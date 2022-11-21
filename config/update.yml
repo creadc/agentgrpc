@@ -1,0 +1,5 @@
+#自动更新
+update:
+  jarUrl: https://fine-build.oss-cn-shanghai.aliyuncs.com/SDET-FR/agent/agent-grpc.jar
+  versionUrl: https://fine-build.oss-cn-shanghai.aliyuncs.com/SDET-FR/agent/version.txt
+  configUrl: https://fine-build.oss-cn-shanghai.aliyuncs.com/SDET-FR/agent/config.tar.gz

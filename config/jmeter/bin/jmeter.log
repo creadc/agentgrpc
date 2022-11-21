@@ -1,0 +1,46 @@
+2022-11-18 17:38:20,161 INFO o.a.j.u.JMeterUtils: Setting Locale to zh_CN
+2022-11-18 17:38:20,171 INFO o.a.j.JMeter: Loading user properties from: user.properties
+2022-11-18 17:38:20,171 INFO o.a.j.JMeter: Loading system properties from: system.properties
+2022-11-18 17:38:20,177 INFO o.a.j.JMeter: Copyright (c) 1998-2022 The Apache Software Foundation
+2022-11-18 17:38:20,177 INFO o.a.j.JMeter: Version 5.5
+2022-11-18 17:38:20,177 INFO o.a.j.JMeter: java.version=1.8.0_331
+2022-11-18 17:38:20,177 INFO o.a.j.JMeter: java.vm.name=Java HotSpot(TM) 64-Bit Server VM
+2022-11-18 17:38:20,177 INFO o.a.j.JMeter: os.name=Windows 11
+2022-11-18 17:38:20,177 INFO o.a.j.JMeter: os.arch=amd64
+2022-11-18 17:38:20,177 INFO o.a.j.JMeter: os.version=10.0
+2022-11-18 17:38:20,177 INFO o.a.j.JMeter: file.encoding=GBK
+2022-11-18 17:38:20,177 INFO o.a.j.JMeter: java.awt.headless=null
+2022-11-18 17:38:20,177 INFO o.a.j.JMeter: Max memory     =3771203584
+2022-11-18 17:38:20,177 INFO o.a.j.JMeter: Available Processors =16
+2022-11-18 17:38:20,180 INFO o.a.j.JMeter: Default Locale=中文 (中国)
+2022-11-18 17:38:20,180 INFO o.a.j.JMeter: JMeter  Locale=中文 (中国)
+2022-11-18 17:38:20,180 INFO o.a.j.JMeter: JMeterHome=C:\application\apache-jmeter-5.5
+2022-11-18 17:38:20,180 INFO o.a.j.JMeter: user.dir  =C:\application\apache-jmeter-5.5\bin
+2022-11-18 17:38:20,182 INFO o.a.j.JMeter: PWD       =C:\application\apache-jmeter-5.5\bin
+2022-11-18 17:38:20,183 INFO o.a.j.JMeter: IP: 2.0.1.56 Name: LAPTOP-A89CBKMD FullName: LAPTOP-A89CBKMD
+2022-11-18 17:38:20,192 INFO o.a.j.JMeter: Loaded icon properties from org/apache/jmeter/images/icon.properties
+2022-11-18 17:38:20,324 INFO o.a.j.JMeterGuiLauncher: Setting LAF to: laf:com.sun.java.swing.plaf.windows.WindowsLookAndFeel
+2022-11-18 17:38:21,549 WARN o.j.r.PluginManager: Found JAR conflict: C:\application\apache-jmeter-5.5\lib\cmdrunner-2.3.jar and C:\application\apache-jmeter-5.5\lib\cmdrunner-2.2.jar
+2022-11-18 17:38:21,550 WARN o.j.r.PluginManager: Found JAR conflict: C:\application\apache-jmeter-5.5\lib\jmeter-plugins-cmn-jmeter-0.7.jar and C:\application\apache-jmeter-5.5\lib\jmeter-plugins-cmn-jmeter-0.6.jar
+2022-11-18 17:38:21,550 WARN o.j.r.PluginManager: Found JAR conflict: C:\application\apache-jmeter-5.5\lib\ext\jmeter-plugins-manager-1.7.jar and C:\application\apache-jmeter-5.5\lib\ext\jmeter-plugins-manager-1.6.jar
+2022-11-18 17:38:22,026 INFO o.j.r.JARSourceHTTP: Found cached repo
+2022-11-18 17:38:22,116 INFO o.j.r.PluginManager: Plugins Status: [jpgc-graphs-basic=2.0, jpgc-perfmon=2.1, jpgc-plugins-manager=1.6, jpgc-tst=2.5, websocket-sampler=1.0.2-SNAPSHOT, websocket-samplers=1.2.8, jmeter-core=5.5, jmeter-ftp=5.5, jmeter-http=5.5, jmeter-jdbc=5.5, jmeter-jms=5.5, jmeter-junit=5.5, jmeter-java=5.5, jmeter-ldap=5.5, jmeter-mail=5.5, jmeter-mongodb=5.5, jmeter-native=5.5, jmeter-tcp=5.5, jmeter-components=5.5]
+2022-11-18 17:38:22,117 INFO o.j.r.PluginManagerMenuItem: Plugins Manager has upgrades: [jpgc-plugins-manager]
+2022-11-18 17:38:25,237 INFO o.a.j.s.FileServer: Default base='C:\application\apache-jmeter-5.5\bin'
+2022-11-18 17:38:25,245 INFO o.a.j.g.a.Load: Loading file: C:\Users\yzp\Downloads\100.jmx
+2022-11-18 17:38:25,245 INFO o.a.j.s.FileServer: Set new base='C:\Users\yzp\Downloads'
+2022-11-18 17:38:25,328 INFO o.a.j.s.SaveService: Testplan (JMX) version: 2.2. Testlog (JTL) version: 2.2
+2022-11-18 17:38:25,332 INFO o.a.j.s.SaveService: Using SaveService properties file encoding UTF-8
+2022-11-18 17:38:25,332 INFO o.a.j.s.SaveService: Using SaveService properties version 5.0
+2022-11-18 17:38:25,334 INFO o.a.j.s.SaveService: Loading file: C:\Users\yzp\Downloads\100.jmx
+2022-11-18 17:38:25,422 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/html is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2022-11-18 17:38:25,422 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xhtml+xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2022-11-18 17:38:25,422 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2022-11-18 17:38:25,422 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2022-11-18 17:38:25,422 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/vnd.wap.wml is org.apache.jmeter.protocol.http.parser.RegexpHTMLParser
+2022-11-18 17:38:25,422 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/css is org.apache.jmeter.protocol.http.parser.CssParser
+2022-11-18 17:38:25,465 INFO o.a.j.s.SampleResult: Note: Sample TimeStamps are START times
+2022-11-18 17:38:25,465 INFO o.a.j.s.SampleResult: sampleresult.default.encoding is set to ISO-8859-1
+2022-11-18 17:38:25,465 INFO o.a.j.s.SampleResult: sampleresult.useNanoTime=true
+2022-11-18 17:38:25,465 INFO o.a.j.s.SampleResult: sampleresult.nanoThreadSleep=5000
+2022-11-18 17:38:25,649 INFO o.a.j.s.FileServer: Set new base='C:\Users\yzp\Downloads'

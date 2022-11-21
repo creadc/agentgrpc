@@ -1,0 +1,80 @@
+syntax="proto3";
+option go_package = "protocol/v1/agent";
+option java_package="com.example.agentgrpc.protocol.project";
+package agent;
+option java_multiple_files = true;
+
+//存在两种形式的远程调用
+//1.工程管理类型的，执行一次，获取结果
+//2.定时任务类型的，任务queue
+//对于1，也可以作为queue处理，存在关闭、换jar、启动的队列任务
+//所以1，2都需要提供一个exec_id来识别任务队列执行状态
+//针对服务端来说，提供的方法应该是尽可能小的，由中心节点来选择组合方式
+
+//agent作为server
+service Project {
+  //启动工程
+  rpc StartNode(NodeControlReq) returns(NodeControlRes){}
+  //停止工程
+  rpc StopNode(NodeControlReq) returns(NodeControlRes){}
+  //重启工程
+  rpc ReStartNode(NodeControlReq) returns(NodeControlRes){}
+  //换jar
+  rpc ReplaceJar(ReplaceJarReq) returns(NodeControlRes){}
+  //节点状态
+  rpc NodeState(NodeControlReq)returns(NodeStateRes){}
+  //持续打堆栈
+  rpc StartPrintJStacks(PrintStacksReq)returns(NodeControlRes){}
+  //停止打堆栈
+  rpc StopPrintJStacks(NodeControlReq)returns(stream StopPrintJStacksRes){}
+  //打dump
+  rpc PrintDump(NodeControlReq)returns(NodeControlRes){}
+
+}
+
+message NodeInfo {
+  string ip=1; //proj ip
+  string port=2; //proj port
+  string webapps=3;
+  string servlet=4;
+  string lib_path=5; //proj lib目录
+  string bin_path=6; //tomcat bin 目录
+}
+
+message NodeControlReq {
+  string exec_id =1; //任务队列id
+  int32 index=2; //当前任务在任务队列中的索引
+  NodeInfo node =3;
+}
+
+message PrintStacksReq{
+  string exec_id =1; //任务队列id
+  int32 index=2;//当前任务在任务队列中的索引
+  NodeInfo node =3;
+  int32 interval=4; //打堆栈间隔
+}
+
+//返回jstack文件,压缩包，看下要不要用流分片传
+message StopPrintJStacksRes{
+  string file_name=1; //文件名
+  bytes chunk=2;//文件
+}
+
+message ReplaceJarReq{
+  string exec_id =1;
+  int32 index=2; //当前任务在任务队列中的索引
+  NodeInfo node =3;
+  string download_url=4; //下载路径
+  repeated string file_list=5;//文件列表
+}
+
+message NodeControlRes{
+  int32 code=1; //执行状态，0成功-1失败-2执行中
+  string message=2; //详细信息
+}
+
+message NodeStateRes{
+  int32 code=1; //执行状态，0成功-1失败-2执行中
+  int32 is_up=2; //是否在线 0在线-1不在线-2(可以增加)宕机
+  map<string, string> attrs = 3; //其他属性，如jar_time
+}

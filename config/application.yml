@@ -1,0 +1,43 @@
+#Springboot web启动端口
+server:
+  port: 8090
+
+# #日志输出配置文件
+#logging:
+# config: config/logback-spring.xml
+
+
+spring:
+  groovy:
+    template:
+      check-template-location: false
+
+grpc:
+  #grpc服务端启动端口
+  server:
+    port: 9090
+  #grpc客户端启动端口，调试用的，正式环境不需要
+  client:
+    userClient:
+      negotiationType: PLAINTEXT
+      address: static://localhost:9090
+
+my:
+  #客户端IP和端口号
+  client:
+    ip: localhost
+    port: 9090
+
+  #默认系统命令执行目录
+  defaultPathOnWindows: C:\Users
+  defaultPathOnLinux: /home
+
+  #agent默认系统命令执行目录
+  agentPathOnWindows: C:\agent
+  agentPathOnLinux: /home/agent
+
+  #堆栈自动停止最大次数
+  stackCountMax: 20
+  #验证启动时发送http的循环次数
+  cycleTime: 20
+

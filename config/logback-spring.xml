@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+  <contextName>logback</contextName>
+  <!--输出到控制台-->
+  <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!--按天生成日志-->
+  <appender name="logFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <Prudent>true</Prudent>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <FileNamePattern>
+     logs/%d{yyyy-MM-dd}/%d{yyyy-MM-dd}.log
+      </FileNamePattern>
+      <maxHistory>7</maxHistory>
+    </rollingPolicy>
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <Pattern>
+       %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n
+      </Pattern>
+    </layout>
+  </appender>
+
+
+  <!-- 异步日志输出 -->
+  <appender name="async_ysw" class="ch.qos.logback.classic.AsyncAppender">
+    <!--队列长度-->
+    <queueSize>1024</queueSize>
+    <!-- 队列剩余容量小于discardingThreshold,则会丢弃TRACT、DEBUG、INFO级别的日志;默认值-1,为queueSize的20%;0不丢失日志 -->
+    <discardingThreshold>0</discardingThreshold>
+    <!--如果为false（默认值），则追加程序将阻止追加到完整队列，而不是丢失消息。设置为true时，附加程序只会丢弃消息，不会阻止您的应用程序-->
+    <neverBlock>false</neverBlock>
+    <!-- ref值与上面的appender标签的name相对应 -->
+    <appender-ref ref="logFile" />
+  </appender>
+
+<root level="INFO">
+    <appender-ref ref="console" />
+    <appender-ref ref="logFile" />
+  </root>
+
+</configuration>

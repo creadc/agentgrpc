@@ -1,0 +1,43 @@
+syntax="proto3";
+option java_package="com.example.agentgrpc.protocol.collector";
+package platform;
+option java_multiple_files = true;
+
+//中心节点作为server
+service Collector{
+  //执行状态更新，每个agent主动上报 -- 此功能可以先不实现
+  rpc AgentStatus(AgentStatusReq)returns(AgentStatusRes){}
+  //任务状态更新,code返回执行中的任务，完成后需要上报
+  rpc TaskStatus(TaskStatusReq)returns(TaskStatusRes){}
+
+
+}
+
+message AgentStatusReq{
+  string agent_Id=1; //暂定，id/name/ip等
+  string status=2; //状态，空闲/正在执行任务
+  repeated TaskList exec_list=3;//正在执行的任务列表
+}
+message TaskList {
+  string exec_id =1;//任务id
+
+}
+
+
+message AgentStatusRes{}
+//任务进度
+message TaskStatusReq {
+  string exec_id =1;//任务id
+  int32 index=2; //当前任务在任务队列中的索引
+  //job_type:
+  // 1开启工程
+  // 2打dump
+  // 3压测结束
+  int32 job_type=3;//当前任务类型(压测/打堆栈/打dump/换jar)
+  int32 code=4;
+  string message=5;//任务执行状态，对于打dump，返回dump目录
+}
+
+message TaskStatusRes{
+
+}

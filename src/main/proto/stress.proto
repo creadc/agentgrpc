@@ -1,0 +1,51 @@
+syntax="proto3";
+option go_package = "protocol/v1/agent";
+option java_package="com.example.agentgrpc.protocol.stress";
+package agent;
+option java_multiple_files = true;
+
+//agent作为server
+service Stress{
+  //开始压测
+  rpc StartStress(StartStressReq) returns(StartStressRes){}
+  //停止压测
+  rpc StopStress(StopStressReq) returns(StopStressRes){}
+  //获取结果文件。上传完成后要归档已获取的文件。将本次任务之前的结果文件全部解析
+  rpc JsonResult(JsonResultReq)returns(stream JsonResultRes){}
+}
+
+
+message StartStressReq{
+  string exec_id =1; //执行队列的id
+  int32 index=2; //当前任务在任务队列中的索引
+  string download_url=3; //下载路径
+  repeated string file_list=4;//文件列表
+}
+
+message StartStressRes{
+  int32 code=1; //执行状态，0成功-1失败-2执行中
+  string message=2; //详细信息
+}
+
+message StopStressReq{
+  string exec_id =1;
+  int32 index=2; //当前任务在任务队列中的索引
+}
+
+message StopStressRes{
+  int32 code=1; //执行状态，0成功-1失败-2执行中
+  string message=2; //详细信息
+}
+
+message JsonResultReq{
+  string exec_id =1;
+  int32 index=2; //当前任务在任务队列中的索引
+  string filter_name=3; //处理的filter
+}
+
+message JsonResultRes{
+  int32 code=1; //执行状态，0成功-1失败-2执行中
+  string message=2; //详细信息
+  string file_name=3;
+  string chunk=4;
+}

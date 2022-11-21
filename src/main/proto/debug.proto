@@ -1,0 +1,19 @@
+syntax="proto3";
+option go_package = "protocol/v1/agent";
+option java_package="com.example.agentgrpc.protocol.debug";
+package agent;
+option java_multiple_files = true;
+
+//调试
+service Debug {
+  //获取上下文
+  rpc GetServletContext(ContextReq) returns(ContextRes){}
+}
+
+message ContextReq{
+  string req = 1;
+}
+
+message ContextRes{
+  string res = 1;
+}
