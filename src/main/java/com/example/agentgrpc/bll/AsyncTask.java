@@ -116,9 +116,8 @@ public class AsyncTask {
     public void startStress(String jmxDirPath,String jmxName,String jtlDirPath,String execId,int index){
         try {
             //压测
-            stress.run(jmxDirPath + jmxName,jtlDirPath,jmxName.split("\\.")[0]+".jtl",execId+"-"+index);
-//            stress.run("C:\\Users\\yzp\\Downloads\\100.jmx",jtlDirPath,jtlName,execId);
-//            stress.run("C:\\Users\\yzp\\Downloads\\中国式复杂报表_1.jmx",jtlDirPath,jtlName,execId);
+            stress.run(jmxDirPath + jmxName,jtlDirPath,jmxName.split("\\.")[0]+".jtl",execId);
+//            stress.run("C:\\Users\\yzp\\Downloads\\1000.jmx",jtlDirPath,"10.jtl",execId);
             SendGrpcUtil.TaskStatus(execId,index,3,0,"JMeter finish");
         }catch (Exception e) {
             log.error("ERROR2: Start stress failed",e);
@@ -128,6 +127,8 @@ public class AsyncTask {
         finally {
             //删除临时jmx文件
             commonMethod.delPath(jmxDirPath);
+            //移除servlet上下文
+            servletContext.removeAttribute(execId);
         }
     }
 }

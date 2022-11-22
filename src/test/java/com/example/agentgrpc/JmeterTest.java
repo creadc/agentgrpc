@@ -17,10 +17,9 @@ public class JmeterTest {
     private int port=9090;
 
     public ManagedChannel init(){
-        ManagedChannel channel = ManagedChannelBuilder.forAddress(IP1, port)
+        return ManagedChannelBuilder.forAddress(IP1, port)
                 .usePlaintext()
                 .build();
-        return channel;
     }
 
     @Test
@@ -33,7 +32,7 @@ public class JmeterTest {
                 .setExecId("1234")
                 .setIndex(1)
                 .setDownloadUrl("https://fine-build.oss-cn-shanghai.aliyuncs.com/SDET-FR/agent/test/")
-                .addFileList("1000.jmx")
+                .addFileList("100.jmx")
                 .build();
         System.out.println(req);
 
