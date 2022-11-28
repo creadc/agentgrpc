@@ -66,7 +66,7 @@ public class ProjectBLL {
 
     public NodeControlRes stopNode(NodeControlReq request) {
         String osType = commonMethod.getSystemType();
-        int pid = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()));
+        int pid = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
         //未启动
         if(pid == 0){
             log.error("ERROR2: Project is already stop");
@@ -97,9 +97,7 @@ public class ProjectBLL {
     }
 
     public NodeControlRes reStartNode(NodeControlReq request) {
-        String osType = commonMethod.getSystemType();
-        String defaultPath;
-        int pid = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()));
+        int pid = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
         //工程状态为启动，要先停止
         if(pid != 0){
             commonMethod.justStop(request.getNode(),pid);
@@ -156,7 +154,7 @@ public class ProjectBLL {
         }
 
         //停止
-        int pid = commonMethod.getPID(Integer.parseInt(node.getPort()));
+        int pid = commonMethod.getPID(Integer.parseInt(node.getPort()),request.getNode().getBinPath());
         if(pid != 0){
             commonMethod.justStop(node,pid);
         }
@@ -259,7 +257,7 @@ public class ProjectBLL {
     }
 
     public NodeControlRes startPrintJStacks(PrintStacksReq request) {
-        int pid = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()));
+        int pid = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
         //pid不存在
         if(pid == 0){
             log.error("ERROR2: Print stacks fail,pid does not exist");
@@ -324,7 +322,7 @@ public class ProjectBLL {
     }
 
     public NodeControlRes printDump(NodeControlReq request) {
-        int pid = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()));
+        int pid = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
         //pid不存在
         if(pid == 0){
             return NodeControlRes.newBuilder()

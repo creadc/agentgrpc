@@ -1,5 +1,7 @@
 package com.example.agentgrpc.test;
 
+import com.example.agentgrpc.AgentgrpcApplication;
+import com.example.agentgrpc.conf.TaskExecutorConfig;
 import com.example.agentgrpc.jmeter.Analyze;
 import com.example.agentgrpc.utils.ExecSystemCommandUtil;
 import org.apache.http.HttpEntity;
@@ -20,8 +22,11 @@ import org.apache.jmeter.save.SaveService;
 import org.apache.jmeter.util.JMeterUtils;
 import org.apache.jorphan.collections.HashTree;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
+import javax.security.auth.login.Configuration;
 import javax.servlet.ServletContext;
 import java.io.*;
 import java.net.URL;
@@ -31,10 +36,29 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 @Component
 public class test {
 
     public static void main(String[] args) {
+//        ConfigurableApplicationContext s = SpringApplication.run(AgentgrpcApplication.class);
+//        String[] beanDefinitionNames = s.getBeanDefinitionNames();
+//        for (String name :beanDefinitionNames){
+//     //       System.out.println(name);
+//        }
+//        TaskExecutorConfig taskExecutorConfig = s.getBean("taskExecutorConfig", TaskExecutorConfig.class);
+//        Executor asyncTaskExecutor = taskExecutorConfig.getAsyncTaskExecutor();
+//        asyncTaskExecutor.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                System.out.println(Thread.currentThread().getName());
+//                try {
+//                    Thread.sleep(30);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
     }
 }

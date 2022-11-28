@@ -13,6 +13,7 @@ public class Constants {
     public static final String KILL = "kill";
     public static final String SS = "ss";
     public static final String NETSTAT_ON_LINUX = "netstat";
+    public static final String PGREP_ON_LINUX = "pgrep";
     public static final String RM = "rm";
     public static final String CP = "cp";
     public static final String NOHUP = "nohup";

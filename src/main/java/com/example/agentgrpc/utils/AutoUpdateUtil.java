@@ -4,6 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.agentgrpc.bll.CommonMethod;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.YamlProcessor;
+import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Properties;
 
 @Slf4j
 @Component
@@ -82,7 +87,7 @@ public class AutoUpdateUtil {
                 }
             }
             //准备工作完成,调用脚本
-            int pid = commonMethod.getPID(PORT);
+            int pid = commonMethod.getPID(PORT,path);
             String oldJarName;
             File file = new File(path + bar +"agent-grpc.jar");
             if (file.exists())
@@ -102,5 +107,12 @@ public class AutoUpdateUtil {
                 log.error("ERROR2: Exec update command failed",e);
             }
         }
+    }
+
+    public void mergeYml(String mainYmlPath ,String addYmlPath){
+        YamlPropertiesFactoryBean factoryBean = new YamlPropertiesFactoryBean();
+        factoryBean.setResolutionMethod(YamlProcessor.ResolutionMethod.OVERRIDE_AND_IGNORE);
+        factoryBean.setResources(new FileSystemResource(addYmlPath),new FileSystemResource(mainYmlPath));
+        Properties properties = factoryBean.getObject();
     }
 }

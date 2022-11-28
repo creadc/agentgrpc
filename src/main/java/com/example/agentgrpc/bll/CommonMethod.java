@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -120,7 +121,75 @@ public class CommonMethod {
     }
 
     //获取工程pid，没有返回0
-    public int getPID(int port){
+    public int getPID(int port,String binPath){
+        String osType = getSystemType();
+        String command;
+        ArrayList<String> arrayList;
+        //linux
+        if("Linux".equals(osType)){
+            command = Constants.PGREP_ON_LINUX + " -f " + binPath;
+            try {
+                arrayList = ExecSystemCommandUtil.execCommand(DEFAULT_PATH_ON_LINUX,command,"utf-8");
+            } catch (IOException e) {
+                log.error("ERROR2: Exec command failed:get pid");
+                return 0;
+            }
+            //没获取到pid
+            if (arrayList.isEmpty()){
+                log.error("ERROR2: PID does not exist");
+                return 0;
+            }
+            //不止一个结果
+            if(arrayList.size() >= 2){
+                log.error("ERROR2: Multiple pid");
+                return 0;
+            }
+            //返回pid
+            int pid = Integer.parseInt(arrayList.get(0));
+            log.info("PID: "+ pid);
+            return pid;
+        }
+
+        //windows
+        //使用netstat查找
+        command =Constants.NETSTAT_ON_WINDOWS + " -ano |findstr "+port;
+        try {
+            arrayList = ExecSystemCommandUtil.execCommand(DEFAULT_PATH_ON_WINDOWS,command,"gbk");
+            String arrayString = arrayList.toString();
+            //不含有效数据
+            if(!arrayString.contains("TCP")){
+                log.error("ERROR2: PID does not exist");
+                return 0;
+            }
+
+            //含有效数据
+            String s1 = null;
+            for (String stringTemp : arrayList) {
+                //获取第一行有效结果
+                if (stringTemp.contains(String.valueOf(port))) {
+                    s1 = stringTemp;
+                    break;
+                }
+            }
+            String[] s2 = removeNullFromList(s1.split(" "));
+            //有端口对应的pid
+            if(String.valueOf(port).equals(s2[1].split(":")[1]) && "LISTENING".equals(s2[3])){
+                int res = Integer.parseInt(s2[4]);
+                log.info("PID:"+res);
+                return res;
+            }
+            //没有端口对应的pid
+            log.error("ERROR2: PID does not exist");
+            return 0;
+        } catch (IOException e) {
+            log.error("ERROR2: Get pid failed",e);
+        }
+        log.error("ERROR2: PID does not exist.It should not be here");
+        return 0;
+    }
+
+    //旧的获取pid的方法，已弃用
+    public int getPID_bak(int port){
         String osType = getSystemType();
         String command;
 
@@ -387,15 +456,15 @@ public class CommonMethod {
 
     //读文件
     public String readFile(String filePath){
-        String jsonStr = "";
+        String jsonStr;
         FileReader fileReader = null;
         Reader reader = null;
         StringBuffer sb;
         try {
             File jsonFile = new File(filePath);
             fileReader = new FileReader(jsonFile);
-            reader = new InputStreamReader(new FileInputStream(jsonFile),"utf-8");
-            int ch = 0;
+            reader = new InputStreamReader(new FileInputStream(jsonFile), StandardCharsets.UTF_8);
+            int ch;
             sb = new StringBuffer();
             while ((ch = reader.read()) != -1) {
                 sb.append((char) ch);
