@@ -129,7 +129,7 @@ public class ProjectServiceImpl extends ProjectGrpc.ProjectImplBase {
                         Thread.sleep(1L);
                     }
             } catch (Exception e) {
-                log.error("ERROR2: read failed");
+                log.error("ERROR2: read failed",e);
                 throw e;
             }
         return buffer.array();

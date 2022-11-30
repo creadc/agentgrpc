@@ -3,6 +3,7 @@ package com.example.agentgrpc;
 import com.example.agentgrpc.protocol.debug.ContextReq;
 import com.example.agentgrpc.protocol.debug.ContextRes;
 import com.example.agentgrpc.protocol.debug.DebugGrpc;
+import com.example.agentgrpc.protocol.debug.TestReq;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,22 @@ public class DebugTest {
         return ManagedChannelBuilder.forAddress(IP1, port)
                 .usePlaintext()
                 .build();
+    }
+
+    @Test
+    public void test(){
+        ManagedChannel channel=init();
+
+        DebugGrpc.DebugBlockingStub stub = DebugGrpc.newBlockingStub(channel);
+
+        TestReq req = TestReq.newBuilder().build();
+        stub.test(req);
+
+        try {
+            channel.shutdown().awaitTermination(1, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

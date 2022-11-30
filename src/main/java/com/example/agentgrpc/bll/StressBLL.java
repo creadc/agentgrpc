@@ -35,12 +35,25 @@ public class StressBLL {
         String url = request.getDownloadUrl();//下载url
         String execId = request.getExecId();
         int index = request.getIndex();
-        String jmxName = request.getFileList(0);
-//        ArrayList<String> jmxNames = new ArrayList<>();//jmx名称的集合
-//        for(int i =0;i<request.getFileListCount();i++){
-//            jmxNames.add(request.getFileList(i));
-//        }
+        String jmxName = null;//脚本文件名
         String jmxPath;//jar路径
+        String fileName;//临时csv文件名
+
+        ArrayList<String> fileNames = new ArrayList<>();//文件名称的集合
+        for(int i =0;i<request.getFileListCount();i++){
+            fileName = request.getFileList(i);
+            if (fileName.contains(".jmx"))
+                jmxName = fileName;
+            fileNames.add(fileName);
+        }
+        //下载的文件没有jmx
+        if (jmxName == null){
+            log.error("ERROR2: No jmx file");
+            return StartStressRes.newBuilder()
+                    .setCode(1)
+                    .setMessage("Download jmx fail")
+                    .build();
+        }
 
         //新建目录
         String[] strs1 = commonMethod.initPath("tempJmx",execId,index,true);
@@ -56,23 +69,27 @@ public class StressBLL {
         //接收jmx文件存放到指定位置,报错就返回
         String jmxDirPath = strs1[1];
         String jtlDirPath = strs2[1];
-        jmxPath = jmxDirPath + jmxName;
-        int res = SendHTTPUtil.downloadFile(UrlUtil.join(url,jmxName),
-                jmxPath);
-        if (res == 0) {
-            log.error("ERROR2: Download jmx failed");
-            //删除目录及文件
-            commonMethod.delPath(jmxDirPath);
-            commonMethod.delPath(jtlDirPath);
-            return StartStressRes.newBuilder()
-                    .setCode(1)
-                    .setMessage("Download jmx fail")
-                    .build();
-        }
 
+        for (int i = 0;i < fileNames.size();i++){
+            fileName = fileNames.get(i);
+            jmxPath = jmxDirPath + fileName;
+            int res = SendHTTPUtil.downloadFile(UrlUtil.join(url,fileName),jmxPath);
+            if (res == 0) {
+                log.error("ERROR2: Download jmx or csv failed");
+                //删除目录及文件
+                commonMethod.delPath(jmxDirPath);
+                commonMethod.delPath(jtlDirPath);
+                return StartStressRes.newBuilder()
+                        .setCode(1)
+                        .setMessage("Download jmx fail")
+                        .build();
+            }
+        }
+        //把jmx文件名从arraylist中分离出来
+        fileNames.remove(jmxName);
         //前置条件准备完成，开始压测，先返回执行中
         //压测
-        asyncTask.startStress(jmxDirPath,jmxName,jtlDirPath,execId,index);
+        asyncTask.startStress(jmxDirPath,jmxName,jtlDirPath,execId,index,fileNames);
         log.info("JMeter running......");
         return StartStressRes.newBuilder()
                 .setCode(2)

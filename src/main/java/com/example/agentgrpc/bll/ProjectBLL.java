@@ -33,7 +33,6 @@ public class ProjectBLL {
 
 
     public NodeControlRes startNode(NodeControlReq request) {
-        String osType = commonMethod.getSystemType();
         int state = commonMethod.getProjectState(request.getNode());
         //已启动
         if (state == 1){
@@ -65,7 +64,6 @@ public class ProjectBLL {
     }
 
     public NodeControlRes stopNode(NodeControlReq request) {
-        String osType = commonMethod.getSystemType();
         int pid = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
         //未启动
         if(pid == 0){
@@ -79,6 +77,11 @@ public class ProjectBLL {
         //已启动或状态异常,总结就是端口占用
         commonMethod.justStop(request.getNode(),pid);
         //结果验证
+        log.info("Result validation");
+        pid = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
+        if (pid != 0)
+            commonMethod.justStop(request.getNode(),pid);
+
         int state = commonMethod.getProjectState(request.getNode());
         //执行命令后不报错但项目还未关闭
         if(state == 1){

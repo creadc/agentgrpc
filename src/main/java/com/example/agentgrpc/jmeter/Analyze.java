@@ -18,8 +18,8 @@ import java.util.stream.Stream;
 @Slf4j
 @Component
 public class Analyze {
-    @Autowired
-    private CommonMethod commonMethod;
+//    @Autowired
+//    private CommonMethod commonMethod;
 
     //过滤jtl文件
     public String filterJtl(String jtlDirPath, String jtlName){
@@ -79,6 +79,7 @@ public class Analyze {
 
     //分析jtl生成json文件,出错返回error
     public String jtlToJson(String jtlDirPath, String jtlName){
+        CommonMethod commonMethod = new CommonMethod();
         String userDir = System.getProperty("user.dir");
         String bar = File.separator;
         String jtlPath = jtlDirPath+bar+jtlName;

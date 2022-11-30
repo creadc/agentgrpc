@@ -8,6 +8,8 @@ option java_multiple_files = true;
 service Debug {
   //获取上下文
   rpc GetServletContext(ContextReq) returns(ContextRes){}
+
+  rpc Test(TestReq) returns(TestRes){}
 }
 
 message ContextReq{
@@ -15,5 +17,12 @@ message ContextReq{
 }
 
 message ContextRes{
+  string res = 1;
+}
+
+message TestReq{
+  string req = 1;
+}
+message TestRes{
   string res = 1;
 }

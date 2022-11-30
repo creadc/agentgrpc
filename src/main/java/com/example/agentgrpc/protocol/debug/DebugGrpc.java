@@ -61,6 +61,37 @@ public final class DebugGrpc {
     return getGetServletContextMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<com.example.agentgrpc.protocol.debug.TestReq,
+      com.example.agentgrpc.protocol.debug.TestRes> getTestMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "Test",
+      requestType = com.example.agentgrpc.protocol.debug.TestReq.class,
+      responseType = com.example.agentgrpc.protocol.debug.TestRes.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<com.example.agentgrpc.protocol.debug.TestReq,
+      com.example.agentgrpc.protocol.debug.TestRes> getTestMethod() {
+    io.grpc.MethodDescriptor<com.example.agentgrpc.protocol.debug.TestReq, com.example.agentgrpc.protocol.debug.TestRes> getTestMethod;
+    if ((getTestMethod = DebugGrpc.getTestMethod) == null) {
+      synchronized (DebugGrpc.class) {
+        if ((getTestMethod = DebugGrpc.getTestMethod) == null) {
+          DebugGrpc.getTestMethod = getTestMethod =
+              io.grpc.MethodDescriptor.<com.example.agentgrpc.protocol.debug.TestReq, com.example.agentgrpc.protocol.debug.TestRes>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "Test"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.example.agentgrpc.protocol.debug.TestReq.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.example.agentgrpc.protocol.debug.TestRes.getDefaultInstance()))
+              .setSchemaDescriptor(new DebugMethodDescriptorSupplier("Test"))
+              .build();
+        }
+      }
+    }
+    return getTestMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -122,6 +153,13 @@ public final class DebugGrpc {
       asyncUnimplementedUnaryCall(getGetServletContextMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void test(com.example.agentgrpc.protocol.debug.TestReq request,
+        io.grpc.stub.StreamObserver<com.example.agentgrpc.protocol.debug.TestRes> responseObserver) {
+      asyncUnimplementedUnaryCall(getTestMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -131,6 +169,13 @@ public final class DebugGrpc {
                 com.example.agentgrpc.protocol.debug.ContextReq,
                 com.example.agentgrpc.protocol.debug.ContextRes>(
                   this, METHODID_GET_SERVLET_CONTEXT)))
+          .addMethod(
+            getTestMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                com.example.agentgrpc.protocol.debug.TestReq,
+                com.example.agentgrpc.protocol.debug.TestRes>(
+                  this, METHODID_TEST)))
           .build();
     }
   }
@@ -162,6 +207,14 @@ public final class DebugGrpc {
       asyncUnaryCall(
           getChannel().newCall(getGetServletContextMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void test(com.example.agentgrpc.protocol.debug.TestReq request,
+        io.grpc.stub.StreamObserver<com.example.agentgrpc.protocol.debug.TestRes> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getTestMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -189,6 +242,13 @@ public final class DebugGrpc {
     public com.example.agentgrpc.protocol.debug.ContextRes getServletContext(com.example.agentgrpc.protocol.debug.ContextReq request) {
       return blockingUnaryCall(
           getChannel(), getGetServletContextMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public com.example.agentgrpc.protocol.debug.TestRes test(com.example.agentgrpc.protocol.debug.TestReq request) {
+      return blockingUnaryCall(
+          getChannel(), getTestMethod(), getCallOptions(), request);
     }
   }
 
@@ -219,9 +279,18 @@ public final class DebugGrpc {
       return futureUnaryCall(
           getChannel().newCall(getGetServletContextMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.example.agentgrpc.protocol.debug.TestRes> test(
+        com.example.agentgrpc.protocol.debug.TestReq request) {
+      return futureUnaryCall(
+          getChannel().newCall(getTestMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_GET_SERVLET_CONTEXT = 0;
+  private static final int METHODID_TEST = 1;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -243,6 +312,10 @@ public final class DebugGrpc {
         case METHODID_GET_SERVLET_CONTEXT:
           serviceImpl.getServletContext((com.example.agentgrpc.protocol.debug.ContextReq) request,
               (io.grpc.stub.StreamObserver<com.example.agentgrpc.protocol.debug.ContextRes>) responseObserver);
+          break;
+        case METHODID_TEST:
+          serviceImpl.test((com.example.agentgrpc.protocol.debug.TestReq) request,
+              (io.grpc.stub.StreamObserver<com.example.agentgrpc.protocol.debug.TestRes>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -306,6 +379,7 @@ public final class DebugGrpc {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new DebugFileDescriptorSupplier())
               .addMethod(getGetServletContextMethod())
+              .addMethod(getTestMethod())
               .build();
         }
       }

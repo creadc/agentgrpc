@@ -60,5 +60,7 @@ public class test {
 //                }
 //            }
 //        });
+        Analyze analyze = new Analyze();
+        analyze.jtlToJson("C:\\agent\\jtl\\1234-1-1669718676619","100.jtl");
     }
 }

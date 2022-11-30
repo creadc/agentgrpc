@@ -131,13 +131,32 @@ public class CommonMethod {
             try {
                 arrayList = ExecSystemCommandUtil.execCommand(DEFAULT_PATH_ON_LINUX,command,"utf-8");
             } catch (IOException e) {
-                log.error("ERROR2: Exec command failed:get pid");
+                log.error("ERROR2: Exec command failed:pgrep",e);
                 return 0;
             }
-            //没获取到pid
+            //没获取到pid,需要判断端口是否被其他程序占用
             if (arrayList.isEmpty()){
-                log.error("ERROR2: PID does not exist");
-                return 0;
+                command = Constants.NETSTAT_ON_LINUX+" -ntlp |grep :"+ port;
+                try {
+                    arrayList = ExecSystemCommandUtil.execCommand(DEFAULT_PATH_ON_LINUX,command,"utf-8");
+                } catch (IOException e) {
+                    log.error("ERROR2: Exec command failed:netstat",e);
+                }
+                //为空，端口未占用
+                if (arrayList.isEmpty()){
+                    log.info("PID does not exist");
+                    return 0;
+                }
+                //存在listen状态，即端口被占用
+                for (String s : arrayList) {
+                    String[] s2 = removeNullFromList(s.split(" "));
+                    if("LISTEN".equals(s2[5])){
+                        int res = Integer.parseInt(s2[6].substring(0,s2[6].indexOf("/")));
+                        log.info("ERROR2: Port is occupied,PID:"+res);
+                        return res;
+                    }
+                }
+
             }
             //不止一个结果
             if(arrayList.size() >= 2){
@@ -158,7 +177,7 @@ public class CommonMethod {
             String arrayString = arrayList.toString();
             //不含有效数据
             if(!arrayString.contains("TCP")){
-                log.error("ERROR2: PID does not exist");
+                log.info("PID does not exist");
                 return 0;
             }
 
@@ -224,7 +243,7 @@ public class CommonMethod {
             try {
                 arrayList = ExecSystemCommandUtil.execCommand(DEFAULT_PATH_ON_LINUX,command,"utf-8");
             } catch (IOException e) {
-                log.error("ERROR2: Exec command failed:netstat -ntulp | grep");
+                log.error("ERROR2: Exec command failed:netstat -ntulp | grep",e);
             }
             String s1 = arrayList.get(0);
             String[] s2 = removeNullFromList(s1.split(" "));

@@ -54,7 +54,7 @@ public class SendHTTPUtil {
             }
             return data;
         } catch (Exception e){
-            log.error("ERROR2: " + e.toString());
+            log.error("ERROR2: Send HTTP failed",e);
             data.put("errorMessage",e.getMessage());
             return data;
         }

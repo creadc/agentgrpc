@@ -1,8 +1,7 @@
 package com.example.agentgrpc.service;
 
-import com.example.agentgrpc.protocol.debug.ContextReq;
-import com.example.agentgrpc.protocol.debug.ContextRes;
-import com.example.agentgrpc.protocol.debug.DebugGrpc;
+import com.example.agentgrpc.jmeter.Analyze;
+import com.example.agentgrpc.protocol.debug.*;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
@@ -44,6 +43,17 @@ public class DebugImpl extends DebugGrpc.DebugImplBase {
 
         //返回
         ContextRes res = ContextRes.newBuilder().build();
+        responseObserver.onNext( res );
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void test(TestReq request, StreamObserver<TestRes> responseObserver) {
+        Analyze analyze = new Analyze();
+        analyze.jtlToJson("C:\\agent\\jtl\\1234-1-1669720326587","1.jtl");
+
+        //返回
+        TestRes res = TestRes.newBuilder().build();
         responseObserver.onNext( res );
         responseObserver.onCompleted();
     }

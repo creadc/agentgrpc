@@ -53,7 +53,7 @@ public class ExecSystemCommandUtil {
                 }
             }
         } catch (IOException e) {
-            log.error("ERROR2: ExecCommandUtil run failed");
+            log.error("ERROR2: ExecCommandUtil run failed",e);
             throw e;
         }finally {
             //遇到个问题，windows启动后如果立刻关闭流会导致工程未启动，所以延迟1s

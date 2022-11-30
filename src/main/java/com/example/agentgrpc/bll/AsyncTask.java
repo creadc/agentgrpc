@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletContext;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -22,12 +23,14 @@ public class AsyncTask {
     @Autowired
     private ServletContext servletContext;
 
-
     @Autowired
     private CommonMethod commonMethod;
 
     @Autowired
     private Stress stress;
+
+    private static final String AGENT_PATH_ON_LINUX = (String) ReadConfUtil.readYml("application.yml","my.agentPathOnLinux");
+    private static final String AGENT_PATH_ON_WINDOWS = (String) ReadConfUtil.readYml("application.yml","my.agentPathOnWindows");
 
     private static final int CYCLE_MAX = (int) ReadConfUtil.readYml("application.yml","my.cycleTime");
     private static final int STACK_COUNT_MAX = (int) ReadConfUtil.readYml("application.yml","my.stackCountMax");
@@ -115,11 +118,10 @@ public class AsyncTask {
 
     //压测
     @Async
-    public void startStress(String jmxDirPath,String jmxName,String jtlDirPath,String execId,int index){
+    public void startStress(String jmxDirPath, String jmxName, String jtlDirPath, String execId, int index, ArrayList<String> fileNames){
         try {
             //压测
-            stress.run(jmxDirPath + jmxName,jtlDirPath,jmxName.split("\\.")[0]+".jtl",execId);
-//            stress.run("C:\\Users\\yzp\\Downloads\\1000.jmx",jtlDirPath,"10.jtl",execId);
+            stress.run(jmxDirPath,jmxName,jtlDirPath,jmxName.split("\\.")[0]+".jtl",execId,fileNames);
             SendGrpcUtil.TaskStatus(execId,index,3,0,"JMeter finish");
         }catch (Exception e) {
             log.error("ERROR2: Start stress failed",e);
