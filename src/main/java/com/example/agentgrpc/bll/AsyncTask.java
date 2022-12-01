@@ -122,7 +122,6 @@ public class AsyncTask {
         try {
             //压测
             stress.run(jmxDirPath,jmxName,jtlDirPath,jmxName.split("\\.")[0]+".jtl",execId,fileNames);
-            SendGrpcUtil.TaskStatus(execId,index,3,0,"JMeter finish");
         }catch (Exception e) {
             log.error("ERROR2: Start stress failed",e);
             commonMethod.delPath(jtlDirPath);
@@ -134,5 +133,6 @@ public class AsyncTask {
             //移除servlet上下文
             servletContext.removeAttribute(execId);
         }
+        SendGrpcUtil.TaskStatus(execId,index,3,0,"JMeter finish");
     }
 }
