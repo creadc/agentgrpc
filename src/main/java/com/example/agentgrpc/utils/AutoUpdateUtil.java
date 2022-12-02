@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -87,7 +88,16 @@ public class AutoUpdateUtil {
                 }
             }
             //准备工作完成,调用脚本
-            int pid = commonMethod.getPID(PORT,path);
+            ArrayList<Integer> pids = commonMethod.getPID(PORT,path);
+            if (pids.get(0) == 0){
+                log.error("ERROR2: pid does not exist,auto update failed");
+                return;
+            }
+            if (pids.size() >=2){
+                log.error("ERROR2: Multiple pid,auto update failed");
+                return;
+            }
+
             String oldJarName;
             File file = new File(path + bar +"agent-grpc.jar");
             if (file.exists())
@@ -95,10 +105,10 @@ public class AutoUpdateUtil {
             else
                 oldJarName = "agent-grpc-" + currentVersion + ".jar";
             if ("Linux".equals(systemType)){
-                command =Constants.NOHUP + " bash script"+File.separator+"update.sh "+pid+" "+oldJarName+" "+newJarName+" >/dev/null 2>&1 &";
+                command =Constants.NOHUP + " bash script"+File.separator+"update.sh "+pids.get(0)+" "+oldJarName+" "+newJarName+" >/dev/null 2>&1 &";
             }
             else {
-                command =Constants.START + " script"+File.separator+"update.bat "+pid+" "+oldJarName+" "+newJarName;
+                command =Constants.START + " script"+File.separator+"update.bat "+pids.get(0)+" "+oldJarName+" "+newJarName;
             }
             try {
                 log.info("=====Auto update=====");

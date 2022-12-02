@@ -64,9 +64,9 @@ public class ProjectBLL {
     }
 
     public NodeControlRes stopNode(NodeControlReq request) {
-        int pid = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
+        ArrayList<Integer> pids = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
         //未启动
-        if(pid == 0){
+        if(pids.get(0) == 0){
             log.error("ERROR2: Project is already stop");
             return NodeControlRes.newBuilder()
                     .setCode(1)
@@ -75,12 +75,17 @@ public class ProjectBLL {
         }
 
         //已启动或状态异常,总结就是端口占用
-        commonMethod.justStop(request.getNode(),pid);
+        for (Integer pid : pids) {
+            commonMethod.justStop(request.getNode(),pid);
+        }
+
         //结果验证
         log.info("Result validation");
-        pid = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
-        if (pid != 0)
-            commonMethod.justStop(request.getNode(),pid);
+        pids = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
+        if (pids.get(0) != 0)
+            for (Integer pid : pids) {
+                commonMethod.justStop(request.getNode(),pid);
+            }
 
         int state = commonMethod.getProjectState(request.getNode());
         //执行命令后不报错但项目还未关闭
@@ -100,10 +105,12 @@ public class ProjectBLL {
     }
 
     public NodeControlRes reStartNode(NodeControlReq request) {
-        int pid = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
+        ArrayList<Integer> pids = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
         //工程状态为启动，要先停止
-        if(pid != 0){
-            commonMethod.justStop(request.getNode(),pid);
+        if(pids.get(0) != 0){
+            for (Integer pid : pids) {
+                commonMethod.justStop(request.getNode(),pid);
+            }
         }
         //延时
         commonMethod.delay(1);
@@ -157,9 +164,11 @@ public class ProjectBLL {
         }
 
         //停止
-        int pid = commonMethod.getPID(Integer.parseInt(node.getPort()),request.getNode().getBinPath());
-        if(pid != 0){
-            commonMethod.justStop(node,pid);
+        ArrayList<Integer> pids = commonMethod.getPID(Integer.parseInt(node.getPort()),request.getNode().getBinPath());
+        if(pids.get(0) != 0){
+            for (Integer pid : pids) {
+                commonMethod.justStop(request.getNode(),pid);
+            }
         }
         //删除和复制
         commonMethod.delSpecificFiles(node.getLibPath(),1);
@@ -260,10 +269,18 @@ public class ProjectBLL {
     }
 
     public NodeControlRes startPrintJStacks(PrintStacksReq request) {
-        int pid = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
+        ArrayList<Integer> pids = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
         //pid不存在
-        if(pid == 0){
-            log.error("ERROR2: Print stacks fail,pid does not exist");
+        if(pids.get(0) == 0){
+            log.error("ERROR2: pid does not exist,cannot stack");
+            return NodeControlRes.newBuilder()
+                    .setCode(1)
+                    .setMessage("PID does not exist")
+                    .build();
+        }
+        //pid有多个
+        if (pids.size() >= 2){
+            log.error("ERROR2: Multiple pid,cannot stack");
             return NodeControlRes.newBuilder()
                     .setCode(1)
                     .setMessage("PID does not exist")
@@ -282,7 +299,7 @@ public class ProjectBLL {
         //前置条件确认完成，发起异步任务打堆栈
         servletContext.setAttribute(request.getExecId(),"1"+"-"+request.getIndex());
 
-        asyncTask.printJStacks(dirStrs[1],request.getExecId(),pid,request.getInterval());
+        asyncTask.printJStacks(dirStrs[1],request.getExecId(),pids.get(0),request.getInterval());
         //返回结果
         return NodeControlRes.newBuilder()
                 .setCode(2)
@@ -325,9 +342,18 @@ public class ProjectBLL {
     }
 
     public NodeControlRes printDump(NodeControlReq request) {
-        int pid = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
+        ArrayList<Integer> pids = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
         //pid不存在
-        if(pid == 0){
+        if(pids.get(0) == 0){
+            log.error("ERROR2: pid does not exist,unable to dump");
+            return NodeControlRes.newBuilder()
+                    .setCode(1)
+                    .setMessage("PID does not exist")
+                    .build();
+        }
+        //pid有多个
+        if (pids.size() >= 2){
+            log.error("ERROR2: Multiple pid,unable to dump");
             return NodeControlRes.newBuilder()
                     .setCode(1)
                     .setMessage("PID does not exist")
@@ -344,7 +370,7 @@ public class ProjectBLL {
                     .build();
         }
         //前置条件确认完成,新启一个线程打dump
-        asyncTask.printDump(dirStrs[1],request.getExecId(),request.getIndex(),pid);
+        asyncTask.printDump(dirStrs[1],request.getExecId(),request.getIndex(),pids.get(0));
 
         return NodeControlRes.newBuilder()
                 .setCode(2)

@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -97,7 +98,7 @@ public class CommonMethod {
             try {
                 arrayList = ExecSystemCommandUtil.execCommand(DEFAULT_PATH_ON_LINUX, command, "utf-8");
                 //结果分析
-                if(!arrayList.isEmpty()){
+                if(!(arrayList.isEmpty())){
                     log.error("ERROR2: The result is empty:stop project");
                 }
             } catch (IOException e) {
@@ -121,10 +122,11 @@ public class CommonMethod {
     }
 
     //获取工程pid，没有返回0
-    public int getPID(int port,String binPath){
+    public ArrayList<Integer> getPID(int port, String binPath){
         String osType = getSystemType();
         String command;
         ArrayList<String> arrayList;
+        ArrayList<Integer> pids = new ArrayList<>();
         //linux
         if("Linux".equals(osType)){
             command = Constants.PGREP_ON_LINUX + " -f " + binPath;
@@ -132,79 +134,83 @@ public class CommonMethod {
                 arrayList = ExecSystemCommandUtil.execCommand(DEFAULT_PATH_ON_LINUX,command,"utf-8");
             } catch (IOException e) {
                 log.error("ERROR2: Exec command failed:pgrep",e);
-                return 0;
+                pids.add(0);
+                return pids;
             }
-            //没获取到pid,需要判断端口是否被其他程序占用
-            if (arrayList.isEmpty()){
-                command = Constants.NETSTAT_ON_LINUX+" -ntlp |grep :"+ port;
-                try {
-                    arrayList = ExecSystemCommandUtil.execCommand(DEFAULT_PATH_ON_LINUX,command,"utf-8");
-                } catch (IOException e) {
-                    log.error("ERROR2: Exec command failed:netstat",e);
-                }
-                //为空，端口未占用
-                if (arrayList.isEmpty()){
-                    log.info("PID does not exist");
-                    return 0;
-                }
-                //存在listen状态，即端口被占用
-                for (String s : arrayList) {
-                    String[] s2 = removeNullFromList(s.split(" "));
-                    if("LISTEN".equals(s2[5])){
-                        int res = Integer.parseInt(s2[6].substring(0,s2[6].indexOf("/")));
+            //把pid放到结果集合中
+            for (String s : arrayList) {
+                pids.add(Integer.valueOf(s));
+            }
+            //再用netstat查一次
+            command = Constants.NETSTAT_ON_LINUX+" -ntlp |grep :"+ port;
+            try {
+                arrayList = ExecSystemCommandUtil.execCommand(DEFAULT_PATH_ON_LINUX,command,"utf-8");
+            } catch (IOException e) {
+                log.error("ERROR2: Exec command failed:netstat",e);
+                if (arrayList.isEmpty())
+                    pids.add(0);
+                return pids;
+            }
+            for (String s : arrayList) {
+                String[] s2 = removeNullFromList(s.split(" "));
+                if("LISTEN".equals(s2[5]) && s2[3].contains(":"+port)){
+                    int res = Integer.parseInt(s2[6].substring(0,s2[6].indexOf("/")));
+                    //使用端口查询和使用bin路径查到的pid不一致，说明端口被占用了
+                    if (!pids.contains(res)){
                         log.info("ERROR2: Port is occupied,PID:"+res);
-                        return res;
+                        pids.add(res);
                     }
                 }
-
             }
-            //不止一个结果
-            if(arrayList.size() >= 2){
-                log.error("ERROR2: Multiple pid");
-                return 0;
+            //判断pids是否为空，如果为空就加上0，返回没有占用
+            if (pids.isEmpty()){
+                pids.add(0);
+                log.error("ERROR2: PID does not exist");
             }
-            //返回pid
-            int pid = Integer.parseInt(arrayList.get(0));
-            log.info("PID: "+ pid);
-            return pid;
+            for (Integer pid : pids) {
+                log.info("PID: "+pid);
+            }
+            return pids;
         }
 
         //windows
         //使用netstat查找
-        command =Constants.NETSTAT_ON_WINDOWS + " -ano |findstr "+port;
+        command =Constants.NETSTAT_ON_WINDOWS + " -ano |findstr :"+port;
         try {
             arrayList = ExecSystemCommandUtil.execCommand(DEFAULT_PATH_ON_WINDOWS,command,"gbk");
             String arrayString = arrayList.toString();
             //不含有效数据
             if(!arrayString.contains("TCP")){
                 log.info("PID does not exist");
-                return 0;
+                pids.add(0);
+                return pids;
             }
 
             //含有效数据
-            String s1 = null;
             for (String stringTemp : arrayList) {
                 //获取第一行有效结果
-                if (stringTemp.contains(String.valueOf(port))) {
-                    s1 = stringTemp;
-                    break;
+                if (stringTemp.contains("LISTENING") && stringTemp.contains(":"+port)) {
+                    //还需要判断port是否在第二个位置，即源端口
+                    String[] temp1 = stringTemp.split(" ");
+                    String[] temp2 = removeNullFromList(temp1);
+                    //找到对应的pid
+                    if (temp2[1].contains(":"+port)){
+                        log.info("PID:"+temp2[4]);
+                        pids.add(Integer.parseInt(temp2[4]));
+                        return pids;
+                    }
                 }
-            }
-            String[] s2 = removeNullFromList(s1.split(" "));
-            //有端口对应的pid
-            if(String.valueOf(port).equals(s2[1].split(":")[1]) && "LISTENING".equals(s2[3])){
-                int res = Integer.parseInt(s2[4]);
-                log.info("PID:"+res);
-                return res;
             }
             //没有端口对应的pid
             log.error("ERROR2: PID does not exist");
-            return 0;
+            pids.add(0);
+            return pids;
         } catch (IOException e) {
             log.error("ERROR2: Get pid failed",e);
         }
         log.error("ERROR2: PID does not exist.It should not be here");
-        return 0;
+        pids.add(0);
+        return pids;
     }
 
     //旧的获取pid的方法，已弃用
