@@ -1,6 +1,9 @@
 package com.example.agentgrpc.utils;
 
 public class Constants {
+    //文件名分隔
+    public static final String DIVISION = "_";
+
     //放一些系统命令
     //windows
     public static final String TASKKILL = "taskkill";

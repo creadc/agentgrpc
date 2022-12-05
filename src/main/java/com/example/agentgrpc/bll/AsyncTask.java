@@ -38,7 +38,7 @@ public class AsyncTask {
     @Async
     public void checkStart(NodeControlReq request){
         try{
-            servletContext.setAttribute(request.getNode().getBinPath()+"-state","1");
+            servletContext.setAttribute(request.getNode().getBinPath()+Constants.DIVISION+"state","1");
             for (int i=0 ; i < CYCLE_MAX ; i++){
                 try {
                     TimeUnit.SECONDS.sleep(5);//秒
@@ -56,7 +56,7 @@ public class AsyncTask {
             log.error("ERROR2: The project has not been started for a long time");
             SendGrpcUtil.TaskStatus(request.getExecId(),request.getIndex(),1,1,"Project start fail");
         }finally {
-            servletContext.removeAttribute(request.getNode().getBinPath()+"-state");
+            servletContext.removeAttribute(request.getNode().getBinPath()+Constants.DIVISION+"state");
         }
 
     }
@@ -69,8 +69,8 @@ public class AsyncTask {
         int i;
         for (i = 1;i<STACK_COUNT_MAX+1;i++){
             command = Constants.JSTACK + " "+pid+" > "+i+".txt";
-            String tag = (String) servletContext.getAttribute(execId+"-jstack");
-            if("1".equals(tag.split("-")[0])){
+            String tag = (String) servletContext.getAttribute(execId+Constants.DIVISION+"jstack");
+            if("1".equals(tag.split(Constants.DIVISION)[0])){
                 try {
                     ExecSystemCommandUtil.execCommand(path,command,"utf-8");
                     commonMethod.delay(interval);
@@ -85,7 +85,7 @@ public class AsyncTask {
         if (i == STACK_COUNT_MAX)
             log.info("ERROR2: Auto stop:stack,path:"+path);
         log.info("Stop stack");
-        servletContext.removeAttribute(execId+"-jstack");
+        servletContext.removeAttribute(execId+Constants.DIVISION+"jstack");
     }
 
     //打dump
@@ -95,7 +95,7 @@ public class AsyncTask {
         String osType = commonMethod.getSystemType();
         String filePath;
         String command;
-        filePath = dirPath+"\\"+execId+"-"+index+"-"+System.currentTimeMillis()+".hprof";
+        filePath = dirPath+"\\"+execId+Constants.DIVISION+index+Constants.DIVISION+System.currentTimeMillis()+".hprof";
         if("Linux".equals(osType)){
             command =Constants.JMAP + " -dump:format=b,file="+filePath+" "+pid;
         }
@@ -125,7 +125,7 @@ public class AsyncTask {
     public void startStress(String jmxDirPath, String jmxName, String jtlDirPath, String execId, int index, ArrayList<String> fileNames){
         try {
             //压测
-            stress.run(jmxDirPath,jmxName,jtlDirPath,jmxName.split("\\.")[0]+".jtl",execId+"-stress",fileNames);
+            stress.run(jmxDirPath,jmxName,jtlDirPath,jmxName.split("\\.")[0]+".jtl",execId+Constants.DIVISION+"stress",fileNames);
         }catch (Exception e) {
             log.error("ERROR2: Start stress failed",e);
             commonMethod.delPath(jtlDirPath);
@@ -135,7 +135,7 @@ public class AsyncTask {
             //删除临时jmx文件
             commonMethod.delPath(jmxDirPath);
             //移除servlet上下文
-            servletContext.removeAttribute(execId+"-stress");
+            servletContext.removeAttribute(execId+Constants.DIVISION+"stress");
         }
         SendGrpcUtil.TaskStatus(execId,index,3,0,"JMeter finish");
     }

@@ -197,8 +197,8 @@ public class ProjectBLL {
         int isUp;  //是否启动
 
         //先判断工程是否处于启动中，如果是直接返回
-        if (servletContext.getAttribute(request.getNode().getBinPath()+"-state") != null){
-            if (servletContext.getAttribute(request.getNode().getBinPath()+"-state") == "1"){
+        if (servletContext.getAttribute(request.getNode().getBinPath()+Constants.DIVISION+"state") != null){
+            if (servletContext.getAttribute(request.getNode().getBinPath()+Constants.DIVISION+"state") == "1"){
                 isUp = 5;
                 log.info("Project state:starting......");
                 return NodeStateRes.newBuilder()
@@ -297,7 +297,7 @@ public class ProjectBLL {
                     .build();
         }
         //前置条件确认完成，发起异步任务打堆栈
-        servletContext.setAttribute(request.getExecId()+"-jstack","1"+"-"+request.getIndex());
+        servletContext.setAttribute(request.getExecId()+Constants.DIVISION+"jstack","1"+Constants.DIVISION+request.getIndex());
         asyncTask.printJStacks(dirStrs[1],request.getExecId(),pids.get(0),request.getInterval());
         //返回结果
         return NodeControlRes.newBuilder()
@@ -311,20 +311,20 @@ public class ProjectBLL {
         String index;//开始打堆栈的索引
         String[] res = new String[2];
         //判断tag是否存在
-        if(servletContext.getAttribute(request.getExecId()+"-jstack") != null){
-            attribute = (String) servletContext.getAttribute(request.getExecId()+"-jstack");
-            index = attribute.split("-")[1];
+        if(servletContext.getAttribute(request.getExecId()+Constants.DIVISION+"jstack") != null){
+            attribute = (String) servletContext.getAttribute(request.getExecId()+Constants.DIVISION+"jstack");
+            index = attribute.split(Constants.DIVISION)[1];
         }
         else{
             res[0] = "No stacking before";
             log.error("ERROR2: No stacking before");
             return res;
         }
-        servletContext.setAttribute(request.getExecId()+"-jstack","0"+"-"+index);
+        servletContext.setAttribute(request.getExecId()+Constants.DIVISION+"jstack","0"+Constants.DIVISION+index);
         //打包
         String stackPath = commonMethod.getPath("stack","null",0,false);//stack目录
-        String tempPath = request.getExecId()+"-"+index;//堆栈临时路径(相对路径)
-        String tarName = tempPath+"-"+System.currentTimeMillis()+".tar.gz";
+        String tempPath = request.getExecId()+Constants.DIVISION+index;//堆栈临时路径(相对路径)
+        String tarName = tempPath+Constants.DIVISION+System.currentTimeMillis()+".tar.gz";
         String fullPath = commonMethod.getPath("stack",request.getExecId(), Integer.parseInt(index),false);//堆栈完整路径
         String command = Constants.TAR + " -zcvf "+tarName+" "+tempPath;
         try {

@@ -125,7 +125,7 @@ public class ProjectServiceImpl extends ProjectGrpc.ProjectImplBase {
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(Paths.get(path), StandardOpenOption.READ)) {
                 Future<Integer> read = channel.read(buffer, offSet);
                 while (!read.isDone()) {
-                        // ----- 睡1毫秒， 不抢占资源
+                        //睡1毫秒， 不抢占资源
                         Thread.sleep(1L);
                     }
             } catch (Exception e) {

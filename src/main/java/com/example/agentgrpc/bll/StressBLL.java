@@ -1,6 +1,7 @@
 package com.example.agentgrpc.bll;
 
 import com.example.agentgrpc.protocol.stress.*;
+import com.example.agentgrpc.utils.Constants;
 import com.example.agentgrpc.utils.ReadConfUtil;
 import com.example.agentgrpc.utils.SendHTTPUtil;
 import com.example.agentgrpc.utils.UrlUtil;
@@ -98,7 +99,7 @@ public class StressBLL {
     }
 
     public StopStressRes stopStress(StopStressReq req){
-        StandardJMeterEngine engine = ((StandardJMeterEngine)servletContext.getAttribute(req.getExecId()+"-stress"));
+        StandardJMeterEngine engine = ((StandardJMeterEngine)servletContext.getAttribute(req.getExecId()+ Constants.DIVISION+"stress"));
         if (engine == null){
             log.error("ERROR2: No stress before");
             return StopStressRes.newBuilder()

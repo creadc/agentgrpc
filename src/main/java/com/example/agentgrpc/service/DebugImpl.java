@@ -49,12 +49,5 @@ public class DebugImpl extends DebugGrpc.DebugImplBase {
 
     @Override
     public void test(TestReq request, StreamObserver<TestRes> responseObserver) {
-        Analyze analyze = new Analyze();
-        analyze.jtlToJson("C:\\agent\\jtl\\1234-1-1669720326587","1.jtl");
-
-        //返回
-        TestRes res = TestRes.newBuilder().build();
-        responseObserver.onNext( res );
-        responseObserver.onCompleted();
     }
 }

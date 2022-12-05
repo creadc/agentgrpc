@@ -1,6 +1,7 @@
 package com.example.agentgrpc.jmeter;
 
 import com.example.agentgrpc.bll.CommonMethod;
+import com.example.agentgrpc.utils.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.jmeter.report.config.ConfigurationException;
 import org.apache.jmeter.report.dashboard.GenerationException;
@@ -29,7 +30,7 @@ public class Analyze {
         InputStreamReader inputStreamReader = null;
         BufferedReader br = null;
         //输出
-        String newFileName = jtlName.split("\\.")[0]+"_filter.jtl";
+        String newFileName = jtlName.split("\\.")[0]+ Constants.DIVISION+"filter.jtl";
         String newFilePath = jtlDirPath+"/"+newFileName;
         FileWriter newFile = null;
         BufferedWriter bw = null;
@@ -83,8 +84,8 @@ public class Analyze {
         String userDir = System.getProperty("user.dir");
         String bar = File.separator;
         String jtlPath = jtlDirPath+bar+jtlName;
-        File jtmFile = new File(jtlDirPath);
-        String[] split = jtmFile.getName().split("-");
+        File jtlFile = new File(jtlDirPath);
+        String[] split = jtlFile.getName().split(Constants.DIVISION);
         Path preJsonPath = Paths.get(userDir,"report-output","statistics.json");
         Path newJsonPath = null;
         ReportGenerator generator;
@@ -101,7 +102,7 @@ public class Analyze {
         //换了种方法判空，不用读取全部行数
         if (JtlIsEmpty(jtlPath)){
             log.error("ERROR2: Jtl file is empty");
-            return split[0]+"-"+split[1]+"-"+jtlName.split("_filter")[0]+"-"+"ERROR";
+            return split[0]+Constants.DIVISION+split[1]+Constants.DIVISION+jtlName.split(Constants.DIVISION+"filter")[0]+Constants.DIVISION+"ERROR";
         }
 
         try {
@@ -116,7 +117,7 @@ public class Analyze {
                 return "error";
             }
             //获取execid和index，作为json文件名
-            newJsonPath = Paths.get(jtlDirPath,split[0]+"-"+split[1]+"-"+jtlName.split("_filter")[0]+".json");
+            newJsonPath = Paths.get(jtlDirPath,split[0]+Constants.DIVISION+split[1]+Constants.DIVISION+jtlName.split(Constants.DIVISION+"filter")[0]+".json");
             //复制json
             try {
                 Files.copy(preJsonPath,newJsonPath, StandardCopyOption.REPLACE_EXISTING);

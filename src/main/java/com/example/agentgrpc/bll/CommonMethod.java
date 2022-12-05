@@ -340,8 +340,8 @@ public class CommonMethod {
         else
             //加时间戳
             if(time)
-                dirPath = agentPath+bar+dirName+bar+execId+"-"+index+"-"+System.currentTimeMillis()+bar;
-            else dirPath = agentPath+bar+dirName+bar+execId+"-"+index+bar;
+                dirPath = agentPath+bar+dirName+bar+execId+Constants.DIVISION+index+Constants.DIVISION+System.currentTimeMillis()+bar;
+            else dirPath = agentPath+bar+dirName+bar+execId+Constants.DIVISION+index+bar;
         return dirPath;
     }
 

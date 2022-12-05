@@ -32,8 +32,8 @@ public class JmeterTest {
                 .setExecId("1234")
                 .setIndex(1)
                 .setDownloadUrl("https://fine-build.oss-cn-shanghai.aliyuncs.com/SDET-FR/agent/test/")
-                .addFileList("中国式复杂报表_1.jmx")
-//                .addFileList("user1.csv")
+                .addFileList("link.jmx")
+                .addFileList("user1.csv")
                 .build();
         System.out.println(req);
 

@@ -13,11 +13,13 @@ import java.util.concurrent.TimeUnit;
 public class DebugTest {
     private String IP1="localhost";
     private String IP2="192.168.101.101";//windows虚拟机
-    private String IP3="192.168.101.21";//linux服务器
-    private int port=9090;
+    private String IP3="192.168.101.21";//21
+    private String IP4="192.168.101.229";//229
+    private int port1=9090;
+    private int port2=9092;
 
     public ManagedChannel init(){
-        return ManagedChannelBuilder.forAddress(IP1, port)
+        return ManagedChannelBuilder.forAddress(IP4, port2)
                 .usePlaintext()
                 .build();
     }

@@ -5,6 +5,7 @@ import com.example.agentgrpc.bll.CommonMethod;
 import com.example.agentgrpc.bll.StressBLL;
 import com.example.agentgrpc.jmeter.Analyze;
 import com.example.agentgrpc.protocol.stress.*;
+import com.example.agentgrpc.utils.Constants;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
@@ -50,8 +51,6 @@ public class StressImpl extends StressGrpc.StressImplBase {
         String agentPath = stressBLL.jsonResult();
         JsonResultRes res;
 
-        //找到jtl文件夹中相同execid的、分析完的jtl文件
-        ArrayList<String> resultPath = new ArrayList<>();
         File jtlPath = new File(agentPath+"/jtl");
         File[] files1 = jtlPath.listFiles();
         //jtl文件夹为空
@@ -68,11 +67,11 @@ public class StressImpl extends StressGrpc.StressImplBase {
         for (File file1 : files1) {
             int i = 0;
             //筛选出同一个execid的目录
-            if (file1.isDirectory() && request.getExecId().equals(file1.getName().split("-")[0])) {
+            if (file1.isDirectory() && request.getExecId().equals(file1.getName().split(Constants.DIVISION)[0])) {
                 //分析jtl文件，生成json
                 File[] files2 = file1.listFiles();
                 for (File file2 : files2) {
-                    if (file2.getName().contains("_filter.jtl")){
+                    if (file2.getName().contains(Constants.DIVISION+"filter.jtl")){
                         break;
                     }
                     ++i;
