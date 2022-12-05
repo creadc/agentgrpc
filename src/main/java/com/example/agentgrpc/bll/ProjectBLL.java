@@ -302,7 +302,7 @@ public class ProjectBLL {
         asyncTask.printJStacks(dirStrs[1],request.getExecId(),pids.get(0),request.getInterval());
         //返回结果
         return NodeControlRes.newBuilder()
-                .setCode(2)
+                .setCode(0)
                 .setMessage("Stack starting......")
                 .build();
     }
