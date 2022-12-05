@@ -297,8 +297,7 @@ public class ProjectBLL {
                     .build();
         }
         //前置条件确认完成，发起异步任务打堆栈
-        servletContext.setAttribute(request.getExecId(),"1"+"-"+request.getIndex());
-
+        servletContext.setAttribute(request.getExecId()+"-jstack","1"+"-"+request.getIndex());
         asyncTask.printJStacks(dirStrs[1],request.getExecId(),pids.get(0),request.getInterval());
         //返回结果
         return NodeControlRes.newBuilder()
@@ -312,8 +311,8 @@ public class ProjectBLL {
         String index;//开始打堆栈的索引
         String[] res = new String[2];
         //判断tag是否存在
-        if(servletContext.getAttribute(request.getExecId()) != null){
-            attribute = (String) servletContext.getAttribute(request.getExecId());
+        if(servletContext.getAttribute(request.getExecId()+"-jstack") != null){
+            attribute = (String) servletContext.getAttribute(request.getExecId()+"-jstack");
             index = attribute.split("-")[1];
         }
         else{
@@ -321,7 +320,7 @@ public class ProjectBLL {
             log.error("ERROR2: No stacking before");
             return res;
         }
-        servletContext.setAttribute(request.getExecId(),"0"+"-"+index);
+        servletContext.setAttribute(request.getExecId()+"-jstack","0"+"-"+index);
         //打包
         String stackPath = commonMethod.getPath("stack","null",0,false);//stack目录
         String tempPath = request.getExecId()+"-"+index;//堆栈临时路径(相对路径)

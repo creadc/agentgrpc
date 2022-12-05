@@ -66,9 +66,10 @@ public class AsyncTask {
     public void printJStacks(String path, String execId, int pid, int interval){
         String command;
         log.info("Start stack......");
-        for (int i = 1;i<STACK_COUNT_MAX+1;i++){
+        int i;
+        for (i = 1;i<STACK_COUNT_MAX+1;i++){
             command = Constants.JSTACK + " "+pid+" > "+i+".txt";
-            String tag = (String) servletContext.getAttribute(execId);
+            String tag = (String) servletContext.getAttribute(execId+"-jstack");
             if("1".equals(tag.split("-")[0])){
                 try {
                     ExecSystemCommandUtil.execCommand(path,command,"utf-8");
@@ -80,8 +81,11 @@ public class AsyncTask {
             else
                 break;
         }
+        //自动停止的情况
+        if (i == STACK_COUNT_MAX)
+            log.info("ERROR2: Auto stop:stack,path:"+path);
         log.info("Stop stack");
-        servletContext.removeAttribute(execId);
+        servletContext.removeAttribute(execId+"-jstack");
     }
 
     //打dump
@@ -121,7 +125,7 @@ public class AsyncTask {
     public void startStress(String jmxDirPath, String jmxName, String jtlDirPath, String execId, int index, ArrayList<String> fileNames){
         try {
             //压测
-            stress.run(jmxDirPath,jmxName,jtlDirPath,jmxName.split("\\.")[0]+".jtl",execId,fileNames);
+            stress.run(jmxDirPath,jmxName,jtlDirPath,jmxName.split("\\.")[0]+".jtl",execId+"-stress",fileNames);
         }catch (Exception e) {
             log.error("ERROR2: Start stress failed",e);
             commonMethod.delPath(jtlDirPath);
@@ -131,7 +135,7 @@ public class AsyncTask {
             //删除临时jmx文件
             commonMethod.delPath(jmxDirPath);
             //移除servlet上下文
-            servletContext.removeAttribute(execId);
+            servletContext.removeAttribute(execId+"-stress");
         }
         SendGrpcUtil.TaskStatus(execId,index,3,0,"JMeter finish");
     }

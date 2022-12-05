@@ -61,6 +61,9 @@ public class Stress {
             log.error("ERROR2: Load jmxTree failed",e);
         }
 
+        //设置jmx脚本文件的工作目录，可以根据这个来找到参数化文件及实现其文件流。
+//        FileServer.getFileServer().setBaseForScript(jmxFile);
+
         //修改csv文件位置
         if (fileNames.size() > 0){
             SearchByClass<CSVDataSet> csvDataSetSearch = new SearchByClass<>(CSVDataSet.class);
@@ -73,7 +76,6 @@ public class Stress {
                         csvDataSet.getProperty("filename").setObjectValue(Paths.get(jmxPath,fileName));
                     }
                 }
-
             }
         }
 

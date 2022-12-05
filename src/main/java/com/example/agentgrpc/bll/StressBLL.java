@@ -98,7 +98,7 @@ public class StressBLL {
     }
 
     public StopStressRes stopStress(StopStressReq req){
-        StandardJMeterEngine engine = ((StandardJMeterEngine)servletContext.getAttribute(req.getExecId()));
+        StandardJMeterEngine engine = ((StandardJMeterEngine)servletContext.getAttribute(req.getExecId()+"-stress"));
         if (engine == null){
             log.error("ERROR2: No stress before");
             return StopStressRes.newBuilder()

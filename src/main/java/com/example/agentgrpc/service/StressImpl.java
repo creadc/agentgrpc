@@ -48,7 +48,7 @@ public class StressImpl extends StressGrpc.StressImplBase {
     @Override
     public void jsonResult(JsonResultReq request, StreamObserver<JsonResultRes> responseObserver) {
         String agentPath = stressBLL.jsonResult();
-        JsonResultRes res = null;
+        JsonResultRes res;
 
         //找到jtl文件夹中相同execid的、分析完的jtl文件
         ArrayList<String> resultPath = new ArrayList<>();
