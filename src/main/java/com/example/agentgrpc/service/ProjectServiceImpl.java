@@ -76,7 +76,7 @@ public class ProjectServiceImpl extends ProjectGrpc.ProjectImplBase {
         String[] strs = projectBLL.stopPrintJStacks(request);
         String str = strs[0];
         //有错误
-        if("tag does not exist".equals(str)){
+        if("No stacking before".equals(str)){
             StopPrintJStacksRes res = StopPrintJStacksRes.newBuilder()
                     .setFileName(str)
                     .build();
