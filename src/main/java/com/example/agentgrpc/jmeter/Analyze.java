@@ -23,7 +23,7 @@ public class Analyze {
 //    private CommonMethod commonMethod;
 
     //过滤jtl文件
-    public String filterJtl(String jtlDirPath, String jtlName){
+    public String filterJtl(String jtlDirPath, String jtlName,String filterName){
         //输入
         File oldFile = new File(jtlDirPath+"/"+jtlName);
         FileInputStream fileInputStream = null;
@@ -48,12 +48,24 @@ public class Analyze {
             //读取第一行
             s = br.readLine();
             bw.write(s+"\t\n");
-            //读取数据
-            while((s = br.readLine())!=null){
-                tempStr = s.split(",");
+            //读取数据并过滤
+
+            //默认
+            if (filterName == null || "".equals(filterName)){
+                while((s = br.readLine())!=null){
+                    tempStr = s.split(",");
 //                System.out.println(tempStr[4]+"===="+tempStr[8]);
-                if(tempStr[4]!=null && !tempStr[8].equals("false"))
-                    bw.write(s+"\t\n");
+                    if(tempStr[4]!=null && !tempStr[8].equals("false"))
+                        bw.write(s+"\t\n");
+                }
+            }
+            //melissa
+            else if (filterName.contains("melissa")){
+                while((s = br.readLine())!=null){
+                    tempStr = s.split(",");
+                    if(tempStr[4]!=null && !tempStr[8].equals("false") && !tempStr[2].contains("登录") && !tempStr[2].contains("total") )
+                        bw.write(s+"\t\n");
+                }
             }
         }catch(Exception e){
             log.error("ERROR2: filter jtl failed",e);
@@ -74,7 +86,6 @@ public class Analyze {
                 log.error("ERROR2: Close stream failed",e);
             }
         }
-
         return newFileName;
     }
 

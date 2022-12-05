@@ -76,7 +76,7 @@ public class StressImpl extends StressGrpc.StressImplBase {
                     }
                     ++i;
                     //过滤
-                    String filterJtl = analyze.filterJtl(file1.getPath(),file2.getName());
+                    String filterJtl = analyze.filterJtl(file1.getPath(),file2.getName(),request.getFilterName());
                     //转为json
                     String jsonPath = analyze.jtlToJson(file1.getPath(), filterJtl);
 //                    String jsonPath = analyze.jtlToJson("C:\\Users\\yzp\\Desktop", "100_filter.jtl");
