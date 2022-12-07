@@ -37,7 +37,7 @@ my:
   agentPathOnLinux: /home/agent
 
   #堆栈自动停止最大次数
-  stackCountMax: 20
+  stackCountMax: 1000
   #验证启动时发送http的循环次数
   cycleTime: 20
 

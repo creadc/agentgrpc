@@ -35,7 +35,7 @@ public class AsyncTask {
     private static final int CYCLE_MAX = (int) ReadConfUtil.readYml("application.yml","my.cycleTime");
     private static final int STACK_COUNT_MAX = (int) ReadConfUtil.readYml("application.yml","my.stackCountMax");
     //确认启动
-    @Async
+    @Async("TaskExecutor")
     public void checkStart(NodeControlReq request){
         try{
             servletContext.setAttribute(request.getNode().getBinPath()+Constants.DIVISION+"state","1");
@@ -62,7 +62,7 @@ public class AsyncTask {
     }
 
     //打堆栈
-    @Async
+    @Async("TaskExecutor")
     public void printJStacks(String path, String execId, int pid, int interval){
         String command;
         log.info("Start stack......");
@@ -89,7 +89,7 @@ public class AsyncTask {
     }
 
     //打dump
-    @Async
+    @Async("TaskExecutor")
     public void printDump(String dirPath,String execId,int index, int pid){
         //数据准备
         String osType = commonMethod.getSystemType();
@@ -114,14 +114,14 @@ public class AsyncTask {
     }
 
     //延迟删除
-    @Async
+    @Async("TaskExecutor")
     public void delayDelete(String path,int time){
         commonMethod.delay(time);
         commonMethod.delPath(path);
     }
 
     //压测
-    @Async
+    @Async("TaskExecutor")
     public void startStress(String jmxDirPath, String jmxName, String jtlDirPath, String execId, int index, ArrayList<String> fileNames){
         try {
             //压测

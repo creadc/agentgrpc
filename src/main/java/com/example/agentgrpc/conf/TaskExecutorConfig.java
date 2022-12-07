@@ -18,10 +18,10 @@ public class TaskExecutorConfig {
     private int maxPoolSize = 8;//最大线程
     private int queueCapacity = 1000;//队列最大长度
     private int keepAliveSeconds = 60;//线程池维护线程所允许的空闲时间
-    private String threadNamePrefix = "agent-thread-";
+    private String threadNamePrefix = "agent-async-";
 
     @Bean
-    public Executor getAsyncTaskExecutor(){
+    public Executor TaskExecutor(){
         ThreadPoolTaskExecutor poolTaskExecutor = new ThreadPoolTaskExecutor();
 
         poolTaskExecutor.setThreadNamePrefix(threadNamePrefix);
