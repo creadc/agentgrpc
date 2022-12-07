@@ -153,7 +153,7 @@ public class CommonMethod {
             }
             for (String s : arrayList) {
                 String[] s2 = removeNullFromList(s.split(" "));
-                if("LISTEN".equals(s2[5]) && s2[3].contains(":"+port)){
+                if(s2.length >= 7 && "LISTEN".equals(s2[5]) && s2[3].contains(":"+port) && s2[6].contains("/")){
                     int res = Integer.parseInt(s2[6].substring(0,s2[6].indexOf("/")));
                     //使用端口查询和使用bin路径查到的pid不一致，说明端口被占用了
                     if (!pids.contains(res)){
