@@ -1,20 +1,17 @@
 package com.example.agentgrpc.utils;
 
-import com.alibaba.fastjson.JSONObject;
 import com.example.agentgrpc.bll.CommonMethod;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.YamlProcessor;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -88,7 +85,7 @@ public class AutoUpdateUtil {
                 }
             }
             //准备工作完成,调用脚本
-            ArrayList<Integer> pids = commonMethod.getPID(PORT,path);
+            ArrayList<Integer> pids = commonMethod.getAllPid(PORT,path);
             if (pids.get(0) == 0){
                 log.error("ERROR2: pid does not exist,auto update failed");
                 return;

@@ -121,8 +121,8 @@ public class CommonMethod {
         }
     }
 
-    //获取工程pid，没有返回0
-    public ArrayList<Integer> getPID(int port, String binPath){
+    //获取所有pid，用到pgrep和natstat，没有返回0
+    public ArrayList<Integer> getAllPid(int port, String binPath){
         String osType = getSystemType();
         String command;
         ArrayList<String> arrayList;
@@ -161,6 +161,77 @@ public class CommonMethod {
                         pids.add(res);
                     }
                 }
+            }
+            //判断pids是否为空，如果为空就加上0，返回没有占用
+            if (pids.isEmpty()){
+                pids.add(0);
+                log.error("ERROR2: PID does not exist");
+            }
+            for (Integer pid : pids) {
+                log.info("PID: "+pid);
+            }
+            return pids;
+        }
+
+        //windows
+        //使用netstat查找
+        command =Constants.NETSTAT_ON_WINDOWS + " -ano |findstr :"+port;
+        try {
+            arrayList = ExecSystemCommandUtil.execCommand(DEFAULT_PATH_ON_WINDOWS,command,"gbk");
+            String arrayString = arrayList.toString();
+            //不含有效数据
+            if(!arrayString.contains("TCP")){
+                log.info("PID does not exist");
+                pids.add(0);
+                return pids;
+            }
+
+            //含有效数据
+            for (String stringTemp : arrayList) {
+                //获取第一行有效结果
+                if (stringTemp.contains("LISTENING") && stringTemp.contains(":"+port)) {
+                    //还需要判断port是否在第二个位置，即源端口
+                    String[] temp1 = stringTemp.split(" ");
+                    String[] temp2 = removeNullFromList(temp1);
+                    //找到对应的pid
+                    if (temp2[1].contains(":"+port)){
+                        log.info("PID:"+temp2[4]);
+                        pids.add(Integer.parseInt(temp2[4]));
+                        return pids;
+                    }
+                }
+            }
+            //没有端口对应的pid
+            log.error("ERROR2: PID does not exist");
+            pids.add(0);
+            return pids;
+        } catch (IOException e) {
+            log.error("ERROR2: Get pid failed",e);
+        }
+        log.error("ERROR2: PID does not exist.It should not be here");
+        pids.add(0);
+        return pids;
+    }
+
+    //获取工程pid，只用到pgrep，没有返回0
+    public ArrayList<Integer> getPidByBinPath(int port, String binPath){
+        String osType = getSystemType();
+        String command;
+        ArrayList<String> arrayList;
+        ArrayList<Integer> pids = new ArrayList<>();
+        //linux
+        if("Linux".equals(osType)){
+            command = Constants.PGREP_ON_LINUX + " -f " + binPath;
+            try {
+                arrayList = ExecSystemCommandUtil.execCommand(DEFAULT_PATH_ON_LINUX,command,"utf-8");
+            } catch (IOException e) {
+                log.error("ERROR2: Exec command failed:pgrep",e);
+                pids.add(0);
+                return pids;
+            }
+            //把pid放到结果集合中
+            for (String s : arrayList) {
+                pids.add(Integer.valueOf(s));
             }
             //判断pids是否为空，如果为空就加上0，返回没有占用
             if (pids.isEmpty()){

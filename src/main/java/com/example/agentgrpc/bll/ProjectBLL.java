@@ -64,7 +64,7 @@ public class ProjectBLL {
     }
 
     public NodeControlRes stopNode(NodeControlReq request) {
-        ArrayList<Integer> pids = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
+        ArrayList<Integer> pids = commonMethod.getAllPid(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
         //未启动
         if(pids.get(0) == 0){
             log.error("ERROR2: Project is already stop");
@@ -81,7 +81,7 @@ public class ProjectBLL {
 
         //结果验证
         log.info("Result validation");
-        pids = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
+        pids = commonMethod.getAllPid(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
         if (pids.get(0) != 0)
             for (Integer pid : pids) {
                 commonMethod.justStop(request.getNode(),pid);
@@ -105,7 +105,7 @@ public class ProjectBLL {
     }
 
     public NodeControlRes reStartNode(NodeControlReq request) {
-        ArrayList<Integer> pids = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
+        ArrayList<Integer> pids = commonMethod.getAllPid(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
         //工程状态为启动，要先停止
         if(pids.get(0) != 0){
             for (Integer pid : pids) {
@@ -164,7 +164,7 @@ public class ProjectBLL {
         }
 
         //停止
-        ArrayList<Integer> pids = commonMethod.getPID(Integer.parseInt(node.getPort()),request.getNode().getBinPath());
+        ArrayList<Integer> pids = commonMethod.getAllPid(Integer.parseInt(node.getPort()),request.getNode().getBinPath());
         if(pids.get(0) != 0){
             for (Integer pid : pids) {
                 commonMethod.justStop(request.getNode(),pid);
@@ -269,7 +269,7 @@ public class ProjectBLL {
     }
 
     public NodeControlRes startPrintJStacks(PrintStacksReq request) {
-        ArrayList<Integer> pids = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
+        ArrayList<Integer> pids = commonMethod.getPidByBinPath(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
         //pid不存在
         if(pids.get(0) == 0){
             log.error("ERROR2: pid does not exist,cannot stack");
@@ -341,7 +341,7 @@ public class ProjectBLL {
     }
 
     public NodeControlRes printDump(NodeControlReq request) {
-        ArrayList<Integer> pids = commonMethod.getPID(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
+        ArrayList<Integer> pids = commonMethod.getPidByBinPath(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
         //pid不存在
         if(pids.get(0) == 0){
             log.error("ERROR2: pid does not exist,unable to dump");
