@@ -130,6 +130,7 @@ public class AsyncTask {
             log.error("ERROR2: Start stress failed",e);
             commonMethod.delPath(jtlDirPath);
             SendGrpcUtil.TaskStatus(execId,index,3,1,"JMeter run failed");
+            return;
         }
         finally {
             //删除临时jmx文件

@@ -32,8 +32,8 @@ public class JmeterTest {
                 .setExecId("1234")
                 .setIndex(1)
                 .setDownloadUrl("https://fine-build.oss-cn-shanghai.aliyuncs.com/SDET-FR/agent/test/")
-                .addFileList("link.jmx")
-                .addFileList("user1.csv")
+                .addFileList("100.jmx")
+//                .addFileList("user1.csv")
                 .build();
         System.out.println(req);
 
@@ -103,7 +103,7 @@ public class JmeterTest {
         JsonResultReq req=JsonResultReq.newBuilder()
                 .setExecId("1234")
                 .setIndex(3)
-                .setFilterName("filter1")
+                .setFilterName("")
                 .build();
         System.out.println(req);
 

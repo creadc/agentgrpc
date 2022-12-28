@@ -1,10 +1,9 @@
 package com.example.agentgrpc.jmeter;
 
-import com.example.agentgrpc.bll.CommonMethod;
 import lombok.extern.slf4j.Slf4j;
+
 import org.apache.jmeter.JMeter;
 import org.apache.jmeter.config.CSVDataSet;
-import org.apache.jmeter.engine.JMeterEngineException;
 import org.apache.jmeter.engine.StandardJMeterEngine;
 import org.apache.jmeter.reporters.ResultCollector;
 import org.apache.jmeter.reporters.Summariser;
@@ -33,15 +32,17 @@ public class Stress {
     private static final String JMETER_HOME = String.valueOf(Paths.get(System.getProperty("user.dir"), "config", "jmeter"));
     private static final String pathToJmeterComponentsJars = String.valueOf(Paths.get(JMETER_HOME, "lib", "ext", "ApacheJMeter_components.jar"));
     private static final String pathToJmeterHttpJars = String.valueOf(Paths.get(JMETER_HOME, "lib", "ext", "ApacheJMeter_http.jar"));
-    private static final String pathToJmeterPlugManagerJars = String.valueOf(Paths.get(JMETER_HOME, "lib", "ext", "jmeter-plugins-manager-1.7.jar"));
     private static final String pathToJmeterFunctionsJars = String.valueOf(Paths.get(JMETER_HOME, "lib", "ext", "ApacheJMeter_functions.jar"));
+    private static final String pathToJmeterPlugManagerJars = String.valueOf(Paths.get(JMETER_HOME, "lib", "ext", "jmeter-plugins-manager-1.7.jar"));
 
     //jmx文件路径,生成的jtl文件存放目录,jtl文件名,标识(用于servlet上下文),附加文件集合(csv等)
     public void run(String jmxPath,String jmxName, String jtlDirPath, String jtlName, String id,ArrayList<String> fileNames) throws Exception {
+
         //初始化
         String pathToJmeterJars = pathToJmeterFunctionsJars + ";" + pathToJmeterHttpJars
                 + ";" + pathToJmeterComponentsJars + ";" + pathToJmeterPlugManagerJars;
         System.setProperty(JMeter.JMETER_NON_GUI, "true");
+
         System.setProperty("java.class.path", pathToJmeterJars);
 
         StandardJMeterEngine engine = new StandardJMeterEngine();
