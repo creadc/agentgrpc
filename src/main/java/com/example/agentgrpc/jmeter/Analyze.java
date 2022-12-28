@@ -63,7 +63,7 @@ public class Analyze {
             else if (filterName.contains("melissa")){
                 while((s = br.readLine())!=null){
                     tempStr = s.split(",");
-                    if(tempStr[4]!=null && !tempStr[8].equals("false") && !tempStr[2].contains("登录") && !tempStr[2].contains("total") )
+                    if(tempStr[4]!=null && !tempStr[8].equals("false") && !tempStr[2].contains("登录") && !tempStr[2].contains("Total") )
                         bw.write(s+"\t\n");
                 }
             }
