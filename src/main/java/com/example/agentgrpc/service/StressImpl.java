@@ -54,7 +54,7 @@ public class StressImpl extends StressGrpc.StressImplBase {
         File jtlPath = new File(agentPath+"/jtl");
         File[] files1 = jtlPath.listFiles();
         //jtl文件夹为空
-        if (files1.length == 0){
+        if (files1 == null||files1.length == 0){
             log.error("ERROR2: No jtl files");
             res = JsonResultRes.newBuilder()
                     .setCode(1)
