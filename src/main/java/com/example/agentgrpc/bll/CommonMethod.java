@@ -458,7 +458,7 @@ public class CommonMethod {
         }
     }
 
-    //删除特定文件
+    //删除特定文件，用于换jar包时删除fine-开头的jar包
     public void delSpecificFiles(String path,int i){
         File dirPath = new File(path);
         File[] files = dirPath.listFiles();

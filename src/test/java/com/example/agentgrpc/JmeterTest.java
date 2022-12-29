@@ -32,8 +32,8 @@ public class JmeterTest {
                 .setExecId("1234")
                 .setIndex(1)
                 .setDownloadUrl("https://fine-build.oss-cn-shanghai.aliyuncs.com/SDET-FR/agent/test/")
-                .addFileList("100.jmx")
-//                .addFileList("user1.csv")
+                .addFileList("9_1picture.jmx")
+                .addFileList("user1.csv")
                 .build();
         System.out.println(req);
 
@@ -101,7 +101,7 @@ public class JmeterTest {
         StressGrpc.StressBlockingStub stub = StressGrpc.newBlockingStub(channel);
 
         JsonResultReq req=JsonResultReq.newBuilder()
-                .setExecId("1234")
+                .setExecId("6ef804cb-e77e-4c97-b924-7dfcdb0ba7b1")
                 .setIndex(3)
                 .setFilterName("")
                 .build();

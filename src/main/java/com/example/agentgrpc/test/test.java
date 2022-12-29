@@ -4,6 +4,7 @@ import com.example.agentgrpc.AgentgrpcApplication;
 import com.example.agentgrpc.conf.TaskExecutorConfig;
 import com.example.agentgrpc.jmeter.Analyze;
 import com.example.agentgrpc.utils.ExecSystemCommandUtil;
+import com.example.agentgrpc.utils.PropertiesToMapUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
@@ -15,6 +16,7 @@ import org.apache.http.util.EntityUtils;
 import org.apache.jmeter.JMeter;
 import org.apache.jmeter.engine.StandardJMeterEngine;
 import org.apache.jmeter.report.config.ConfigurationException;
+import org.apache.jmeter.report.dashboard.GenerationException;
 import org.apache.jmeter.report.dashboard.ReportGenerator;
 import org.apache.jmeter.reporters.ResultCollector;
 import org.apache.jmeter.reporters.Summariser;
@@ -22,8 +24,11 @@ import org.apache.jmeter.save.SaveService;
 import org.apache.jmeter.util.JMeterUtils;
 import org.apache.jorphan.collections.HashTree;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.YamlProcessor;
+import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
 
 import javax.security.auth.login.Configuration;
@@ -32,35 +37,77 @@ import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.Executor;
 
 @Component
 public class test {
 
     public static void main(String[] args) {
-//        ConfigurableApplicationContext s = SpringApplication.run(AgentgrpcApplication.class);
-//        String[] beanDefinitionNames = s.getBeanDefinitionNames();
-//        for (String name :beanDefinitionNames){
-//     //       System.out.println(name);
-//        }
-//        TaskExecutorConfig taskExecutorConfig = s.getBean("taskExecutorConfig", TaskExecutorConfig.class);
-//        Executor asyncTaskExecutor = taskExecutorConfig.getAsyncTaskExecutor();
-//        asyncTaskExecutor.execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                System.out.println(Thread.currentThread().getName());
-//                try {
-//                    Thread.sleep(30);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("\"");
+        String jtlPath = "C:\\agent\\jtl\\6ef804cb-e77e-4c97-b924-7dfcdb0ba7b1_0_1672215058635\\普通过滤gai.jtl";
+        try {
+            ReportGenerator generator = new ReportGenerator(jtlPath,null);
+            try {
+                generator.generate();
+            } catch (GenerationException e) {
+                e.printStackTrace();
+            }
+        } catch (ConfigurationException e) {
+            e.printStackTrace();
+        }
+
+
+//        String mainYmlPath="C:\\Users\\yzp\\Desktop\\application1.yml";
+//        String addYmlPath="C:\\Users\\yzp\\Desktop\\application2.yml";
+//        YamlPropertiesFactoryBean factoryBean = new YamlPropertiesFactoryBean();
+//        factoryBean.setResolutionMethod(YamlProcessor.ResolutionMethod.OVERRIDE_AND_IGNORE);
+//        factoryBean.setResources(new FileSystemResource(addYmlPath),new FileSystemResource(mainYmlPath));
+//        Properties properties = factoryBean.getObject();
+//
+////        Set<Object> objects = properties.keySet();
+////        for (Object key : objects) {
+////            System.out.println(key + ": " + properties.get(key));
+////        }
+//
+//        write2Yaml(properties,"C:\\Users\\yzp\\Desktop\\application3.yml");
     }
+
+    public static void write2Yaml(Properties properties,String filePath){
+        try {
+            if (properties == null) {
+                return;
+            }
+            //properties 转化为yaml 格式字符串
+            StringBuffer ymlString = PropertiesToMapUtil.prop2YmlString(properties);
+            writeStr2File(ymlString,filePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 把字符串写到指定的文件
+     * @param msg
+     * @param filePath
+     */
+    public static void writeStr2File(StringBuffer msg,String filePath){
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(filePath);
+            //将字符串写到指定文件
+            fos.write(msg.toString().getBytes());
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 }

@@ -44,7 +44,7 @@ public class ExecSystemCommandUtil {
             process = pb.start();// 启动进程
             inputStreamReader = new InputStreamReader(process.getInputStream(), code);
             br = new BufferedReader(inputStreamReader);
-            String line = null;
+            String line;
             //遇到个问题,执行startup.bat时,readLine不会停止,所以禁用了
             if(command.equals("startup.bat")){}
             else{

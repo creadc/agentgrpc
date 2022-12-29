@@ -1,5 +1,6 @@
 package com.example.agentgrpc.jmeter;
 
+import com.example.agentgrpc.utils.SendGrpcUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.jmeter.JMeter;
@@ -36,7 +37,7 @@ public class Stress {
     private static final String pathToJmeterPlugManagerJars = String.valueOf(Paths.get(JMETER_HOME, "lib", "ext", "jmeter-plugins-manager-1.7.jar"));
 
     //jmx文件路径,生成的jtl文件存放目录,jtl文件名,标识(用于servlet上下文),附加文件集合(csv等)
-    public void run(String jmxPath,String jmxName, String jtlDirPath, String jtlName, String id,ArrayList<String> fileNames) throws Exception {
+    public void run(String jmxPath,String jmxName, String jtlDirPath, String jtlName, String id,ArrayList<String> fileNames,String execId,int index) throws Exception {
 
         //初始化
         String pathToJmeterJars = pathToJmeterFunctionsJars + ";" + pathToJmeterHttpJars
@@ -73,8 +74,14 @@ public class Stress {
             for (CSVDataSet csvDataSet : csvDataSets) {
                 String tempName = csvDataSet.getProperty("filename").getStringValue();
                 for (String fileName : fileNames) {
-                    if(tempName.equalsIgnoreCase(fileName)){
+                    if(tempName.equals(fileName)){
                         csvDataSet.getProperty("filename").setObjectValue(Paths.get(jmxPath,fileName));
+                    }
+                    //如果不同就报错
+                    else {
+                        log.error("ERROR2: The csv file is inconsistent");
+                        SendGrpcUtil.TaskStatus(execId,index,3,1,"The csv file is inconsistent");
+                        return;
                     }
                 }
             }

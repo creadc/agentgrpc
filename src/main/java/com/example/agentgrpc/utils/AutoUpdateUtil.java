@@ -13,14 +13,13 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Properties;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
 public class AutoUpdateUtil {
-
     @Autowired
     private CommonMethod commonMethod;
 
@@ -29,9 +28,15 @@ public class AutoUpdateUtil {
     private static final String configUrl = (String) ReadConfUtil.readYml("update.yml","update.configUrl");
     private static final int PORT = (int) ReadConfUtil.readYml("application.yml","server.port");
 
-        @Scheduled(cron = "0 0 2 * * ?")
-//    @Scheduled(initialDelay=3000, fixedDelay=10000)
+    @Scheduled(cron = "0 0 2 * * ?")
     public void checkUpdate(){
+        //延时，避免同一时刻获取文件
+        try {
+            TimeUnit.SECONDS.sleep(new Random().nextInt(3600)+1);//秒
+        } catch (InterruptedException e) {
+            log.error("ERROR2: Delay failed",e);
+        }
+
         log.info("--Start checking for automatic updates--");
         String path = System.getProperty("user.dir");
         //获取服务器上最新版本

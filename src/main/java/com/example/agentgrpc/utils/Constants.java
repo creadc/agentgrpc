@@ -25,4 +25,6 @@ public class Constants {
     public static final String JSTACK = "jstack";
     public static final String JMAP = "jmap";
     public static final String TAR = "tar";
+    public static final String JMETER = "jmeter";
+
 }

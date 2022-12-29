@@ -1,6 +1,7 @@
 package com.example.agentgrpc.bll;
 
 //import com.example.agentgrpc.conf.TaskExecutorConfig;
+import com.example.agentgrpc.jmeter.Analyze;
 import com.example.agentgrpc.jmeter.Stress;
 import com.example.agentgrpc.protocol.project.NodeControlReq;
 import com.example.agentgrpc.utils.Constants;
@@ -123,9 +124,10 @@ public class AsyncTask {
     //压测
     @Async("TaskExecutor")
     public void startStress(String jmxDirPath, String jmxName, String jtlDirPath, String execId, int index, ArrayList<String> fileNames){
+        String id = execId+Constants.DIVISION+"stress";
         try {
             //压测
-            stress.run(jmxDirPath,jmxName,jtlDirPath,jmxName.split("\\.")[0]+".jtl",execId+Constants.DIVISION+"stress",fileNames);
+            stress.run(jmxDirPath,jmxName,jtlDirPath,jmxName.split("\\.")[0]+".jtl",id,fileNames,execId,index);
         }catch (Exception e) {
             log.error("ERROR2: Start stress failed",e);
             commonMethod.delPath(jtlDirPath);
@@ -135,9 +137,12 @@ public class AsyncTask {
         finally {
             //删除临时jmx文件
             commonMethod.delPath(jmxDirPath);
+            //如果正常，返回grpc
+            if (servletContext.getAttribute(id) != null)
+                SendGrpcUtil.TaskStatus(execId,index,3,0,"JMeter finish");
             //移除servlet上下文
-            servletContext.removeAttribute(execId+Constants.DIVISION+"stress");
+            servletContext.removeAttribute(id);
         }
-        SendGrpcUtil.TaskStatus(execId,index,3,0,"JMeter finish");
+
     }
 }

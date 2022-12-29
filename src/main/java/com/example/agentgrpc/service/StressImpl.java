@@ -53,6 +53,7 @@ public class StressImpl extends StressGrpc.StressImplBase {
 
         File jtlPath = new File(agentPath+"/jtl");
         File[] files1 = jtlPath.listFiles();
+        int i = 0;
         //jtl文件夹为空
         if (files1 == null||files1.length == 0){
             log.error("ERROR2: No jtl files");
@@ -64,16 +65,20 @@ public class StressImpl extends StressGrpc.StressImplBase {
             responseObserver.onCompleted();
             return;
         }
+        //对每个文件夹进行处理
         for (File file1 : files1) {
-            int i = 0;
             //筛选出同一个execid的目录
             if (file1.isDirectory() && request.getExecId().equals(file1.getName().split(Constants.DIVISION)[0])) {
                 //分析jtl文件，生成json
                 File[] files2 = file1.listFiles();
                 for (File file2 : files2) {
+                    //已经过滤，退出
                     if (file2.getName().contains(Constants.DIVISION+"filter.jtl")){
                         break;
                     }
+                    //不为jtl文件，继续
+                    if(!file2.getName().endsWith(".jtl"))
+                        continue;
                     ++i;
                     //过滤
                     String filterJtl = analyze.filterJtl(file1.getPath(),file2.getName(),request.getFilterName());
@@ -94,15 +99,13 @@ public class StressImpl extends StressGrpc.StressImplBase {
                                 .build();
                         responseObserver.onNext(res);
                     }
-                    else {
+                    else{
                         log.error("ERROR2: Upload: empty file");
                         //返回分析后的json文件
 //                        System.out.println(commonMethod.readJsonFile(jsonPath));
                         res = JsonResultRes.newBuilder()
                                 .setCode(1)
-                                .setMessage("")
-                                .setFileName(json.getName())
-                                .setChunk("No files")
+                                .setMessage("No files")
                                 .build();
                         responseObserver.onNext(res);
                     }
@@ -115,17 +118,17 @@ public class StressImpl extends StressGrpc.StressImplBase {
                 asyncTask.delayDelete(file1.getPath(),3);
                 log.info("Backup over");
             }
-            //有jtl文件，但是没有对应execid的jtl
-            if (i==0){
-                log.error("ERROR2: No Corresponding jtl files");
-                res = JsonResultRes.newBuilder()
-                        .setCode(1)
-                        .setMessage("No files")
-                        .build();
-                responseObserver.onNext(res);
-                responseObserver.onCompleted();
-                return;
-            }
+        }
+        //有jtl文件，但是没有对应execid的jtl
+        if (i==0){
+            log.error("ERROR2: No Corresponding jtl files");
+            res = JsonResultRes.newBuilder()
+                    .setCode(1)
+                    .setMessage("No files")
+                    .build();
+            responseObserver.onNext(res);
+            responseObserver.onCompleted();
+            return;
         }
         responseObserver.onCompleted();
     }

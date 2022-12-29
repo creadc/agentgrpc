@@ -208,6 +208,6 @@ goto end
 
 :pause
 echo errorlevel=%ERRORLEVEL%
-pause
+
 
 :end
