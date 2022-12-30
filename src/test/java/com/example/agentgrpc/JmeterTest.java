@@ -101,9 +101,9 @@ public class JmeterTest {
         StressGrpc.StressBlockingStub stub = StressGrpc.newBlockingStub(channel);
 
         JsonResultReq req=JsonResultReq.newBuilder()
-                .setExecId("6ef804cb-e77e-4c97-b924-7dfcdb0ba7b1")
+                .setExecId("1234")
                 .setIndex(3)
-                .setFilterName("")
+                .setFilterName("melissa")
                 .build();
         System.out.println(req);
 

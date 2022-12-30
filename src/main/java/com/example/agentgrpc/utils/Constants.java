@@ -20,6 +20,7 @@ public class Constants {
     public static final String RM = "rm";
     public static final String CP = "cp";
     public static final String NOHUP = "nohup";
+    public static final String CHMOD = "chmod";
 
     //通用
     public static final String JSTACK = "jstack";

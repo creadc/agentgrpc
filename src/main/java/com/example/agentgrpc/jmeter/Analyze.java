@@ -53,8 +53,7 @@ public class Analyze {
             if (filterName == null || "".equals(filterName)){
                 while((s = br.readLine())!=null){
                     tempStr = s.split(",");
-//                System.out.println(tempStr[4]+"===="+tempStr[8]);
-                    if(tempStr[4]!=null && !tempStr[8].equals("false"))
+                    if(!tempStr[4].equals("") && !tempStr[tempStr.length-10].equals("false"))
                         bw.write(s+"\t\n");
                 }
             }
@@ -62,7 +61,7 @@ public class Analyze {
             else if (filterName.contains("melissa")){
                 while((s = br.readLine())!=null){
                     tempStr = s.split(",");
-                    if(tempStr[4]!=null && !tempStr[8].equals("false") && !tempStr[2].contains("登录"))
+                    if(!tempStr[4].equals("") && !tempStr[tempStr.length-10].equals("false") && !tempStr[2].contains("登录"))
                         bw.write(s+"\t\n");
                 }
             }
@@ -112,16 +111,26 @@ public class Analyze {
         //生成报告
         log.info("Start generate report......");
         try {
+            String command;
+            //linux给jmeter加权限
+            if (commonMethod.getSystemType().equals("Linux")){
+                command = Constants.CHMOD+" +x jmeter";
+                ExecSystemCommandUtil.execCommand(String.valueOf(jmeterBinDirPath), command, "utf-8");
+            }
+
             //执行生成报告命令
-            String command = "."+bar+Constants.JMETER+" -g "+jtlPath+" -o "+reportDirPath;
-            ExecSystemCommandUtil.execCommand(String.valueOf(jmeterBinDirPath), command, "utf-8");
+            command = "."+bar+Constants.JMETER+" -g "+jtlPath+" -o "+reportDirPath;
+            ArrayList<String> arrayList = ExecSystemCommandUtil.execCommand(String.valueOf(jmeterBinDirPath), command, "utf-8");
+            String s = arrayList.toString();
+            if(s != null && !s.equals("") &&!s.contains("does not contain the field names header"))
+                log.error("ERROR2: Exec command failed:genarate report,detailed information: "+s);
             //复制json
             try {
                 Files.copy(preJsonPath,newJsonPath, StandardCopyOption.REPLACE_EXISTING);
             }
             //没有json文件，说明生成报告失败
             catch (NoSuchFileException e){
-                log.error("ERROR2: Exec command failed:genarate report",e);
+                log.error("ERROR2: No json file generated");
                 commonMethod.delPath(jtlPath);
             }
             catch (IOException e) {
