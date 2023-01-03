@@ -31,11 +31,11 @@ public class AutoUpdateUtil {
     @Scheduled(cron = "0 0 2 * * ?")
     public void checkUpdate(){
         //延时，避免同一时刻获取文件
-        try {
-            TimeUnit.SECONDS.sleep(new Random().nextInt(3600)+1);//秒
-        } catch (InterruptedException e) {
-            log.error("ERROR2: Delay failed",e);
-        }
+//        try {
+//            TimeUnit.SECONDS.sleep(new Random().nextInt(3600)+1);//秒
+//        } catch (InterruptedException e) {
+//            log.error("ERROR2: Delay failed",e);
+//        }
 
         log.info("--Start checking for automatic updates--");
         String path = System.getProperty("user.dir");

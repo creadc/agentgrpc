@@ -1,0 +1,17 @@
+syntax="proto3";
+option go_package = "protocol/v1/agent";
+option java_package="com.example.agentgrpc.protocol.agent";
+package agent;
+option java_multiple_files = true;
+
+//agent管理
+service Agent{
+  //更新
+  rpc UpdateAgent(UpdateAgentReq) returns(UpdateAgentRes){}
+}
+
+message UpdateAgentReq{
+}
+
+message UpdateAgentRes{
+}

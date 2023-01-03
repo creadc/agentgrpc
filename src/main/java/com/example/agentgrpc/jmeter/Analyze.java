@@ -53,7 +53,7 @@ public class Analyze {
             if (filterName == null || "".equals(filterName)){
                 while((s = br.readLine())!=null){
                     tempStr = s.split(",");
-                    if(!tempStr[4].equals("") && !tempStr[tempStr.length-10].equals("false"))
+                    if(tempStr.length >= 17 && !tempStr[4].equals("") && !tempStr[tempStr.length-10].equals("false"))
                         bw.write(s+"\t\n");
                 }
             }
@@ -61,7 +61,7 @@ public class Analyze {
             else if (filterName.contains("melissa")){
                 while((s = br.readLine())!=null){
                     tempStr = s.split(",");
-                    if(!tempStr[4].equals("") && !tempStr[tempStr.length-10].equals("false") && !tempStr[2].contains("登录"))
+                    if(tempStr.length >= 17 && !tempStr[4].equals("") && !tempStr[tempStr.length-10].equals("false") && !tempStr[2].contains("登录"))
                         bw.write(s+"\t\n");
                 }
             }
@@ -122,7 +122,7 @@ public class Analyze {
             command = "."+bar+Constants.JMETER+" -g "+jtlPath+" -o "+reportDirPath;
             ArrayList<String> arrayList = ExecSystemCommandUtil.execCommand(String.valueOf(jmeterBinDirPath), command, "utf-8");
             String s = arrayList.toString();
-            if(s != null && !s.equals("") &&!s.contains("does not contain the field names header"))
+            if(s != null && !s.equals(""))
                 log.error("ERROR2: Exec command failed:genarate report,detailed information: "+s);
             //复制json
             try {
