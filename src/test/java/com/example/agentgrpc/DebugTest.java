@@ -19,7 +19,7 @@ public class DebugTest {
     private int port2=9092;
 
     public ManagedChannel init(){
-        return ManagedChannelBuilder.forAddress(IP4, port2)
+        return ManagedChannelBuilder.forAddress(IP3, port1)
                 .usePlaintext()
                 .build();
     }

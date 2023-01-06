@@ -44,18 +44,8 @@ import java.util.concurrent.Executor;
 public class test {
 
     public static void main(String[] args) {
-        String jtlPath = "C:\\agent\\jtl\\6ef804cb-e77e-4c97-b924-7dfcdb0ba7b1_0_1672215058635\\普通过滤gai.jtl";
-        try {
-            ReportGenerator generator = new ReportGenerator(jtlPath,null);
-            try {
-                generator.generate();
-            } catch (GenerationException e) {
-                e.printStackTrace();
-            }
-        } catch (ConfigurationException e) {
-            e.printStackTrace();
-        }
-
+        String s = "[1]+  退出 137              nohup ./startserver.sh";
+        int i = Integer.parseInt(s);
 
 //        String mainYmlPath="C:\\Users\\yzp\\Desktop\\application1.yml";
 //        String addYmlPath="C:\\Users\\yzp\\Desktop\\application2.yml";

@@ -121,12 +121,32 @@ public class CommonMethod {
         }
     }
 
+    //只重启
+    public void justRestart(NodeInfo node){
+        ArrayList<Integer> pids = getAllPid(Integer.parseInt(node.getPort()),node.getBinPath());
+        //工程状态为启动，要先停止
+        if(pids.get(0) != 0){
+            for (Integer pid : pids) {
+                justStop(node,pid);
+            }
+        }
+        //延时
+        delay(1);
+        //启动
+        justStart(node);
+    }
+
     //获取所有pid，用到pgrep和natstat，没有返回0
     public ArrayList<Integer> getAllPid(int port, String binPath){
         String osType = getSystemType();
         String command;
         ArrayList<String> arrayList;
         ArrayList<Integer> pids = new ArrayList<>();
+        int temp;
+        //如果binPath最后是/，把/去掉
+        if(binPath.endsWith("/"))
+            binPath = binPath.substring(0,binPath.length()-1);
+
         //linux
         if("Linux".equals(osType)){
             command = Constants.PGREP_ON_LINUX + " -f " + binPath;
@@ -138,8 +158,14 @@ public class CommonMethod {
                 return pids;
             }
             //把pid放到结果集合中
-            for (String s : arrayList) {
-                pids.add(Integer.valueOf(s));
+            try {
+                for (String s : arrayList) {
+                    temp = Integer.parseInt(s);
+                    pids.add(temp);
+                }
+            }
+            catch (Exception e){
+                log.error("ERROR1: Pid parse int failed,No pid");
             }
             //再用netstat查一次
             command = Constants.NETSTAT_ON_LINUX+" -ntlp |grep :"+ port;
@@ -165,7 +191,7 @@ public class CommonMethod {
             //判断pids是否为空，如果为空就加上0，返回没有占用
             if (pids.isEmpty()){
                 pids.add(0);
-                log.error("ERROR2: PID does not exist");
+                log.error("ERROR1: PID does not exist");
             }
             for (Integer pid : pids) {
                 log.info("PID: "+pid);

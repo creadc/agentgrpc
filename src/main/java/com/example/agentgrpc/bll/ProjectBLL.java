@@ -105,17 +105,8 @@ public class ProjectBLL {
     }
 
     public NodeControlRes reStartNode(NodeControlReq request) {
-        ArrayList<Integer> pids = commonMethod.getAllPid(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
-        //工程状态为启动，要先停止
-        if(pids.get(0) != 0){
-            for (Integer pid : pids) {
-                commonMethod.justStop(request.getNode(),pid);
-            }
-        }
-        //延时
-        commonMethod.delay(1);
-        //启动
-        commonMethod.justStart(request.getNode());
+        //重启
+        commonMethod.justRestart(request.getNode());
         //新启线程验证
         asyncTask.checkStart(request);
         log.info("Starting......");
@@ -162,21 +153,13 @@ public class ProjectBLL {
                         .build();
             }
         }
-
-        //停止
-        ArrayList<Integer> pids = commonMethod.getAllPid(Integer.parseInt(node.getPort()),request.getNode().getBinPath());
-        if(pids.get(0) != 0){
-            for (Integer pid : pids) {
-                commonMethod.justStop(request.getNode(),pid);
-            }
-        }
         //删除和复制
         commonMethod.delSpecificFiles(node.getLibPath(),1);
         commonMethod.copyFiles(jarNames,jarDirPath,node.getLibPath());
         //删除目录及文件
         commonMethod.delPath(jarDirPath);
-        //启动
-        commonMethod.justStart(node);
+        //重启
+        commonMethod.justRestart(request.getNode());
         //新启线程验证
         NodeControlReq req = NodeControlReq.newBuilder()
                 .setNode(node)

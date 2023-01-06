@@ -44,6 +44,11 @@ public class AsyncTask {
                 try {
                     TimeUnit.SECONDS.sleep(5);//秒
                     int state = commonMethod.getProjectState(request.getNode());
+                    //遇到个问题，tomcat有时换jar的重启失败，需要手动再重启一次
+                    if (state == 0){
+                        log.error("ERROR2: Check start failed:down,restart now");
+                        commonMethod.justRestart(request.getNode());
+                    }
                     //工程启动了
                     if(state == 1){
                         SendGrpcUtil.TaskStatus(request.getExecId(),request.getIndex(),1,0,"Project start success");
