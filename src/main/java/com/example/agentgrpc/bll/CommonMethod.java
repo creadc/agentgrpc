@@ -13,6 +13,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -436,8 +437,10 @@ public class CommonMethod {
             dirPath = agentPath+bar+dirName+bar;
         else
             //加时间戳
-            if(time)
-                dirPath = agentPath+bar+dirName+bar+execId+Constants.DIVISION+index+Constants.DIVISION+System.currentTimeMillis()+bar;
+            if(time){
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
+                dirPath = agentPath+bar+dirName+bar+execId+Constants.DIVISION+index+Constants.DIVISION+sdf.format(System.currentTimeMillis())+bar;
+            }
             else dirPath = agentPath+bar+dirName+bar+execId+Constants.DIVISION+index+bar;
         return dirPath;
     }

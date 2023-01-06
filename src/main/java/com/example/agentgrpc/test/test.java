@@ -37,6 +37,7 @@ import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.Executor;
 
@@ -44,8 +45,12 @@ import java.util.concurrent.Executor;
 public class test {
 
     public static void main(String[] args) {
-        String s = "[1]+  退出 137              nohup ./startserver.sh";
-        int i = Integer.parseInt(s);
+        Long timeStamp = System.currentTimeMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
+        System.out.println("Long类型的时间戳："+timeStamp);
+        System.out.println("格式化后的时间："+sdf.format(timeStamp));
+        System.out.println("格式化后的时间带毫秒："+sdf2.format(timeStamp));
 
 //        String mainYmlPath="C:\\Users\\yzp\\Desktop\\application1.yml";
 //        String addYmlPath="C:\\Users\\yzp\\Desktop\\application2.yml";

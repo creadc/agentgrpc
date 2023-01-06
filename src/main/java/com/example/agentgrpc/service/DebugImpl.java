@@ -2,6 +2,7 @@ package com.example.agentgrpc.service;
 
 import com.example.agentgrpc.jmeter.Analyze;
 import com.example.agentgrpc.protocol.debug.*;
+import com.example.agentgrpc.utils.OrganizeDocumentsUtil;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
@@ -16,6 +17,9 @@ import java.util.HashSet;
 public class DebugImpl extends DebugGrpc.DebugImplBase {
     @Autowired
     private ServletContext servletContext;
+
+    @Autowired
+    private OrganizeDocumentsUtil organizeDocumentsUtil;
 
     @Override
     public void getServletContext(ContextReq request, StreamObserver<ContextRes> responseObserver) {
@@ -49,5 +53,9 @@ public class DebugImpl extends DebugGrpc.DebugImplBase {
 
     @Override
     public void test(TestReq request, StreamObserver<TestRes> responseObserver) {
+        organizeDocumentsUtil.organizeJtlBakFiles();
+        TestRes res = TestRes.newBuilder().build();
+        responseObserver.onNext( res );
+        responseObserver.onCompleted();
     }
 }

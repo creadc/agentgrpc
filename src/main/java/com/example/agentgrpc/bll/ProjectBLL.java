@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletContext;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -307,7 +308,8 @@ public class ProjectBLL {
         //打包
         String stackPath = commonMethod.getPath("stack","null",0,false);//stack目录
         String tempPath = request.getExecId()+Constants.DIVISION+index;//堆栈临时路径(相对路径)
-        String tarName = tempPath+Constants.DIVISION+System.currentTimeMillis()+".tar.gz";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
+        String tarName = tempPath+Constants.DIVISION+sdf.format(System.currentTimeMillis())+".tar.gz";
         String fullPath = commonMethod.getPath("stack",request.getExecId(), Integer.parseInt(index),false);//堆栈完整路径
         String command = Constants.TAR + " -zcvf "+tarName+" "+tempPath;
         try {

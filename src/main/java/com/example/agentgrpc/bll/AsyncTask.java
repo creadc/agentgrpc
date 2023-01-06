@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletContext;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -101,7 +102,8 @@ public class AsyncTask {
         String osType = commonMethod.getSystemType();
         String filePath;
         String command;
-        filePath = dirPath+"\\"+execId+Constants.DIVISION+index+Constants.DIVISION+System.currentTimeMillis()+".hprof";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
+        filePath = dirPath+"\\"+execId+Constants.DIVISION+index+Constants.DIVISION+sdf.format(System.currentTimeMillis())+".hprof";
         if("Linux".equals(osType)){
             command =Constants.JMAP + " -dump:format=b,file="+filePath+" "+pid;
         }

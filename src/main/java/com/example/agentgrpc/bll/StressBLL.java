@@ -125,7 +125,7 @@ public class StressBLL {
         else {
             agentPath = AGENT_PATH_ON_WINDOWS;
         }
-        File jtlBakPath = new File(agentPath+"/jtl_bak");
+        File jtlBakPath = new File(agentPath+File.separator+"jtl_bak");
         if (!jtlBakPath.exists()){ //如果不存在
             jtlBakPath.mkdirs();
         }
