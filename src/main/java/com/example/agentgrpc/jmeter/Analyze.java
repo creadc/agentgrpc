@@ -3,6 +3,7 @@ package com.example.agentgrpc.jmeter;
 import com.example.agentgrpc.bll.CommonMethod;
 import com.example.agentgrpc.utils.Constants;
 import com.example.agentgrpc.utils.ExecSystemCommandUtil;
+import com.example.agentgrpc.utils.ReadConfUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.jmeter.report.config.ConfigurationException;
 import org.apache.jmeter.report.dashboard.GenerationException;
@@ -122,8 +123,16 @@ public class Analyze {
             command = "."+bar+Constants.JMETER+" -g "+jtlPath+" -o "+reportDirPath;
             ArrayList<String> arrayList = ExecSystemCommandUtil.execCommand(String.valueOf(jmeterBinDirPath), command, "utf-8");
             String s = arrayList.toString();
-            if(s != null && !s.equals(""))
+            if(s != null && s.contains("An error occurred")){
                 log.error("ERROR2: Exec command failed:genarate report,detailed information: "+s);
+
+                //把jmeter.log复制过来
+                File preLogFile = new File(String.valueOf(Paths.get(String.valueOf(jmeterBinDirPath),"jmeter.log")));
+                File newLogFile = new File(String.valueOf(Paths.get(jtlDirPath,"jmeter.log")));
+                Files.copy(preLogFile.toPath(),newLogFile.toPath());
+            }
+
+
             //复制json
             try {
                 Files.copy(preJsonPath,newJsonPath, StandardCopyOption.REPLACE_EXISTING);
@@ -141,6 +150,7 @@ public class Analyze {
             log.error("ERROR2: Jtl to json failed",e);
             commonMethod.delPath(jtlPath);
         }finally {
+            log.info("Generate report over");
             //删除报告
             commonMethod.delPath(String.valueOf(reportDirPath));
         }

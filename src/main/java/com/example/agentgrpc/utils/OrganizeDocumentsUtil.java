@@ -43,13 +43,16 @@ public class OrganizeDocumentsUtil {
         Pattern pattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}");
         Matcher matcher;
         File tempFile;
+        String s;
         //遍历，把文件夹都放到archiveDirPath中
         File[] files = new File(jtlBakDirPath).listFiles();
         for (File file : files) {
             //如果是归档文件，就跳过
-            matcher = pattern.matcher(file.getName());
+            s = file.getName();
+            matcher = pattern.matcher(s);
             if (!matcher.matches()) {
-                tempFile = new File(String.valueOf(Paths.get(archiveDirPath,file.getName())));
+                log.info("organize:"+s);
+                tempFile = new File(String.valueOf(Paths.get(archiveDirPath,s)));
                 tempFile.mkdirs();
                 commonMethod.moveFile(file,tempFile);
                 asyncTask.delayDelete(file.getPath(),3);

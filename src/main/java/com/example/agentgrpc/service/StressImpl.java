@@ -48,6 +48,7 @@ public class StressImpl extends StressGrpc.StressImplBase {
 
     @Override
     public void jsonResult(JsonResultReq request, StreamObserver<JsonResultRes> responseObserver) {
+        log.info("--Json result start--");
         String agentPath = stressBLL.jsonResult();
         JsonResultRes res;
 
@@ -84,6 +85,7 @@ public class StressImpl extends StressGrpc.StressImplBase {
                     String filterJtl = analyze.filterJtl(file1.getPath(),file2.getName(),request.getFilterName());
                     //转为json
                     String jsonPath = analyze.jtlToJson(file1.getPath(), filterJtl);
+                    commonMethod.delay(1);
 //                    String jsonPath = analyze.jtlToJson("C:\\Users\\yzp\\Desktop", "100_filter.jtl");
                     //回传
                     File json = new File(jsonPath);
@@ -105,13 +107,13 @@ public class StressImpl extends StressGrpc.StressImplBase {
 //                        System.out.println(commonMethod.readJsonFile(jsonPath));
                         res = JsonResultRes.newBuilder()
                                 .setCode(1)
-                                .setMessage("No files")
+                                .setMessage("No json file,there is a problem with the jtl file")
                                 .build();
                         responseObserver.onNext(res);
                     }
                 }
                 //把对应的文件夹归档
-                log.info("Start backup......");
+                log.info("Start backup "+file1.getName()+"......");
                 File bakDir = new File(agentPath+"/jtl_bak/"+file1.getName());
                 bakDir.mkdirs();
                 commonMethod.moveFile(file1,bakDir);
@@ -124,12 +126,13 @@ public class StressImpl extends StressGrpc.StressImplBase {
             log.error("ERROR2: No Corresponding jtl files");
             res = JsonResultRes.newBuilder()
                     .setCode(1)
-                    .setMessage("No files")
+                    .setMessage("No jtl files with execid \""+request.getExecId()+"\"")
                     .build();
             responseObserver.onNext(res);
             responseObserver.onCompleted();
             return;
         }
+        log.info("--Json result over--");
         responseObserver.onCompleted();
     }
 }

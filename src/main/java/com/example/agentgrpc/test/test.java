@@ -3,6 +3,7 @@ package com.example.agentgrpc.test;
 import com.example.agentgrpc.AgentgrpcApplication;
 import com.example.agentgrpc.conf.TaskExecutorConfig;
 import com.example.agentgrpc.jmeter.Analyze;
+import com.example.agentgrpc.jmeter.Stress;
 import com.example.agentgrpc.utils.ExecSystemCommandUtil;
 import com.example.agentgrpc.utils.PropertiesToMapUtil;
 import org.apache.http.HttpEntity;
@@ -45,12 +46,9 @@ import java.util.concurrent.Executor;
 public class test {
 
     public static void main(String[] args) {
-        Long timeStamp = System.currentTimeMillis();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
-        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
-        System.out.println("Long类型的时间戳："+timeStamp);
-        System.out.println("格式化后的时间："+sdf.format(timeStamp));
-        System.out.println("格式化后的时间带毫秒："+sdf2.format(timeStamp));
+//        Analyze analyze = new Analyze();
+//        analyze.jtlToJson("C:\\Users\\yzp\\Desktop","参数控件_filter.jtl");
+
 
 //        String mainYmlPath="C:\\Users\\yzp\\Desktop\\application1.yml";
 //        String addYmlPath="C:\\Users\\yzp\\Desktop\\application2.yml";

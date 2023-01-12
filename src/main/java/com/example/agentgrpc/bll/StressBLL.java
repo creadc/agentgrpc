@@ -1,5 +1,7 @@
 package com.example.agentgrpc.bll;
 
+import com.example.agentgrpc.jmeter.Stress;
+import com.example.agentgrpc.pojo.StressCheck;
 import com.example.agentgrpc.protocol.stress.*;
 import com.example.agentgrpc.utils.Constants;
 import com.example.agentgrpc.utils.ReadConfUtil;
@@ -7,6 +9,7 @@ import com.example.agentgrpc.utils.SendHTTPUtil;
 import com.example.agentgrpc.utils.UrlUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.jmeter.engine.StandardJMeterEngine;
+import org.apache.jorphan.collections.HashTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +30,9 @@ public class StressBLL {
 
     @Autowired
     private AsyncTask asyncTask;
+
+    @Autowired
+    private Stress stress;
 
     private static final String AGENT_PATH_ON_LINUX = (String) ReadConfUtil.readYml("application.yml","my.agentPathOnLinux");
     private static final String AGENT_PATH_ON_WINDOWS = (String) ReadConfUtil.readYml("application.yml","my.agentPathOnWindows");
@@ -71,10 +77,9 @@ public class StressBLL {
         String jmxDirPath = strs1[1];
         String jtlDirPath = strs2[1];
 
-        for (int i = 0;i < fileNames.size();i++){
-            fileName = fileNames.get(i);
-            jmxPath = jmxDirPath + fileName;
-            int res = SendHTTPUtil.downloadFile(UrlUtil.join(url,fileName),jmxPath);
+        for (String name : fileNames) {
+            jmxPath = jmxDirPath + name;
+            int res = SendHTTPUtil.downloadFile(UrlUtil.join(url, name), jmxPath);
             if (res == 0) {
                 log.error("ERROR2: Download jmx or csv failed");
                 //删除目录及文件
@@ -88,9 +93,28 @@ public class StressBLL {
         }
         //把jmx文件名从arraylist中分离出来
         fileNames.remove(jmxName);
+        //压测前检查
+        StressCheck sc = new StressCheck();
+        try {
+            sc = stress.check(jmxDirPath, jmxName, jtlDirPath, fileNames);
+        }
+        catch (Exception e){
+            log.error("ERROR2: Check jmx file failed",e);
+            commonMethod.delPath(jtlDirPath);
+            return StartStressRes.newBuilder()
+                    .setCode(1)
+                    .setMessage("Check jmx file failed")
+                    .build();
+        }
+        if (!sc.getRes().equals("success")){
+            return StartStressRes.newBuilder()
+                    .setCode(1)
+                    .setMessage(sc.getRes())
+                    .build();
+        }
+        HashTree jmxtree = sc.getHashTree();
         //前置条件准备完成，开始压测，先返回执行中
-        //压测
-        asyncTask.startStress(jmxDirPath,jmxName,jtlDirPath,execId,index,fileNames);
+        asyncTask.startStress(jmxtree,jmxDirPath,jmxName,jtlDirPath,execId,index);
         log.info("JMeter running......");
         return StartStressRes.newBuilder()
                 .setCode(2)

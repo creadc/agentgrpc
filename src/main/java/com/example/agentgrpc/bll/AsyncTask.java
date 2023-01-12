@@ -9,6 +9,7 @@ import com.example.agentgrpc.utils.ExecSystemCommandUtil;
 import com.example.agentgrpc.utils.ReadConfUtil;
 import com.example.agentgrpc.utils.SendGrpcUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.jorphan.collections.HashTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -29,10 +30,10 @@ public class AsyncTask {
     private CommonMethod commonMethod;
 
     @Autowired
-    private Stress stress;
+    private Analyze analyze;
 
-    private static final String AGENT_PATH_ON_LINUX = (String) ReadConfUtil.readYml("application.yml","my.agentPathOnLinux");
-    private static final String AGENT_PATH_ON_WINDOWS = (String) ReadConfUtil.readYml("application.yml","my.agentPathOnWindows");
+    @Autowired
+    private Stress stress;
 
     private static final int CYCLE_MAX = (int) ReadConfUtil.readYml("application.yml","my.cycleTime");
     private static final int STACK_COUNT_MAX = (int) ReadConfUtil.readYml("application.yml","my.stackCountMax");
@@ -130,16 +131,16 @@ public class AsyncTask {
 
     //压测
     @Async("TaskExecutor")
-    public void startStress(String jmxDirPath, String jmxName, String jtlDirPath, String execId, int index, ArrayList<String> fileNames){
+    public void startStress(HashTree jmxTree, String jmxDirPath, String jmxName, String jtlDirPath, String execId, int index){
         String id = execId+Constants.DIVISION+"stress";
         try {
             //压测
-            stress.run(jmxDirPath,jmxName,jtlDirPath,jmxName.split("\\.")[0]+".jtl",id,fileNames,execId,index);
+//            stress.run(jmxDirPath,jmxName,jtlDirPath,jmxName.split("\\.")[0]+".jtl",id,fileNames,execId,index);
+            stress.run(jmxTree,jtlDirPath,jmxName.split("\\.")[0]+".jtl",id);
         }catch (Exception e) {
             log.error("ERROR2: Start stress failed",e);
             commonMethod.delPath(jtlDirPath);
             SendGrpcUtil.TaskStatus(execId,index,3,1,"JMeter run failed");
-            return;
         }
         finally {
             //删除临时jmx文件
@@ -152,4 +153,5 @@ public class AsyncTask {
         }
 
     }
+
 }
