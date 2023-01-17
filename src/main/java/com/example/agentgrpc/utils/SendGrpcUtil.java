@@ -20,6 +20,8 @@ public class SendGrpcUtil {
                 .usePlaintext()
                 .build();
 
+        log.info("Send grpc: {execid:"+execId+",index:"+index+",job_type:"+job_type+",code:"+code+",message:"+message+"}");
+
         CollectorGrpc.CollectorBlockingStub stub = CollectorGrpc.newBlockingStub(channel);
         TaskStatusReq req = TaskStatusReq.newBuilder()
                 .setExecId(execId)
@@ -30,7 +32,6 @@ public class SendGrpcUtil {
                 .build();
 
         TaskStatusRes res = stub.taskStatus(req);
-        log.info("Send grpc: {execid:"+execId+",index:"+index+",job_type:"+job_type+",code:"+code+",message:"+message+"}");
         try {
             channel.shutdown().awaitTermination(1, TimeUnit.SECONDS);
         } catch (InterruptedException e) {

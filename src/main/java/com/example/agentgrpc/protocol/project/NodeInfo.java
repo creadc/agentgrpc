@@ -22,6 +22,7 @@ private static final long serialVersionUID = 0L;
     servlet_ = "";
     libPath_ = "";
     binPath_ = "";
+    projType_ = "";
   }
 
   @java.lang.Override
@@ -44,6 +45,7 @@ private static final long serialVersionUID = 0L;
     if (extensionRegistry == null) {
       throw new java.lang.NullPointerException();
     }
+    int mutable_bitField0_ = 0;
     com.google.protobuf.UnknownFieldSet.Builder unknownFields =
         com.google.protobuf.UnknownFieldSet.newBuilder();
     try {
@@ -90,6 +92,25 @@ private static final long serialVersionUID = 0L;
             binPath_ = s;
             break;
           }
+          case 58: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            projType_ = s;
+            break;
+          }
+          case 66: {
+            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+              attrs_ = com.google.protobuf.MapField.newMapField(
+                  AttrsDefaultEntryHolder.defaultEntry);
+              mutable_bitField0_ |= 0x00000001;
+            }
+            com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
+            attrs__ = input.readMessage(
+                AttrsDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+            attrs_.getMutableMap().put(
+                attrs__.getKey(), attrs__.getValue());
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -114,6 +135,18 @@ private static final long serialVersionUID = 0L;
     return com.example.agentgrpc.protocol.project.ProjectOuterClass.internal_static_agent_NodeInfo_descriptor;
   }
 
+  @SuppressWarnings({"rawtypes"})
+  @java.lang.Override
+  protected com.google.protobuf.MapField internalGetMapField(
+      int number) {
+    switch (number) {
+      case 8:
+        return internalGetAttrs();
+      default:
+        throw new RuntimeException(
+            "Invalid map field number: " + number);
+    }
+  }
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
@@ -382,6 +415,149 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int PROJ_TYPE_FIELD_NUMBER = 7;
+  private volatile java.lang.Object projType_;
+  /**
+   * <pre>
+   *工程类型 1tomcat 2docker 3...
+   * </pre>
+   *
+   * <code>string proj_type = 7;</code>
+   * @return The projType.
+   */
+  @java.lang.Override
+  public java.lang.String getProjType() {
+    java.lang.Object ref = projType_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      projType_ = s;
+      return s;
+    }
+  }
+  /**
+   * <pre>
+   *工程类型 1tomcat 2docker 3...
+   * </pre>
+   *
+   * <code>string proj_type = 7;</code>
+   * @return The bytes for projType.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getProjTypeBytes() {
+    java.lang.Object ref = projType_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      projType_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int ATTRS_FIELD_NUMBER = 8;
+  private static final class AttrsDefaultEntryHolder {
+    static final com.google.protobuf.MapEntry<
+        java.lang.String, java.lang.String> defaultEntry =
+            com.google.protobuf.MapEntry
+            .<java.lang.String, java.lang.String>newDefaultInstance(
+                com.example.agentgrpc.protocol.project.ProjectOuterClass.internal_static_agent_NodeInfo_AttrsEntry_descriptor, 
+                com.google.protobuf.WireFormat.FieldType.STRING,
+                "",
+                com.google.protobuf.WireFormat.FieldType.STRING,
+                "");
+  }
+  private com.google.protobuf.MapField<
+      java.lang.String, java.lang.String> attrs_;
+  private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+  internalGetAttrs() {
+    if (attrs_ == null) {
+      return com.google.protobuf.MapField.emptyMapField(
+          AttrsDefaultEntryHolder.defaultEntry);
+    }
+    return attrs_;
+  }
+
+  public int getAttrsCount() {
+    return internalGetAttrs().getMap().size();
+  }
+  /**
+   * <pre>
+   *其他属性，用于适配国产化
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; attrs = 8;</code>
+   */
+
+  @java.lang.Override
+  public boolean containsAttrs(
+      java.lang.String key) {
+    if (key == null) { throw new NullPointerException("map key"); }
+    return internalGetAttrs().getMap().containsKey(key);
+  }
+  /**
+   * Use {@link #getAttrsMap()} instead.
+   */
+  @java.lang.Override
+  @java.lang.Deprecated
+  public java.util.Map<java.lang.String, java.lang.String> getAttrs() {
+    return getAttrsMap();
+  }
+  /**
+   * <pre>
+   *其他属性，用于适配国产化
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; attrs = 8;</code>
+   */
+  @java.lang.Override
+
+  public java.util.Map<java.lang.String, java.lang.String> getAttrsMap() {
+    return internalGetAttrs().getMap();
+  }
+  /**
+   * <pre>
+   *其他属性，用于适配国产化
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; attrs = 8;</code>
+   */
+  @java.lang.Override
+
+  public java.lang.String getAttrsOrDefault(
+      java.lang.String key,
+      java.lang.String defaultValue) {
+    if (key == null) { throw new NullPointerException("map key"); }
+    java.util.Map<java.lang.String, java.lang.String> map =
+        internalGetAttrs().getMap();
+    return map.containsKey(key) ? map.get(key) : defaultValue;
+  }
+  /**
+   * <pre>
+   *其他属性，用于适配国产化
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; attrs = 8;</code>
+   */
+  @java.lang.Override
+
+  public java.lang.String getAttrsOrThrow(
+      java.lang.String key) {
+    if (key == null) { throw new NullPointerException("map key"); }
+    java.util.Map<java.lang.String, java.lang.String> map =
+        internalGetAttrs().getMap();
+    if (!map.containsKey(key)) {
+      throw new java.lang.IllegalArgumentException();
+    }
+    return map.get(key);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -414,6 +590,15 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(binPath_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 6, binPath_);
     }
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(projType_)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 7, projType_);
+    }
+    com.google.protobuf.GeneratedMessageV3
+      .serializeStringMapTo(
+        output,
+        internalGetAttrs(),
+        AttrsDefaultEntryHolder.defaultEntry,
+        8);
     unknownFields.writeTo(output);
   }
 
@@ -440,6 +625,19 @@ private static final long serialVersionUID = 0L;
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(binPath_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, binPath_);
+    }
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(projType_)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, projType_);
+    }
+    for (java.util.Map.Entry<java.lang.String, java.lang.String> entry
+         : internalGetAttrs().getMap().entrySet()) {
+      com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
+      attrs__ = AttrsDefaultEntryHolder.defaultEntry.newBuilderForType()
+          .setKey(entry.getKey())
+          .setValue(entry.getValue())
+          .build();
+      size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(8, attrs__);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -468,6 +666,10 @@ private static final long serialVersionUID = 0L;
         .equals(other.getLibPath())) return false;
     if (!getBinPath()
         .equals(other.getBinPath())) return false;
+    if (!getProjType()
+        .equals(other.getProjType())) return false;
+    if (!internalGetAttrs().equals(
+        other.internalGetAttrs())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -491,6 +693,12 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getLibPath().hashCode();
     hash = (37 * hash) + BIN_PATH_FIELD_NUMBER;
     hash = (53 * hash) + getBinPath().hashCode();
+    hash = (37 * hash) + PROJ_TYPE_FIELD_NUMBER;
+    hash = (53 * hash) + getProjType().hashCode();
+    if (!internalGetAttrs().getMap().isEmpty()) {
+      hash = (37 * hash) + ATTRS_FIELD_NUMBER;
+      hash = (53 * hash) + internalGetAttrs().hashCode();
+    }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -598,6 +806,28 @@ private static final long serialVersionUID = 0L;
       return com.example.agentgrpc.protocol.project.ProjectOuterClass.internal_static_agent_NodeInfo_descriptor;
     }
 
+    @SuppressWarnings({"rawtypes"})
+    protected com.google.protobuf.MapField internalGetMapField(
+        int number) {
+      switch (number) {
+        case 8:
+          return internalGetAttrs();
+        default:
+          throw new RuntimeException(
+              "Invalid map field number: " + number);
+      }
+    }
+    @SuppressWarnings({"rawtypes"})
+    protected com.google.protobuf.MapField internalGetMutableMapField(
+        int number) {
+      switch (number) {
+        case 8:
+          return internalGetMutableAttrs();
+        default:
+          throw new RuntimeException(
+              "Invalid map field number: " + number);
+      }
+    }
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
@@ -636,6 +866,9 @@ private static final long serialVersionUID = 0L;
 
       binPath_ = "";
 
+      projType_ = "";
+
+      internalGetMutableAttrs().clear();
       return this;
     }
 
@@ -662,12 +895,16 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.example.agentgrpc.protocol.project.NodeInfo buildPartial() {
       com.example.agentgrpc.protocol.project.NodeInfo result = new com.example.agentgrpc.protocol.project.NodeInfo(this);
+      int from_bitField0_ = bitField0_;
       result.ip_ = ip_;
       result.port_ = port_;
       result.webapps_ = webapps_;
       result.servlet_ = servlet_;
       result.libPath_ = libPath_;
       result.binPath_ = binPath_;
+      result.projType_ = projType_;
+      result.attrs_ = internalGetAttrs();
+      result.attrs_.makeImmutable();
       onBuilt();
       return result;
     }
@@ -740,6 +977,12 @@ private static final long serialVersionUID = 0L;
         binPath_ = other.binPath_;
         onChanged();
       }
+      if (!other.getProjType().isEmpty()) {
+        projType_ = other.projType_;
+        onChanged();
+      }
+      internalGetMutableAttrs().mergeFrom(
+          other.internalGetAttrs());
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -768,6 +1011,7 @@ private static final long serialVersionUID = 0L;
       }
       return this;
     }
+    private int bitField0_;
 
     private java.lang.Object ip_ = "";
     /**
@@ -1302,6 +1546,261 @@ private static final long serialVersionUID = 0L;
       
       binPath_ = value;
       onChanged();
+      return this;
+    }
+
+    private java.lang.Object projType_ = "";
+    /**
+     * <pre>
+     *工程类型 1tomcat 2docker 3...
+     * </pre>
+     *
+     * <code>string proj_type = 7;</code>
+     * @return The projType.
+     */
+    public java.lang.String getProjType() {
+      java.lang.Object ref = projType_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        projType_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <pre>
+     *工程类型 1tomcat 2docker 3...
+     * </pre>
+     *
+     * <code>string proj_type = 7;</code>
+     * @return The bytes for projType.
+     */
+    public com.google.protobuf.ByteString
+        getProjTypeBytes() {
+      java.lang.Object ref = projType_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        projType_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <pre>
+     *工程类型 1tomcat 2docker 3...
+     * </pre>
+     *
+     * <code>string proj_type = 7;</code>
+     * @param value The projType to set.
+     * @return This builder for chaining.
+     */
+    public Builder setProjType(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      projType_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     *工程类型 1tomcat 2docker 3...
+     * </pre>
+     *
+     * <code>string proj_type = 7;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearProjType() {
+      
+      projType_ = getDefaultInstance().getProjType();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     *工程类型 1tomcat 2docker 3...
+     * </pre>
+     *
+     * <code>string proj_type = 7;</code>
+     * @param value The bytes for projType to set.
+     * @return This builder for chaining.
+     */
+    public Builder setProjTypeBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      projType_ = value;
+      onChanged();
+      return this;
+    }
+
+    private com.google.protobuf.MapField<
+        java.lang.String, java.lang.String> attrs_;
+    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+    internalGetAttrs() {
+      if (attrs_ == null) {
+        return com.google.protobuf.MapField.emptyMapField(
+            AttrsDefaultEntryHolder.defaultEntry);
+      }
+      return attrs_;
+    }
+    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+    internalGetMutableAttrs() {
+      onChanged();;
+      if (attrs_ == null) {
+        attrs_ = com.google.protobuf.MapField.newMapField(
+            AttrsDefaultEntryHolder.defaultEntry);
+      }
+      if (!attrs_.isMutable()) {
+        attrs_ = attrs_.copy();
+      }
+      return attrs_;
+    }
+
+    public int getAttrsCount() {
+      return internalGetAttrs().getMap().size();
+    }
+    /**
+     * <pre>
+     *其他属性，用于适配国产化
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; attrs = 8;</code>
+     */
+
+    @java.lang.Override
+    public boolean containsAttrs(
+        java.lang.String key) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      return internalGetAttrs().getMap().containsKey(key);
+    }
+    /**
+     * Use {@link #getAttrsMap()} instead.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, java.lang.String> getAttrs() {
+      return getAttrsMap();
+    }
+    /**
+     * <pre>
+     *其他属性，用于适配国产化
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; attrs = 8;</code>
+     */
+    @java.lang.Override
+
+    public java.util.Map<java.lang.String, java.lang.String> getAttrsMap() {
+      return internalGetAttrs().getMap();
+    }
+    /**
+     * <pre>
+     *其他属性，用于适配国产化
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; attrs = 8;</code>
+     */
+    @java.lang.Override
+
+    public java.lang.String getAttrsOrDefault(
+        java.lang.String key,
+        java.lang.String defaultValue) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      java.util.Map<java.lang.String, java.lang.String> map =
+          internalGetAttrs().getMap();
+      return map.containsKey(key) ? map.get(key) : defaultValue;
+    }
+    /**
+     * <pre>
+     *其他属性，用于适配国产化
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; attrs = 8;</code>
+     */
+    @java.lang.Override
+
+    public java.lang.String getAttrsOrThrow(
+        java.lang.String key) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      java.util.Map<java.lang.String, java.lang.String> map =
+          internalGetAttrs().getMap();
+      if (!map.containsKey(key)) {
+        throw new java.lang.IllegalArgumentException();
+      }
+      return map.get(key);
+    }
+
+    public Builder clearAttrs() {
+      internalGetMutableAttrs().getMutableMap()
+          .clear();
+      return this;
+    }
+    /**
+     * <pre>
+     *其他属性，用于适配国产化
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; attrs = 8;</code>
+     */
+
+    public Builder removeAttrs(
+        java.lang.String key) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      internalGetMutableAttrs().getMutableMap()
+          .remove(key);
+      return this;
+    }
+    /**
+     * Use alternate mutation accessors instead.
+     */
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, java.lang.String>
+    getMutableAttrs() {
+      return internalGetMutableAttrs().getMutableMap();
+    }
+    /**
+     * <pre>
+     *其他属性，用于适配国产化
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; attrs = 8;</code>
+     */
+    public Builder putAttrs(
+        java.lang.String key,
+        java.lang.String value) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      if (value == null) {
+  throw new NullPointerException("map value");
+}
+
+      internalGetMutableAttrs().getMutableMap()
+          .put(key, value);
+      return this;
+    }
+    /**
+     * <pre>
+     *其他属性，用于适配国产化
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; attrs = 8;</code>
+     */
+
+    public Builder putAllAttrs(
+        java.util.Map<java.lang.String, java.lang.String> values) {
+      internalGetMutableAttrs().getMutableMap()
+          .putAll(values);
       return this;
     }
     @java.lang.Override

@@ -110,4 +110,78 @@ public interface NodeInfoOrBuilder extends
    */
   com.google.protobuf.ByteString
       getBinPathBytes();
+
+  /**
+   * <pre>
+   *工程类型 1tomcat 2docker 3...
+   * </pre>
+   *
+   * <code>string proj_type = 7;</code>
+   * @return The projType.
+   */
+  java.lang.String getProjType();
+  /**
+   * <pre>
+   *工程类型 1tomcat 2docker 3...
+   * </pre>
+   *
+   * <code>string proj_type = 7;</code>
+   * @return The bytes for projType.
+   */
+  com.google.protobuf.ByteString
+      getProjTypeBytes();
+
+  /**
+   * <pre>
+   *其他属性，用于适配国产化
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; attrs = 8;</code>
+   */
+  int getAttrsCount();
+  /**
+   * <pre>
+   *其他属性，用于适配国产化
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; attrs = 8;</code>
+   */
+  boolean containsAttrs(
+      java.lang.String key);
+  /**
+   * Use {@link #getAttrsMap()} instead.
+   */
+  @java.lang.Deprecated
+  java.util.Map<java.lang.String, java.lang.String>
+  getAttrs();
+  /**
+   * <pre>
+   *其他属性，用于适配国产化
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; attrs = 8;</code>
+   */
+  java.util.Map<java.lang.String, java.lang.String>
+  getAttrsMap();
+  /**
+   * <pre>
+   *其他属性，用于适配国产化
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; attrs = 8;</code>
+   */
+
+  java.lang.String getAttrsOrDefault(
+      java.lang.String key,
+      java.lang.String defaultValue);
+  /**
+   * <pre>
+   *其他属性，用于适配国产化
+   * </pre>
+   *
+   * <code>map&lt;string, string&gt; attrs = 8;</code>
+   */
+
+  java.lang.String getAttrsOrThrow(
+      java.lang.String key);
 }

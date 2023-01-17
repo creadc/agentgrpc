@@ -28,7 +28,7 @@ public class AutoUpdateUtil {
     private static final String configUrl = (String) ReadConfUtil.readYml("update.yml","update.configUrl");
     private static final int PORT = (int) ReadConfUtil.readYml("application.yml","server.port");
 
-    @Scheduled(cron = "0 0 2 * * ?")
+    @Scheduled(cron = "0 0 6 * * ?")
     public void checkUpdate(){
         //延时，避免同一时刻获取文件
 //        try {

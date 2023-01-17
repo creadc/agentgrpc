@@ -39,6 +39,8 @@ message NodeInfo {
   string servlet=4;
   string lib_path=5; //proj lib目录
   string bin_path=6; //tomcat bin 目录
+  string proj_type=7; //工程类型 1tomcat 2docker 3...
+  map<string, string> attrs=8; //其他属性，用于适配国产化
 }
 
 message NodeControlReq {

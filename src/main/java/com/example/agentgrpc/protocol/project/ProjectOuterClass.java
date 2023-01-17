@@ -20,6 +20,11 @@ public final class ProjectOuterClass {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_agent_NodeInfo_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_agent_NodeInfo_AttrsEntry_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_agent_NodeInfo_AttrsEntry_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_agent_NodeControlReq_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -63,38 +68,41 @@ public final class ProjectOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\rproject.proto\022\005agent\"j\n\010NodeInfo\022\n\n\002ip" +
-      "\030\001 \001(\t\022\014\n\004port\030\002 \001(\t\022\017\n\007webapps\030\003 \001(\t\022\017\n" +
-      "\007servlet\030\004 \001(\t\022\020\n\010lib_path\030\005 \001(\t\022\020\n\010bin_" +
-      "path\030\006 \001(\t\"O\n\016NodeControlReq\022\017\n\007exec_id\030" +
-      "\001 \001(\t\022\r\n\005index\030\002 \001(\005\022\035\n\004node\030\003 \001(\0132\017.age" +
-      "nt.NodeInfo\"a\n\016PrintStacksReq\022\017\n\007exec_id" +
-      "\030\001 \001(\t\022\r\n\005index\030\002 \001(\005\022\035\n\004node\030\003 \001(\0132\017.ag" +
-      "ent.NodeInfo\022\020\n\010interval\030\004 \001(\005\"7\n\023StopPr" +
-      "intJStacksRes\022\021\n\tfile_name\030\001 \001(\t\022\r\n\005chun" +
-      "k\030\002 \001(\014\"w\n\rReplaceJarReq\022\017\n\007exec_id\030\001 \001(" +
-      "\t\022\r\n\005index\030\002 \001(\005\022\035\n\004node\030\003 \001(\0132\017.agent.N" +
-      "odeInfo\022\024\n\014download_url\030\004 \001(\t\022\021\n\tfile_li" +
-      "st\030\005 \003(\t\"/\n\016NodeControlRes\022\014\n\004code\030\001 \001(\005" +
-      "\022\017\n\007message\030\002 \001(\t\"\210\001\n\014NodeStateRes\022\014\n\004co" +
-      "de\030\001 \001(\005\022\r\n\005is_up\030\002 \001(\005\022-\n\005attrs\030\003 \003(\0132\036" +
-      ".agent.NodeStateRes.AttrsEntry\032,\n\nAttrsE" +
-      "ntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\0012\206\004\n" +
-      "\007Project\022;\n\tStartNode\022\025.agent.NodeContro" +
-      "lReq\032\025.agent.NodeControlRes\"\000\022:\n\010StopNod" +
-      "e\022\025.agent.NodeControlReq\032\025.agent.NodeCon" +
-      "trolRes\"\000\022=\n\013ReStartNode\022\025.agent.NodeCon" +
-      "trolReq\032\025.agent.NodeControlRes\"\000\022;\n\nRepl" +
-      "aceJar\022\024.agent.ReplaceJarReq\032\025.agent.Nod" +
-      "eControlRes\"\000\0229\n\tNodeState\022\025.agent.NodeC" +
-      "ontrolReq\032\023.agent.NodeStateRes\"\000\022C\n\021Star" +
-      "tPrintJStacks\022\025.agent.PrintStacksReq\032\025.a" +
-      "gent.NodeControlRes\"\000\022I\n\020StopPrintJStack" +
-      "s\022\025.agent.NodeControlReq\032\032.agent.StopPri" +
-      "ntJStacksRes\"\0000\001\022;\n\tPrintDump\022\025.agent.No" +
-      "deControlReq\032\025.agent.NodeControlRes\"\000B=\n" +
-      "&com.example.agentgrpc.protocol.projectP" +
-      "\001Z\021protocol/v1/agentb\006proto3"
+      "\n\rproject.proto\022\005agent\"\326\001\n\010NodeInfo\022\n\n\002i" +
+      "p\030\001 \001(\t\022\014\n\004port\030\002 \001(\t\022\017\n\007webapps\030\003 \001(\t\022\017" +
+      "\n\007servlet\030\004 \001(\t\022\020\n\010lib_path\030\005 \001(\t\022\020\n\010bin" +
+      "_path\030\006 \001(\t\022\021\n\tproj_type\030\007 \001(\t\022)\n\005attrs\030" +
+      "\010 \003(\0132\032.agent.NodeInfo.AttrsEntry\032,\n\nAtt" +
+      "rsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"" +
+      "O\n\016NodeControlReq\022\017\n\007exec_id\030\001 \001(\t\022\r\n\005in" +
+      "dex\030\002 \001(\005\022\035\n\004node\030\003 \001(\0132\017.agent.NodeInfo" +
+      "\"a\n\016PrintStacksReq\022\017\n\007exec_id\030\001 \001(\t\022\r\n\005i" +
+      "ndex\030\002 \001(\005\022\035\n\004node\030\003 \001(\0132\017.agent.NodeInf" +
+      "o\022\020\n\010interval\030\004 \001(\005\"7\n\023StopPrintJStacksR" +
+      "es\022\021\n\tfile_name\030\001 \001(\t\022\r\n\005chunk\030\002 \001(\014\"w\n\r" +
+      "ReplaceJarReq\022\017\n\007exec_id\030\001 \001(\t\022\r\n\005index\030" +
+      "\002 \001(\005\022\035\n\004node\030\003 \001(\0132\017.agent.NodeInfo\022\024\n\014" +
+      "download_url\030\004 \001(\t\022\021\n\tfile_list\030\005 \003(\t\"/\n" +
+      "\016NodeControlRes\022\014\n\004code\030\001 \001(\005\022\017\n\007message" +
+      "\030\002 \001(\t\"\210\001\n\014NodeStateRes\022\014\n\004code\030\001 \001(\005\022\r\n" +
+      "\005is_up\030\002 \001(\005\022-\n\005attrs\030\003 \003(\0132\036.agent.Node" +
+      "StateRes.AttrsEntry\032,\n\nAttrsEntry\022\013\n\003key" +
+      "\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\0012\206\004\n\007Project\022;\n" +
+      "\tStartNode\022\025.agent.NodeControlReq\032\025.agen" +
+      "t.NodeControlRes\"\000\022:\n\010StopNode\022\025.agent.N" +
+      "odeControlReq\032\025.agent.NodeControlRes\"\000\022=" +
+      "\n\013ReStartNode\022\025.agent.NodeControlReq\032\025.a" +
+      "gent.NodeControlRes\"\000\022;\n\nReplaceJar\022\024.ag" +
+      "ent.ReplaceJarReq\032\025.agent.NodeControlRes" +
+      "\"\000\0229\n\tNodeState\022\025.agent.NodeControlReq\032\023" +
+      ".agent.NodeStateRes\"\000\022C\n\021StartPrintJStac" +
+      "ks\022\025.agent.PrintStacksReq\032\025.agent.NodeCo" +
+      "ntrolRes\"\000\022I\n\020StopPrintJStacks\022\025.agent.N" +
+      "odeControlReq\032\032.agent.StopPrintJStacksRe" +
+      "s\"\0000\001\022;\n\tPrintDump\022\025.agent.NodeControlRe" +
+      "q\032\025.agent.NodeControlRes\"\000B=\n&com.exampl" +
+      "e.agentgrpc.protocol.projectP\001Z\021protocol" +
+      "/v1/agentb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -105,7 +113,13 @@ public final class ProjectOuterClass {
     internal_static_agent_NodeInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_agent_NodeInfo_descriptor,
-        new java.lang.String[] { "Ip", "Port", "Webapps", "Servlet", "LibPath", "BinPath", });
+        new java.lang.String[] { "Ip", "Port", "Webapps", "Servlet", "LibPath", "BinPath", "ProjType", "Attrs", });
+    internal_static_agent_NodeInfo_AttrsEntry_descriptor =
+      internal_static_agent_NodeInfo_descriptor.getNestedTypes().get(0);
+    internal_static_agent_NodeInfo_AttrsEntry_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_agent_NodeInfo_AttrsEntry_descriptor,
+        new java.lang.String[] { "Key", "Value", });
     internal_static_agent_NodeControlReq_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_agent_NodeControlReq_fieldAccessorTable = new

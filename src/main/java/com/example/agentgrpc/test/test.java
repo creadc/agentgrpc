@@ -46,6 +46,11 @@ import java.util.concurrent.Executor;
 public class test {
 
     public static void main(String[] args) {
+        HashMap<String,String> map = new HashMap<>();
+        map.put("123","321");
+        map.put("a","1");
+        System.out.println(map);
+
 //        Analyze analyze = new Analyze();
 //        analyze.jtlToJson("C:\\Users\\yzp\\Desktop","参数控件_filter.jtl");
 
