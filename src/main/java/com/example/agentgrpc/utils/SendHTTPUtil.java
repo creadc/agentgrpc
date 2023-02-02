@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
@@ -53,7 +54,13 @@ public class SendHTTPUtil {
                 data.put("errorMessage","SocketTimeoutException");
             }
             return data;
-        } catch (Exception e){
+        }
+        //国产化适配，响应码为404
+        catch (HttpClientErrorException e){
+            data.put("errorMessage","HttpClientErrorException");
+            return data;
+        }
+        catch (Exception e){
             log.error("ERROR2: Send HTTP failed",e);
             data.put("errorMessage",e.getMessage());
             return data;

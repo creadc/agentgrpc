@@ -1,11 +1,13 @@
 package com.example.agentgrpc.test;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.agentgrpc.AgentgrpcApplication;
 import com.example.agentgrpc.conf.TaskExecutorConfig;
 import com.example.agentgrpc.jmeter.Analyze;
 import com.example.agentgrpc.jmeter.Stress;
 import com.example.agentgrpc.utils.ExecSystemCommandUtil;
 import com.example.agentgrpc.utils.PropertiesToMapUtil;
+import com.example.agentgrpc.utils.SendHTTPUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
@@ -46,10 +48,12 @@ import java.util.concurrent.Executor;
 public class test {
 
     public static void main(String[] args) {
-        HashMap<String,String> map = new HashMap<>();
-        map.put("123","321");
-        map.put("a","1");
-        System.out.println(map);
+
+//        //发送http请求，判断工程状态
+        String url="http://124.71.152.17:8385/webroot/decision/system/info";
+        JSONObject jsonObject = SendHTTPUtil.getReturnJson(url, new HashMap<>());
+        String s = (String) jsonObject.get("errorMessage");
+        System.out.println(s);
 
 //        Analyze analyze = new Analyze();
 //        analyze.jtlToJson("C:\\Users\\yzp\\Desktop","参数控件_filter.jtl");

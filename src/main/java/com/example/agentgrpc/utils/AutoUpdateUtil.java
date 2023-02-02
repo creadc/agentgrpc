@@ -90,7 +90,7 @@ public class AutoUpdateUtil {
                 }
             }
             //准备工作完成,调用脚本
-            ArrayList<Integer> pids = commonMethod.getAllPid(PORT,path);
+            ArrayList<Integer> pids = commonMethod.getAllPid(PORT,path,"");
             if (pids.get(0) == 0){
                 log.error("ERROR2: pid does not exist,auto update failed");
                 return;

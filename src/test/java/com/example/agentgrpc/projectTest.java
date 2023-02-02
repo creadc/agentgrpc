@@ -11,12 +11,13 @@ import java.util.concurrent.TimeUnit;
 public class projectTest {
 
     private String IP1="localhost";
-    private String IP2="192.168.101.101";//windows虚拟机
-    private String IP3="192.168.101.21";//linux服务器
-    private int port=9090;
+    private String IP2="124.71.152.17";
+    private String IP3="192.168.101.21";
+    private int port1=9090;
+    private int port2=9091;
 
     public ManagedChannel init(){
-        ManagedChannel channel = ManagedChannelBuilder.forAddress(IP1, port)
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(IP2, port2)
                 .usePlaintext()
                 .build();
         return channel;
@@ -95,7 +96,7 @@ public class projectTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }//linux 8500
+    }
 
     @Test
     public void startNode1(){
@@ -170,7 +171,7 @@ public class projectTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }//linux 8500
+    }
 
     @Test
     public void stopNode1(){
@@ -245,7 +246,7 @@ public class projectTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }//linux 8500
+    }
 
     @Test
     public void reStartNode1(){
@@ -320,7 +321,7 @@ public class projectTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }//linux 8500
+    }
 
     @Test
     public void replaceJar1(){
@@ -382,6 +383,37 @@ public class projectTest {
     }//linux 8506
 
     @Test
+    public void replaceJar3(){
+        ManagedChannel channel=init();
+
+        ProjectGrpc.ProjectBlockingStub stub = ProjectGrpc.newBlockingStub(channel);
+
+        NodeInfo nodeInfo = node3();
+
+        ReplaceJarReq req = ReplaceJarReq.newBuilder()
+                .setNode(nodeInfo)
+                .setExecId("123456")
+                .setIndex(5)
+                .setDownloadUrl("https://www.voidtools.com/")
+                .addFileList("Everything-1.4.1.1018.x86-Setup.exe")
+                .addFileList("Everything-1.4.1.1020.x64-Setup.exe")
+                .addFileList("Everything-1.4.1.1020.x86.zip")
+                .addFileList("Everything-1.4.1.1020.x64.zip")
+                .build();
+
+        System.out.println(req);
+
+        NodeControlRes res=stub.replaceJar(req);
+        System.out.println(res);
+
+        try {
+            channel.shutdown().awaitTermination(1, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void StartPrintJStacks1(){
         ManagedChannel channel=init();
 
@@ -432,6 +464,32 @@ public class projectTest {
             e.printStackTrace();
         }
     }//linux 8506
+
+    @Test
+    public void StartPrintJStacks3(){
+        ManagedChannel channel=init();
+
+        ProjectGrpc.ProjectBlockingStub stub = ProjectGrpc.newBlockingStub(channel);
+
+        NodeInfo nodeInfo = node3();
+
+        PrintStacksReq req=PrintStacksReq.newBuilder()
+                .setNode(nodeInfo)
+                .setExecId("123456")
+                .setIndex(6)
+                .setInterval(3)
+                .build();
+        System.out.println(req);
+
+        NodeControlRes res=stub.startPrintJStacks(req);
+        System.out.println(res);
+
+        try {
+            channel.shutdown().awaitTermination(1, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test
     public void stopPrintJStacks1(){
@@ -488,6 +546,33 @@ public class projectTest {
     }//linux 8506
 
     @Test
+    public void stopPrintJStacks3(){
+        ManagedChannel channel=init();
+
+        ProjectGrpc.ProjectBlockingStub stub = ProjectGrpc.newBlockingStub(channel);
+
+        NodeInfo nodeInfo = node3();
+
+        NodeControlReq req=NodeControlReq.newBuilder()
+                .setNode(nodeInfo)
+                .setExecId("123456")
+                .setIndex(7)
+                .build();
+        System.out.println(req);
+
+        Iterator<StopPrintJStacksRes> res=stub.stopPrintJStacks(req);
+        while (res.hasNext()) {
+            System.out.println(res.next());
+        }
+
+        try {
+            channel.shutdown().awaitTermination(1, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void PrintDump1(){
         ManagedChannel channel=init();
 
@@ -537,6 +622,30 @@ public class projectTest {
         }
     }//linux 8506
 
+    @Test
+    public void PrintDump3(){
+        ManagedChannel channel=init();
+
+        ProjectGrpc.ProjectBlockingStub stub = ProjectGrpc.newBlockingStub(channel);
+
+        NodeInfo nodeInfo = node3();
+
+        NodeControlReq req=NodeControlReq.newBuilder()
+                .setNode(nodeInfo)
+                .setExecId("123456")
+                .setIndex(8)
+                .build();
+        System.out.println(req);
+
+        NodeControlRes res = stub.printDump(req);
+        System.out.println(res);
+
+        try {
+            channel.shutdown().awaitTermination(1, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
     //本地node
     public NodeInfo node1(){
@@ -562,15 +671,16 @@ public class projectTest {
                 .build();
     }
 
-    //linux node 8500
+    //国产化
     public NodeInfo node3(){
         return NodeInfo.newBuilder()
-                .setIp("192.168.101.21")
-                .setPort("8500")
+                .setIp("124.71.152.17")
+                .setPort("8385")
                 .setWebapps("webroot")
                 .setServlet("decision")
-                .setLibPath("/home/apps/fr_10.0/webapps/webroot/WEB-INF/lib")
-                .setBinPath("/home/apps/fr_10.0/bin")
+                .setLibPath("/home/user/environment/TAS/bin")
+                .setBinPath("/home/InforSuiteAS_StE_V10.0.5/as/bin")
+                .setProjType("infors")
                 .build();
     }
 

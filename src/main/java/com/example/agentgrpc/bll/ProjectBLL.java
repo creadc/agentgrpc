@@ -65,7 +65,8 @@ public class ProjectBLL {
     }
 
     public NodeControlRes stopNode(NodeControlReq request) {
-        ArrayList<Integer> pids = commonMethod.getAllPid(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
+        NodeInfo node = request.getNode();
+        ArrayList<Integer> pids = commonMethod.getAllPid(Integer.parseInt(node.getPort()), node.getBinPath(),node.getProjType());
         //未启动
         if(pids.get(0) == 0){
             log.error("ERROR2: Project is already stop");
@@ -77,18 +78,18 @@ public class ProjectBLL {
 
         //已启动或状态异常,总结就是端口占用
         for (Integer pid : pids) {
-            commonMethod.justStop(request.getNode(),pid);
+            commonMethod.justStop(node,pid);
         }
 
         //结果验证
         log.info("Result validation");
-        pids = commonMethod.getAllPid(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
+        pids = commonMethod.getAllPid(Integer.parseInt(node.getPort()), node.getBinPath(),node.getProjType());
         if (pids.get(0) != 0)
             for (Integer pid : pids) {
-                commonMethod.justStop(request.getNode(),pid);
+                commonMethod.justStop(node,pid);
             }
 
-        int state = commonMethod.getProjectState(request.getNode());
+        int state = commonMethod.getProjectState(node);
         //执行命令后不报错但项目还未关闭
         if(state == 1){
             log.error("ERROR2: Exec command success,stop fail");

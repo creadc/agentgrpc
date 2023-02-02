@@ -70,15 +70,10 @@ public class DebugImpl extends DebugGrpc.DebugImplBase {
 
     @Override
     public void test(TestReq request, StreamObserver<TestRes> responseObserver) {
-
-        Path jmeterBinDirPath = Paths.get(System.getProperty("user.dir"),"config","jmeter","bin");
-        //把jmeter.log复制过来
-        File preLogFile = new File(String.valueOf(Paths.get(String.valueOf(jmeterBinDirPath),"jmeter.log")));
-        File newLogFile = new File(String.valueOf(Paths.get("C:\\Users\\yzp\\Desktop\\83f9a878-9316-4ba9-b94b-511c6836b72a_1_2023-01-10-22-02","jmeter.log")));
-        try {
-            Files.copy(preLogFile.toPath(),newLogFile.toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
+        String s = System.getProperty("os.name");
+        log.info(s);
+        if (s.equals("")){
+            System.out.println("null");
         }
 
 //        organizeDocumentsUtil.organizeJtlBakFiles();

@@ -4,6 +4,7 @@ package com.example.agentgrpc.bll;
 import com.example.agentgrpc.jmeter.Analyze;
 import com.example.agentgrpc.jmeter.Stress;
 import com.example.agentgrpc.protocol.project.NodeControlReq;
+import com.example.agentgrpc.protocol.project.NodeInfo;
 import com.example.agentgrpc.utils.Constants;
 import com.example.agentgrpc.utils.ExecSystemCommandUtil;
 import com.example.agentgrpc.utils.ReadConfUtil;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletContext;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -40,16 +42,17 @@ public class AsyncTask {
     //确认启动
     @Async("TaskExecutor")
     public void checkStart(NodeControlReq request){
+        NodeInfo node = request.getNode();
         try{
-            servletContext.setAttribute(request.getNode().getBinPath()+Constants.DIVISION+"state","1");
+            servletContext.setAttribute(node.getBinPath()+Constants.DIVISION+"state","1");
             for (int i=0 ; i < CYCLE_MAX ; i++){
                 try {
                     TimeUnit.SECONDS.sleep(5);//秒
-                    int state = commonMethod.getProjectState(request.getNode());
+                    int state = commonMethod.getProjectState(node);
                     //遇到个问题，tomcat有时换jar的重启失败，需要手动再重启一次
-                    if (state == 0){
+                    if (state == 0 && ("tomcat".equals(node.getProjType()) || "".equals(node.getProjType()))){
                         log.error("ERROR2: Check start failed:down,restart now");
-                        commonMethod.justRestart(request.getNode());
+                        commonMethod.justRestart(node);
                     }
                     //工程启动了
                     if(state == 1){
@@ -64,7 +67,7 @@ public class AsyncTask {
             log.error("ERROR2: The project has not been started for a long time");
             SendGrpcUtil.TaskStatus(request.getExecId(),request.getIndex(),1,1,"Project start fail");
         }finally {
-            servletContext.removeAttribute(request.getNode().getBinPath()+Constants.DIVISION+"state");
+            servletContext.removeAttribute(node.getBinPath()+Constants.DIVISION+"state");
         }
 
     }
@@ -104,7 +107,7 @@ public class AsyncTask {
         String filePath;
         String command;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
-        filePath = dirPath+"\\"+execId+Constants.DIVISION+index+Constants.DIVISION+sdf.format(System.currentTimeMillis())+".hprof";
+        filePath = String.valueOf(Paths.get(dirPath,execId+ Constants.DIVISION+index+Constants.DIVISION+sdf.format(System.currentTimeMillis())+".hprof"));
         if("Linux".equals(osType)){
             command =Constants.JMAP + " -dump:format=b,file="+filePath+" "+pid;
         }

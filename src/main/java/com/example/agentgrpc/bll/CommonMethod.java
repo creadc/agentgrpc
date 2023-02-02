@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -29,7 +30,6 @@ public class CommonMethod {
     private static final String AGENT_PATH_ON_WINDOWS = (String) ReadConfUtil.readYml("application.yml","my.agentPathOnWindows");
 
 
-
     //获取工程状态(无jar版本简略版),返回1为启动,返回0为关闭,返回-1为宕机和未知错误
     public int getProjectState(NodeInfo node){
         //发送http请求，判断工程状态
@@ -37,18 +37,32 @@ public class CommonMethod {
                 +"/"+node.getWebapps()+"/"+node.getServlet()+"/system/info";
         JSONObject jsonObject = SendHTTPUtil.getReturnJson(url,new HashMap<>());
 
+        String projectType = node.getProjType();
+
         //连接失败
         if (jsonObject.containsKey("errorMessage")){
             String message = String.valueOf(jsonObject.get("errorMessage"));
 
             //常规报错:未启动
             if("ConnectException".equals(message)){
-                log.info("Project state:down");
-                return 0;
+                //华宇启动中也是ConnectException，这里特殊处理
+                if ("tas".equals(projectType)){
+                    log.info("Project state:down or starting");
+                    return 0;
+                }
+                else {
+                    log.info("Project state:down");
+                    return 0;
+                }
             }
-            //宕机
+            //卡住，启动中或宕机
             else if("SocketTimeoutException".equals(message)){
                 log.info("Project state:starting or crash");
+                return -1;
+            }
+            //一些国产化中间件启动时是404
+            else if ("HttpClientErrorException".equals(message)){
+                log.info("Localization project state:starting");
                 return -1;
             }
             //其他错误
@@ -67,15 +81,66 @@ public class CommonMethod {
         //数据准备
         String osType =getSystemType();
         String path=node.getBinPath();
+        String projType = node.getProjType();//容器类型
         String command;
 
-        switch (osType){
-            case "Linux" : command="bash startup.sh";break;
-            case "Windows" : command="startup.bat";break;
-            default: command="other"; break;
+        //linux
+        if ("Linux".equals(osType)){
+            //tomcat
+            if ("tomcat".equals(projType) || "".equals(projType))
+                command="bash startup.sh";
+            //国产化容器
+            else
+                switch (projType){
+                    //东方通
+                    case "tongweb":command="nohup ./startserver.sh &";break;
+                    //宝蓝德
+                    case "bes":{
+                        Map<String,String> map = node.getAttrsMap();
+                        String user = map.get("user");
+                        String pwd = map.get("pwd");
+                        if (user.length()>0 && pwd.length()>0){
+                            command="nohup ./iastool --passport "+pwd+" start --server --user "+user+" --password "+pwd+" &";
+                        }
+                        //用户名或密码为空
+                        else{
+                            log.error("ERROR2: The user name or password of bes is empty");
+                            return;
+                        }
+                        break;
+                    }
+                    //金蝶
+                    case "apusic":
+                    //中创
+                    case "infors": {
+                        Map<String,String> map = node.getAttrsMap();
+                        if (map.size()==0)
+                            command="nohup ./asadmin start-domain &";
+                        else{
+                            String domainName = map.get("domainName");
+                            if (domainName.length()>0)
+                                command="nohup ./asadmin start-domain "+domainName+" &";
+                            else {
+                                log.error("ERROR2: The domain of apusic is empty");
+                                return;
+                            }
+                        }
+                        break;
+                    }
+                    //华宇
+                    case "tas":command="nohup ./startserver.sh &";break;
+                    //其他，做报错处理
+                    default:{
+                        log.error("ERROR2: Unknown project type:"+projType);
+                        return;
+                    }
+                }
         }
-        //其他系统
-        if("other".equals(command)){
+        //windows
+        else if("Windows".equals(osType))
+            command="startup.bat";
+        //其他
+        else{
             log.error("ERROR2: Neither Windows nor Linux");
             return;
         }
@@ -124,7 +189,7 @@ public class CommonMethod {
 
     //只重启
     public void justRestart(NodeInfo node){
-        ArrayList<Integer> pids = getAllPid(Integer.parseInt(node.getPort()),node.getBinPath());
+        ArrayList<Integer> pids = getAllPid(Integer.parseInt(node.getPort()),node.getBinPath(),node.getProjType());
         //工程状态为启动，要先停止
         if(pids.get(0) != 0){
             for (Integer pid : pids) {
@@ -138,7 +203,7 @@ public class CommonMethod {
     }
 
     //获取所有pid，用到pgrep和natstat，没有返回0
-    public ArrayList<Integer> getAllPid(int port, String binPath){
+    public ArrayList<Integer> getAllPid(int port, String binPath,String projType){
         String osType = getSystemType();
         String command;
         ArrayList<String> arrayList;
@@ -150,7 +215,23 @@ public class CommonMethod {
 
         //linux
         if("Linux".equals(osType)){
-            command = Constants.PGREP_ON_LINUX + " -f " + binPath;
+            if ("tomcat".equals(projType) || "".equals(projType))
+                command = Constants.PGREP_ON_LINUX + " -f " + binPath;
+            else {
+                switch (projType){
+                    case "tongweb":
+                    case "tas":command = Constants.PGREP_ON_LINUX + " -f " + binPath;break;
+                    case "bes":
+                    case "apusic":
+                    case "infors":command = Constants.PGREP_ON_LINUX + " -f " + binPathToProjPath(binPath);break;
+                    default:{
+                        log.error("ERROR2: Unknown project type:"+projType);
+                        pids.add(0);
+                        return pids;
+                    }
+                }
+            }
+
             try {
                 arrayList = ExecSystemCommandUtil.execCommand(DEFAULT_PATH_ON_LINUX,command,"utf-8");
             } catch (IOException e) {
@@ -609,5 +690,14 @@ public class CommonMethod {
                 log.error("ERROR2: Close stream failed",e);
             }
         }
+    }
+
+    public String binPathToProjPath(String binPath){
+        //如果binPath最后是/，把/去掉
+        if(binPath.endsWith("/"))
+            binPath = binPath.substring(0,binPath.length()-1);
+        if (binPath.endsWith("/bin"))
+            return binPath.substring(0,binPath.length()-4);
+        return binPath;
     }
 }
