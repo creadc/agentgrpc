@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
 @GrpcService
-public class AgentImpl extends AgentGrpc.AgentImplBase {
+public class AgentServiceImpl extends AgentGrpc.AgentImplBase {
     @Autowired
     AutoUpdateUtil autoUpdateUtil;
 

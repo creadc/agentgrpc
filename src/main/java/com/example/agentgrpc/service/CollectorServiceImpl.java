@@ -9,7 +9,7 @@ import net.devh.boot.grpc.server.service.GrpcService;
 
 @Slf4j
 @GrpcService
-public class CollectorImpl extends CollectorGrpc.CollectorImplBase {
+public class CollectorServiceImpl extends CollectorGrpc.CollectorImplBase {
     @Override
     public void taskStatus(TaskStatusReq request, StreamObserver<TaskStatusRes> responseObserver) {
         log.info("上传结果============"+"\n"+request);

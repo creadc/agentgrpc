@@ -22,7 +22,7 @@ import java.util.HashSet;
 
 @Slf4j
 @GrpcService
-public class DebugImpl extends DebugGrpc.DebugImplBase {
+public class DebugServiceImpl extends DebugGrpc.DebugImplBase {
     @Autowired
     private ServletContext servletContext;
 

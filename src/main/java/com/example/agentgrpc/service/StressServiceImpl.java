@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 @Slf4j
 @GrpcService
-public class StressImpl extends StressGrpc.StressImplBase {
+public class StressServiceImpl extends StressGrpc.StressImplBase {
 
     @Autowired
     private StressBLL stressBLL;
