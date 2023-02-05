@@ -5,18 +5,12 @@ import com.example.agentgrpc.bll.CommonMethod;
 import com.example.agentgrpc.jmeter.Analyze;
 import com.example.agentgrpc.protocol.debug.*;
 import com.example.agentgrpc.utils.OrganizeDocumentsUtil;
-import com.example.agentgrpc.utils.ReadConfUtil;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletContext;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Enumeration;
 import java.util.HashSet;
 
@@ -25,18 +19,6 @@ import java.util.HashSet;
 public class DebugServiceImpl extends DebugGrpc.DebugImplBase {
     @Autowired
     private ServletContext servletContext;
-
-    @Autowired
-    private OrganizeDocumentsUtil organizeDocumentsUtil;
-
-    @Autowired
-    private Analyze analyze;
-
-    @Autowired
-    private CommonMethod commonMethod;
-
-    @Autowired
-    private AsyncTask asyncTask;
 
     @Override
     public void getServletContext(ContextReq request, StreamObserver<ContextRes> responseObserver) {

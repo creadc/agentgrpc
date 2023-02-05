@@ -19,7 +19,6 @@ import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -30,9 +29,6 @@ public class AsyncTask {
 
     @Autowired
     private CommonMethod commonMethod;
-
-    @Autowired
-    private Analyze analyze;
 
     @Autowired
     private Stress stress;
@@ -50,7 +46,7 @@ public class AsyncTask {
                     TimeUnit.SECONDS.sleep(5);//秒
                     int state = commonMethod.getProjectState(node);
                     //遇到个问题，tomcat有时换jar的重启失败，需要手动再重启一次
-                    if (state == 0 && ("tomcat".equals(node.getProjType()) || "".equals(node.getProjType()))){
+                    if (state == 0 && (node.getProjType() ==1 || node.getProjType() ==0)){
                         log.error("ERROR2: Check start failed:down,restart now");
                         commonMethod.justRestart(node);
                     }

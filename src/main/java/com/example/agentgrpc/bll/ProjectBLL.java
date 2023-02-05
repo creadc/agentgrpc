@@ -78,7 +78,7 @@ public class ProjectBLL {
 
         //已启动或状态异常,总结就是端口占用
         for (Integer pid : pids) {
-            commonMethod.justStop(node,pid);
+            commonMethod.justStop(pid);
         }
 
         //结果验证
@@ -86,7 +86,7 @@ public class ProjectBLL {
         pids = commonMethod.getAllPid(Integer.parseInt(node.getPort()), node.getBinPath(),node.getProjType());
         if (pids.get(0) != 0)
             for (Integer pid : pids) {
-                commonMethod.justStop(node,pid);
+                commonMethod.justStop(pid);
             }
 
         int state = commonMethod.getProjectState(node);
@@ -121,7 +121,6 @@ public class ProjectBLL {
     public NodeControlRes replaceJar(ReplaceJarReq request) {
         //数据准备
         NodeInfo node = request.getNode();
-        String osType = commonMethod.getSystemType();
         String url = request.getDownloadUrl();//下载url
         ArrayList<String> jarNames = new ArrayList<>();//jar名称的集合
         for(int i =0;i<request.getFileListCount();i++){

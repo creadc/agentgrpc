@@ -113,23 +113,13 @@ public interface NodeInfoOrBuilder extends
 
   /**
    * <pre>
-   *工程类型 1tomcat 2docker 3...
+   *工程类型 1.tomcat 2.tongweb 3.bes 4.apusic 5.tas 6.infors 7.docker
    * </pre>
    *
-   * <code>string proj_type = 7;</code>
+   * <code>int32 proj_type = 7;</code>
    * @return The projType.
    */
-  java.lang.String getProjType();
-  /**
-   * <pre>
-   *工程类型 1tomcat 2docker 3...
-   * </pre>
-   *
-   * <code>string proj_type = 7;</code>
-   * @return The bytes for projType.
-   */
-  com.google.protobuf.ByteString
-      getProjTypeBytes();
+  int getProjType();
 
   /**
    * <pre>

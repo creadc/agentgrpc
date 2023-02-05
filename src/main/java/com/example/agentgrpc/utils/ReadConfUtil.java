@@ -35,12 +35,11 @@ public class ReadConfUtil {
         try {
             inputStream = classPathResource.getInputStream();
             properties.load(inputStream);
-            String res = properties.getProperty(key);
             //多个结果
 //            String[] split = res.split(",");
 //            Arrays.stream(split).forEach(System.out::println);
 
-            return res;
+            return properties.getProperty(key);
         } catch (IOException e) {
             log.error("ERROR2: Read properties failed",e);
         }

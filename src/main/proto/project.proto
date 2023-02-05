@@ -39,7 +39,7 @@ message NodeInfo {
   string servlet=4;
   string lib_path=5; //proj lib目录
   string bin_path=6; //tomcat bin 目录
-  string proj_type=7; //工程类型 1tomcat 2docker 3...
+  int32 proj_type=7; //工程类型 1.tomcat 2.tongweb 3.bes 4.apusic 5.tas 6.infors 7.docker
   map<string, string> attrs=8; //其他属性，用于适配国产化
 }
 

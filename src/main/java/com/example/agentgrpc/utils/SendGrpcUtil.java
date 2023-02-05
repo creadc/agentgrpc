@@ -6,7 +6,6 @@ import com.example.agentgrpc.protocol.collector.TaskStatusRes;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import lombok.extern.slf4j.Slf4j;
-import net.devh.boot.grpc.server.service.GrpcService;
 
 import java.util.concurrent.TimeUnit;
 

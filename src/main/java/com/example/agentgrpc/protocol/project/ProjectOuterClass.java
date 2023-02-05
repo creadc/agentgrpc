@@ -71,7 +71,7 @@ public final class ProjectOuterClass {
       "\n\rproject.proto\022\005agent\"\326\001\n\010NodeInfo\022\n\n\002i" +
       "p\030\001 \001(\t\022\014\n\004port\030\002 \001(\t\022\017\n\007webapps\030\003 \001(\t\022\017" +
       "\n\007servlet\030\004 \001(\t\022\020\n\010lib_path\030\005 \001(\t\022\020\n\010bin" +
-      "_path\030\006 \001(\t\022\021\n\tproj_type\030\007 \001(\t\022)\n\005attrs\030" +
+      "_path\030\006 \001(\t\022\021\n\tproj_type\030\007 \001(\005\022)\n\005attrs\030" +
       "\010 \003(\0132\032.agent.NodeInfo.AttrsEntry\032,\n\nAtt" +
       "rsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"" +
       "O\n\016NodeControlReq\022\017\n\007exec_id\030\001 \001(\t\022\r\n\005in" +

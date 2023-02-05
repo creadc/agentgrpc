@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletContext;
 import java.io.File;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 @Slf4j
@@ -94,7 +93,7 @@ public class StressBLL {
         //把jmx文件名从arraylist中分离出来
         fileNames.remove(jmxName);
         //压测前检查
-        StressCheck sc = new StressCheck();
+        StressCheck sc;
         try {
             sc = stress.check(jmxDirPath, jmxName, jtlDirPath, fileNames);
         }

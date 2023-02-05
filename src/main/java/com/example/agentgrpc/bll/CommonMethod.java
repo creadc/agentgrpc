@@ -16,7 +16,6 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -37,7 +36,7 @@ public class CommonMethod {
                 +"/"+node.getWebapps()+"/"+node.getServlet()+"/system/info";
         JSONObject jsonObject = SendHTTPUtil.getReturnJson(url,new HashMap<>());
 
-        String projectType = node.getProjType();
+        int projectType = node.getProjType();
 
         //连接失败
         if (jsonObject.containsKey("errorMessage")){
@@ -46,7 +45,7 @@ public class CommonMethod {
             //常规报错:未启动
             if("ConnectException".equals(message)){
                 //华宇启动中也是ConnectException，这里特殊处理
-                if ("tas".equals(projectType)){
+                if (projectType == 5){
                     log.info("Project state:down or starting");
                     return 0;
                 }
@@ -81,21 +80,24 @@ public class CommonMethod {
         //数据准备
         String osType =getSystemType();
         String path=node.getBinPath();
-        String projType = node.getProjType();//容器类型
+        int projType = node.getProjType();//容器类型
         String command;
 
         //linux
         if ("Linux".equals(osType)){
             //tomcat
-            if ("tomcat".equals(projType) || "".equals(projType))
+            if (projType == 1 || projType == 0)
                 command="bash startup.sh";
             //国产化容器
             else
                 switch (projType){
                     //东方通
-                    case "tongweb":command="nohup ./startserver.sh &";break;
+                    case 2:
+                    //华宇
+                    case 5:
+                        command="nohup ./startserver.sh &";break;
                     //宝蓝德
-                    case "bes":{
+                    case 3:{
                         Map<String,String> map = node.getAttrsMap();
                         String user = map.get("user");
                         String pwd = map.get("pwd");
@@ -110,9 +112,9 @@ public class CommonMethod {
                         break;
                     }
                     //金蝶
-                    case "apusic":
+                    case 4:
                     //中创
-                    case "infors": {
+                    case 6: {
                         Map<String,String> map = node.getAttrsMap();
                         if (map.size()==0)
                             command="nohup ./asadmin start-domain &";
@@ -127,8 +129,6 @@ public class CommonMethod {
                         }
                         break;
                     }
-                    //华宇
-                    case "tas":command="nohup ./startserver.sh &";break;
                     //其他，做报错处理
                     default:{
                         log.error("ERROR2: Unknown project type:"+projType);
@@ -153,7 +153,7 @@ public class CommonMethod {
     }
 
     //只关闭
-    public void justStop(NodeInfo node,int pid){
+    public void justStop(int pid){
         String osType = getSystemType();
         String command;
         ArrayList<String> arrayList;
@@ -193,7 +193,7 @@ public class CommonMethod {
         //工程状态为启动，要先停止
         if(pids.get(0) != 0){
             for (Integer pid : pids) {
-                justStop(node,pid);
+                justStop(pid);
             }
         }
         //延时
@@ -203,7 +203,7 @@ public class CommonMethod {
     }
 
     //获取所有pid，用到pgrep和natstat，没有返回0
-    public ArrayList<Integer> getAllPid(int port, String binPath,String projType){
+    public ArrayList<Integer> getAllPid(int port, String binPath,int projType){
         String osType = getSystemType();
         String command;
         ArrayList<String> arrayList;
@@ -215,15 +215,15 @@ public class CommonMethod {
 
         //linux
         if("Linux".equals(osType)){
-            if ("tomcat".equals(projType) || "".equals(projType))
+            if (projType == 1 || projType == 0)
                 command = Constants.PGREP_ON_LINUX + " -f " + binPath;
             else {
                 switch (projType){
-                    case "tongweb":
-                    case "tas":command = Constants.PGREP_ON_LINUX + " -f " + binPath;break;
-                    case "bes":
-                    case "apusic":
-                    case "infors":command = Constants.PGREP_ON_LINUX + " -f " + binPathToProjPath(binPath);break;
+                    case 2:
+                    case 5:command = Constants.PGREP_ON_LINUX + " -f " + binPath;break;
+                    case 3:
+                    case 4:
+                    case 6:command = Constants.PGREP_ON_LINUX + " -f " + binPathToProjPath(binPath);break;
                     default:{
                         log.error("ERROR2: Unknown project type:"+projType);
                         pids.add(0);
@@ -692,6 +692,7 @@ public class CommonMethod {
         }
     }
 
+    //去掉/bin
     public String binPathToProjPath(String binPath){
         //如果binPath最后是/，把/去掉
         if(binPath.endsWith("/"))

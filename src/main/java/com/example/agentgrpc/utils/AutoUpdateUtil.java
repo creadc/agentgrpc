@@ -13,9 +13,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Properties;
 
 @Slf4j
 @Component
@@ -55,7 +55,6 @@ public class AutoUpdateUtil {
         //版本相同，不做修改
         if (currentVersion.equals(newVersion)){
             log.info("--No update required--");
-            return;
         }
         //版本不同，开始自动更新
         else {
@@ -90,7 +89,7 @@ public class AutoUpdateUtil {
                 }
             }
             //准备工作完成,调用脚本
-            ArrayList<Integer> pids = commonMethod.getAllPid(PORT,path,"");
+            ArrayList<Integer> pids = commonMethod.getAllPid(PORT,path,0);
             if (pids.get(0) == 0){
                 log.error("ERROR2: pid does not exist,auto update failed");
                 return;

@@ -22,7 +22,6 @@ private static final long serialVersionUID = 0L;
     servlet_ = "";
     libPath_ = "";
     binPath_ = "";
-    projType_ = "";
   }
 
   @java.lang.Override
@@ -92,10 +91,9 @@ private static final long serialVersionUID = 0L;
             binPath_ = s;
             break;
           }
-          case 58: {
-            java.lang.String s = input.readStringRequireUtf8();
+          case 56: {
 
-            projType_ = s;
+            projType_ = input.readInt32();
             break;
           }
           case 66: {
@@ -416,49 +414,18 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PROJ_TYPE_FIELD_NUMBER = 7;
-  private volatile java.lang.Object projType_;
+  private int projType_;
   /**
    * <pre>
-   *工程类型 1tomcat 2docker 3...
+   *工程类型 1.tomcat 2.tongweb 3.bes 4.apusic 5.tas 6.infors 7.docker
    * </pre>
    *
-   * <code>string proj_type = 7;</code>
+   * <code>int32 proj_type = 7;</code>
    * @return The projType.
    */
   @java.lang.Override
-  public java.lang.String getProjType() {
-    java.lang.Object ref = projType_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      projType_ = s;
-      return s;
-    }
-  }
-  /**
-   * <pre>
-   *工程类型 1tomcat 2docker 3...
-   * </pre>
-   *
-   * <code>string proj_type = 7;</code>
-   * @return The bytes for projType.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getProjTypeBytes() {
-    java.lang.Object ref = projType_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      projType_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
+  public int getProjType() {
+    return projType_;
   }
 
   public static final int ATTRS_FIELD_NUMBER = 8;
@@ -590,8 +557,8 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(binPath_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 6, binPath_);
     }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(projType_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 7, projType_);
+    if (projType_ != 0) {
+      output.writeInt32(7, projType_);
     }
     com.google.protobuf.GeneratedMessageV3
       .serializeStringMapTo(
@@ -626,8 +593,9 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(binPath_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, binPath_);
     }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(projType_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, projType_);
+    if (projType_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(7, projType_);
     }
     for (java.util.Map.Entry<java.lang.String, java.lang.String> entry
          : internalGetAttrs().getMap().entrySet()) {
@@ -666,8 +634,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getLibPath())) return false;
     if (!getBinPath()
         .equals(other.getBinPath())) return false;
-    if (!getProjType()
-        .equals(other.getProjType())) return false;
+    if (getProjType()
+        != other.getProjType()) return false;
     if (!internalGetAttrs().equals(
         other.internalGetAttrs())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
@@ -694,7 +662,7 @@ private static final long serialVersionUID = 0L;
     hash = (37 * hash) + BIN_PATH_FIELD_NUMBER;
     hash = (53 * hash) + getBinPath().hashCode();
     hash = (37 * hash) + PROJ_TYPE_FIELD_NUMBER;
-    hash = (53 * hash) + getProjType().hashCode();
+    hash = (53 * hash) + getProjType();
     if (!internalGetAttrs().getMap().isEmpty()) {
       hash = (37 * hash) + ATTRS_FIELD_NUMBER;
       hash = (53 * hash) + internalGetAttrs().hashCode();
@@ -866,7 +834,7 @@ private static final long serialVersionUID = 0L;
 
       binPath_ = "";
 
-      projType_ = "";
+      projType_ = 0;
 
       internalGetMutableAttrs().clear();
       return this;
@@ -977,9 +945,8 @@ private static final long serialVersionUID = 0L;
         binPath_ = other.binPath_;
         onChanged();
       }
-      if (!other.getProjType().isEmpty()) {
-        projType_ = other.projType_;
-        onChanged();
+      if (other.getProjType() != 0) {
+        setProjType(other.getProjType());
       }
       internalGetMutableAttrs().mergeFrom(
           other.internalGetAttrs());
@@ -1549,98 +1516,45 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object projType_ = "";
+    private int projType_ ;
     /**
      * <pre>
-     *工程类型 1tomcat 2docker 3...
+     *工程类型 1.tomcat 2.tongweb 3.bes 4.apusic 5.tas 6.infors 7.docker
      * </pre>
      *
-     * <code>string proj_type = 7;</code>
+     * <code>int32 proj_type = 7;</code>
      * @return The projType.
      */
-    public java.lang.String getProjType() {
-      java.lang.Object ref = projType_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        projType_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
+    @java.lang.Override
+    public int getProjType() {
+      return projType_;
     }
     /**
      * <pre>
-     *工程类型 1tomcat 2docker 3...
+     *工程类型 1.tomcat 2.tongweb 3.bes 4.apusic 5.tas 6.infors 7.docker
      * </pre>
      *
-     * <code>string proj_type = 7;</code>
-     * @return The bytes for projType.
-     */
-    public com.google.protobuf.ByteString
-        getProjTypeBytes() {
-      java.lang.Object ref = projType_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        projType_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <pre>
-     *工程类型 1tomcat 2docker 3...
-     * </pre>
-     *
-     * <code>string proj_type = 7;</code>
+     * <code>int32 proj_type = 7;</code>
      * @param value The projType to set.
      * @return This builder for chaining.
      */
-    public Builder setProjType(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+    public Builder setProjType(int value) {
+      
       projType_ = value;
       onChanged();
       return this;
     }
     /**
      * <pre>
-     *工程类型 1tomcat 2docker 3...
+     *工程类型 1.tomcat 2.tongweb 3.bes 4.apusic 5.tas 6.infors 7.docker
      * </pre>
      *
-     * <code>string proj_type = 7;</code>
+     * <code>int32 proj_type = 7;</code>
      * @return This builder for chaining.
      */
     public Builder clearProjType() {
       
-      projType_ = getDefaultInstance().getProjType();
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     *工程类型 1tomcat 2docker 3...
-     * </pre>
-     *
-     * <code>string proj_type = 7;</code>
-     * @param value The bytes for projType to set.
-     * @return This builder for chaining.
-     */
-    public Builder setProjTypeBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      projType_ = value;
+      projType_ = 0;
       onChanged();
       return this;
     }

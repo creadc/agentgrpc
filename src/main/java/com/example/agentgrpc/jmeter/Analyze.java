@@ -3,24 +3,16 @@ package com.example.agentgrpc.jmeter;
 import com.example.agentgrpc.bll.CommonMethod;
 import com.example.agentgrpc.utils.Constants;
 import com.example.agentgrpc.utils.ExecSystemCommandUtil;
-import com.example.agentgrpc.utils.ReadConfUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.jmeter.report.config.ConfigurationException;
-import org.apache.jmeter.report.dashboard.GenerationException;
-import org.apache.jmeter.report.dashboard.ReportGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.nio.file.*;
 import java.util.ArrayList;
-import java.util.stream.Stream;
 
 @Slf4j
 @Component
 public class Analyze {
-//    @Autowired
-//    private CommonMethod commonMethod;
 
     //过滤jtl文件
     public String filterJtl(String jtlDirPath, String jtlName,String filterName){

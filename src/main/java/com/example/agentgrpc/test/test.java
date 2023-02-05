@@ -48,15 +48,13 @@ import java.util.concurrent.Executor;
 public class test {
 
     public static void main(String[] args) {
+        System.out.println(1);
+        //发送http请求，判断工程状态
+//        String url="http://124.71.152.17:8385/webroot/decision/system/info";
+//        JSONObject jsonObject = SendHTTPUtil.getReturnJson(url, new HashMap<>());
+//        String s = (String) jsonObject.get("errorMessage");
+//        System.out.println(s);
 
-//        //发送http请求，判断工程状态
-        String url="http://124.71.152.17:8385/webroot/decision/system/info";
-        JSONObject jsonObject = SendHTTPUtil.getReturnJson(url, new HashMap<>());
-        String s = (String) jsonObject.get("errorMessage");
-        System.out.println(s);
-
-//        Analyze analyze = new Analyze();
-//        analyze.jtlToJson("C:\\Users\\yzp\\Desktop","参数控件_filter.jtl");
 
 
 //        String mainYmlPath="C:\\Users\\yzp\\Desktop\\application1.yml";

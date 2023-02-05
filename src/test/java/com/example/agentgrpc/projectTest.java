@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 public class projectTest {
 
     private String IP1="localhost";
-    private String IP2="124.71.152.17";
+    private String IP2="124.70.178.70";
     private String IP3="192.168.101.21";
     private int port1=9090;
     private int port2=9091;
@@ -674,13 +674,15 @@ public class projectTest {
     //国产化
     public NodeInfo node3(){
         return NodeInfo.newBuilder()
-                .setIp("124.71.152.17")
-                .setPort("8385")
+                .setIp("124.70.178.70")
+                .setPort("18080")
                 .setWebapps("webroot")
                 .setServlet("decision")
                 .setLibPath("/home/user/environment/TAS/bin")
-                .setBinPath("/home/InforSuiteAS_StE_V10.0.5/as/bin")
-                .setProjType("infors")
+                .setBinPath("/home/bes952/bin")
+                .setProjType(3)
+                .putAttrs("user","admin")
+                .putAttrs("pwd","B#2008_2108#es")
                 .build();
     }
 
