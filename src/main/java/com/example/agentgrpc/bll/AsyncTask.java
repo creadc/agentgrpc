@@ -76,8 +76,8 @@ public class AsyncTask {
         int i;
         for (i = 1;i<STACK_COUNT_MAX+1;i++){
             command = Constants.JSTACK + " "+pid+" > "+i+".txt";
-            String tag = (String) servletContext.getAttribute(execId+Constants.DIVISION+"jstack");
-            if("1".equals(tag.split(Constants.DIVISION)[0])){
+            int[] ints = (int[]) servletContext.getAttribute(execId+Constants.DIVISION+"jstack");
+            if(ints[0] == 1){
                 try {
                     ExecSystemCommandUtil.execCommand(path,command,"utf-8");
                     commonMethod.delay(interval);

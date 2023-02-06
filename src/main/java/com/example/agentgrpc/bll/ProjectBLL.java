@@ -282,7 +282,9 @@ public class ProjectBLL {
                     .build();
         }
         //前置条件确认完成，发起异步任务打堆栈
-        servletContext.setAttribute(request.getExecId()+Constants.DIVISION+"jstack","1"+Constants.DIVISION+request.getIndex());
+        //value包含两个有效值，分别是状态（0/1）和开始打堆栈任务的index（停止堆栈时需要）
+        int[] ints = {1,request.getIndex()};
+        servletContext.setAttribute(request.getExecId()+Constants.DIVISION+"jstack",ints);
         asyncTask.printJStacks(dirStrs[1],request.getExecId(),pids.get(0),request.getInterval());
         //返回结果
         return NodeControlRes.newBuilder()
@@ -292,26 +294,28 @@ public class ProjectBLL {
     }
 
     public String[] stopPrintJStacks(NodeControlReq request) {
-        String attribute;
-        String index;//开始打堆栈的索引
+        int[] ints;
+        int index;//开始打堆栈的索引
         String[] res = new String[2];
         //判断tag是否存在
         if(servletContext.getAttribute(request.getExecId()+Constants.DIVISION+"jstack") != null){
-            attribute = (String) servletContext.getAttribute(request.getExecId()+Constants.DIVISION+"jstack");
-            index = attribute.split(Constants.DIVISION)[1];
+            ints = (int[]) servletContext.getAttribute(request.getExecId()+Constants.DIVISION+"jstack");
+            index = ints[1];
         }
         else{
             res[0] = "No stacking before";
             log.error("ERROR2: No stacking before");
             return res;
         }
-        servletContext.setAttribute(request.getExecId()+Constants.DIVISION+"jstack","0"+Constants.DIVISION+index);
+        //停止打堆栈
+        ints[0] = 0;
+        servletContext.setAttribute(request.getExecId()+Constants.DIVISION+"jstack",ints);
         //打包
         String stackPath = commonMethod.getPath("stack","null",0,false);//stack目录
         String tempPath = request.getExecId()+Constants.DIVISION+index;//堆栈临时路径(相对路径)
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
         String tarName = tempPath+Constants.DIVISION+sdf.format(System.currentTimeMillis())+".tar.gz";
-        String fullPath = commonMethod.getPath("stack",request.getExecId(), Integer.parseInt(index),false);//堆栈完整路径
+        String fullPath = commonMethod.getPath("stack",request.getExecId(), index,false);//堆栈完整路径
         String command = Constants.TAR + " -zcvf "+tarName+" "+tempPath;
         try {
             ExecSystemCommandUtil.execCommand(stackPath,command,"utf-8");

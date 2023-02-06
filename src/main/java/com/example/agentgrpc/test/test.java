@@ -48,7 +48,9 @@ import java.util.concurrent.Executor;
 public class test {
 
     public static void main(String[] args) {
-        System.out.println(1);
+        int[] i = {1,2};
+        System.out.println(i[0]);
+        System.out.println(i[1]);
         //发送http请求，判断工程状态
 //        String url="http://124.71.152.17:8385/webroot/decision/system/info";
 //        JSONObject jsonObject = SendHTTPUtil.getReturnJson(url, new HashMap<>());

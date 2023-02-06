@@ -17,10 +17,9 @@ public class projectTest {
     private int port2=9091;
 
     public ManagedChannel init(){
-        ManagedChannel channel = ManagedChannelBuilder.forAddress(IP2, port2)
+        return ManagedChannelBuilder.forAddress(IP1, port1)
                 .usePlaintext()
                 .build();
-        return channel;
     }
 
     @Test
