@@ -139,7 +139,7 @@ public class StressBLL {
     }
 
     public String jsonResult(){
-        //新建一个归档文件夹
+        //归档文件夹
         String osType = commonMethod.getSystemType();
         String agentPath;//agent目录
         if ("Linux".equals(osType)){

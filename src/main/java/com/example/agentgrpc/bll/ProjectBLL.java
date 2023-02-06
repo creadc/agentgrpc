@@ -253,7 +253,8 @@ public class ProjectBLL {
     }
 
     public NodeControlRes startPrintJStacks(PrintStacksReq request) {
-        ArrayList<Integer> pids = commonMethod.getPidByBinPath(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
+        NodeInfo node = request.getNode();
+        ArrayList<Integer> pids = commonMethod.getPidByBinPath(Integer.parseInt(node.getPort()), node.getBinPath(),node.getProjType());
         //pid不存在
         if(pids.get(0) == 0){
             log.error("ERROR2: pid does not exist,cannot stack");
@@ -319,14 +320,15 @@ public class ProjectBLL {
         }
         //删除文件夹,保留压缩包
         asyncTask.delayDelete(fullPath,3);
-        //返回gz路径
+        //返回压缩包路径和名字
         res[0] = stackPath+tarName;
         res[1] = tarName;
         return res;
     }
 
     public NodeControlRes printDump(NodeControlReq request) {
-        ArrayList<Integer> pids = commonMethod.getPidByBinPath(Integer.parseInt(request.getNode().getPort()),request.getNode().getBinPath());
+        NodeInfo node = request.getNode();
+        ArrayList<Integer> pids = commonMethod.getPidByBinPath(Integer.parseInt(node.getPort()), node.getBinPath(),node.getProjType());
         //pid不存在
         if(pids.get(0) == 0){
             log.error("ERROR2: pid does not exist,unable to dump");

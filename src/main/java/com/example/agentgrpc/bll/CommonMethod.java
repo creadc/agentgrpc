@@ -165,7 +165,7 @@ public class CommonMethod {
                 arrayList = ExecSystemCommandUtil.execCommand(DEFAULT_PATH_ON_LINUX, command, "utf-8");
                 //结果分析
                 if(!(arrayList.isEmpty())){
-                    log.error("ERROR2: The result is empty:stop project");
+                    log.error("ERROR2: The result is not empty:stop project");
                 }
             } catch (IOException e) {
                 log.error("ERROR2: Failed to execute the command:stop project",e);
@@ -219,10 +219,15 @@ public class CommonMethod {
                 command = Constants.PGREP_ON_LINUX + " -f " + binPath;
             else {
                 switch (projType){
+                    //东方通
                     case 2:
+                    //华宇
                     case 5:command = Constants.PGREP_ON_LINUX + " -f " + binPath;break;
+                    //宝蓝德
                     case 3:
+                    //金蝶
                     case 4:
+                    //中创
                     case 6:command = Constants.PGREP_ON_LINUX + " -f " + binPathToProjPath(binPath);break;
                     default:{
                         log.error("ERROR2: Unknown project type:"+projType);
@@ -321,15 +326,35 @@ public class CommonMethod {
         return pids;
     }
 
-    //获取工程pid，只用到pgrep，没有返回0
-    public ArrayList<Integer> getPidByBinPath(int port, String binPath){
+    //获取工程pid，只用到pgrep，没有返回0。适用于打堆栈和打dump
+    public ArrayList<Integer> getPidByBinPath(int port, String binPath,int projType){
         String osType = getSystemType();
         String command;
         ArrayList<String> arrayList;
         ArrayList<Integer> pids = new ArrayList<>();
         //linux
         if("Linux".equals(osType)){
-            command = Constants.PGREP_ON_LINUX + " -f " + binPath;
+            if (projType == 1 || projType == 0)
+                command = Constants.PGREP_ON_LINUX + " -f " + binPath;
+            else {
+                switch (projType){
+                    //东方通
+                    case 2:
+                        //华宇
+                    case 5:command = Constants.PGREP_ON_LINUX + " -f " + binPath;break;
+                    //宝蓝德
+                    case 3:
+                        //金蝶
+                    case 4:
+                        //中创
+                    case 6:command = Constants.PGREP_ON_LINUX + " -f " + binPathToProjPath(binPath);break;
+                    default:{
+                        log.error("ERROR2: Unknown project type:"+projType);
+                        pids.add(0);
+                        return pids;
+                    }
+                }
+            }
             try {
                 arrayList = ExecSystemCommandUtil.execCommand(DEFAULT_PATH_ON_LINUX,command,"utf-8");
             } catch (IOException e) {

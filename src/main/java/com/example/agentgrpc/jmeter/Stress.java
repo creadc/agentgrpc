@@ -73,17 +73,20 @@ public class Stress {
                 res.setRes("JMeter run failed:Missing csv file");
                 return res;
             }
+            //标记
+            int flag = 0;
             for (String fileName : fileNames) {
                 if(tempName.equals(fileName)){
                     csvDataSet.getProperty("filename").setObjectValue(Paths.get(jmxPath,fileName));
+                    flag++;
                 }
-                //jmx的csv和传来的csv名字不一致
-                else {
-                    String s = "The csv file is inconsistent,csv file in jmx file is \""+tempName+"\",uploaded csv file is \""+fileName+"\"";
-                    log.error("ERROR2: "+s);
-                    res.setRes(s);
-                    return res;
-                }
+            }
+            //没有替换，说明jmx的csv和传来的csv名字不一致
+            if (flag == 0){
+                String s = "The csv file is inconsistent,csv file in jmx file is \""+tempName+"\"";
+                log.error("ERROR2: "+s);
+                res.setRes(s);
+                return res;
             }
         }
         res.setRes("success");
@@ -98,7 +101,6 @@ public class Stress {
         String pathToJmeterJars = pathToJmeterFunctionsJars + ";" + pathToJmeterHttpJars
                 + ";" + pathToJmeterComponentsJars + ";" + pathToJmeterPlugManagerJars;
         System.setProperty(JMeter.JMETER_NON_GUI, "true");
-
         System.setProperty("java.class.path", pathToJmeterJars);
 
         JMeterUtils.loadJMeterProperties(JMETER_PROPERTIES);
@@ -106,6 +108,7 @@ public class Stress {
         JMeterUtils.initLocale();
 
         StandardJMeterEngine engine = new StandardJMeterEngine();
+
         //结果收集
         Summariser summer = null;
         String summariserName = JMeterUtils.getPropDefault("summariser.name", "summary");

@@ -55,7 +55,7 @@ public class StressServiceImpl extends StressGrpc.StressImplBase {
         File[] files1 = jtlPath.listFiles();
         int i = 0;
         //jtl文件夹为空
-        if (files1 == null||files1.length == 0){
+        if (files1 == null || files1.length == 0){
             log.error("ERROR2: No jtl files");
             res = JsonResultRes.newBuilder()
                     .setCode(1)
@@ -69,7 +69,7 @@ public class StressServiceImpl extends StressGrpc.StressImplBase {
         for (File file1 : files1) {
             //筛选出同一个execid的目录
             if (file1.isDirectory() && request.getExecId().equals(file1.getName().split(Constants.DIVISION)[0])) {
-                //分析jtl文件，生成json
+                //过滤jtl文件，并生成json
                 File[] files2 = file1.listFiles();
                 for (File file2 : files2) {
                     //已经过滤，退出
