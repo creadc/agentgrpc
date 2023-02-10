@@ -33,7 +33,7 @@ message TaskStatusReq {
   // 1开启工程
   // 2打dump
   // 3压测结束
-  int32 job_type=3;//当前任务类型(压测/打堆栈/打dump/换jar)
+  int32 job_type=3;//当前任务类型。1:启动检查,2:打dump,3:压测,8:agent更新
   int32 code=4;
   string message=5;//任务执行状态，对于打dump，返回dump目录
 }

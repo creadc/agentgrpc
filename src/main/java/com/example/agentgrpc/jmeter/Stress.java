@@ -1,7 +1,7 @@
 package com.example.agentgrpc.jmeter;
 
 import com.example.agentgrpc.bll.CommonMethod;
-import com.example.agentgrpc.pojo.StressCheck;
+import com.example.agentgrpc.pojo.StressCheckEntity;
 import com.example.agentgrpc.utils.SendGrpcUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,13 +40,13 @@ public class Stress {
     private static final String pathToJmeterFunctionsJars = String.valueOf(Paths.get(JMETER_HOME, "lib", "ext", "ApacheJMeter_functions.jar"));
     private static final String pathToJmeterPlugManagerJars = String.valueOf(Paths.get(JMETER_HOME, "lib", "ext", "jmeter-plugins-manager-1.7.jar"));
     //压测前检查
-    public StressCheck check(String jmxPath, String jmxName, String jtlDirPath, ArrayList<String> fileNames){
+    public StressCheckEntity check(String jmxPath, String jmxName, String jtlDirPath, ArrayList<String> fileNames){
         //初始化
         JMeterUtils.loadJMeterProperties(JMETER_PROPERTIES);
         JMeterUtils.setJMeterHome(JMETER_HOME);
         JMeterUtils.initLocale();
 
-        StressCheck res = new StressCheck();
+        StressCheckEntity res = new StressCheckEntity();
         //获取文件
         File file = new File(String.valueOf(Paths.get(jmxPath,jmxName)));
         HashTree jmxTree;

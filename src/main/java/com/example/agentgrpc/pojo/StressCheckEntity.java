@@ -2,7 +2,7 @@ package com.example.agentgrpc.pojo;
 
 import org.apache.jorphan.collections.HashTree;
 
-public class StressCheck {
+public class StressCheckEntity {
     private String res;
     private HashTree hashTree;
 

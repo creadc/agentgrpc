@@ -6,4 +6,34 @@ package com.example.agentgrpc.protocol.agent;
 public interface UpdateAgentResOrBuilder extends
     // @@protoc_insertion_point(interface_extends:agent.UpdateAgentRes)
     com.google.protobuf.MessageOrBuilder {
+
+  /**
+   * <pre>
+   *状态码
+   * </pre>
+   *
+   * <code>int32 code = 1;</code>
+   * @return The code.
+   */
+  int getCode();
+
+  /**
+   * <pre>
+   *详细信息
+   * </pre>
+   *
+   * <code>string message = 2;</code>
+   * @return The message.
+   */
+  java.lang.String getMessage();
+  /**
+   * <pre>
+   *详细信息
+   * </pre>
+   *
+   * <code>string message = 2;</code>
+   * @return The bytes for message.
+   */
+  com.google.protobuf.ByteString
+      getMessageBytes();
 }

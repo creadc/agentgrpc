@@ -16,6 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private UpdateAgentRes() {
+    message_ = "";
   }
 
   @java.lang.Override
@@ -48,6 +49,17 @@ private static final long serialVersionUID = 0L;
           case 0:
             done = true;
             break;
+          case 8: {
+
+            code_ = input.readInt32();
+            break;
+          }
+          case 18: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            message_ = s;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -80,6 +92,67 @@ private static final long serialVersionUID = 0L;
             com.example.agentgrpc.protocol.agent.UpdateAgentRes.class, com.example.agentgrpc.protocol.agent.UpdateAgentRes.Builder.class);
   }
 
+  public static final int CODE_FIELD_NUMBER = 1;
+  private int code_;
+  /**
+   * <pre>
+   *状态码
+   * </pre>
+   *
+   * <code>int32 code = 1;</code>
+   * @return The code.
+   */
+  @java.lang.Override
+  public int getCode() {
+    return code_;
+  }
+
+  public static final int MESSAGE_FIELD_NUMBER = 2;
+  private volatile java.lang.Object message_;
+  /**
+   * <pre>
+   *详细信息
+   * </pre>
+   *
+   * <code>string message = 2;</code>
+   * @return The message.
+   */
+  @java.lang.Override
+  public java.lang.String getMessage() {
+    java.lang.Object ref = message_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      message_ = s;
+      return s;
+    }
+  }
+  /**
+   * <pre>
+   *详细信息
+   * </pre>
+   *
+   * <code>string message = 2;</code>
+   * @return The bytes for message.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getMessageBytes() {
+    java.lang.Object ref = message_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      message_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -94,6 +167,12 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
+    if (code_ != 0) {
+      output.writeInt32(1, code_);
+    }
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(message_)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, message_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -103,6 +182,13 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
+    if (code_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(1, code_);
+    }
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(message_)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, message_);
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -118,6 +204,10 @@ private static final long serialVersionUID = 0L;
     }
     com.example.agentgrpc.protocol.agent.UpdateAgentRes other = (com.example.agentgrpc.protocol.agent.UpdateAgentRes) obj;
 
+    if (getCode()
+        != other.getCode()) return false;
+    if (!getMessage()
+        .equals(other.getMessage())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -129,6 +219,10 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
+    hash = (37 * hash) + CODE_FIELD_NUMBER;
+    hash = (53 * hash) + getCode();
+    hash = (37 * hash) + MESSAGE_FIELD_NUMBER;
+    hash = (53 * hash) + getMessage().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -262,6 +356,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      code_ = 0;
+
+      message_ = "";
+
       return this;
     }
 
@@ -288,6 +386,8 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.example.agentgrpc.protocol.agent.UpdateAgentRes buildPartial() {
       com.example.agentgrpc.protocol.agent.UpdateAgentRes result = new com.example.agentgrpc.protocol.agent.UpdateAgentRes(this);
+      result.code_ = code_;
+      result.message_ = message_;
       onBuilt();
       return result;
     }
@@ -336,6 +436,13 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(com.example.agentgrpc.protocol.agent.UpdateAgentRes other) {
       if (other == com.example.agentgrpc.protocol.agent.UpdateAgentRes.getDefaultInstance()) return this;
+      if (other.getCode() != 0) {
+        setCode(other.getCode());
+      }
+      if (!other.getMessage().isEmpty()) {
+        message_ = other.message_;
+        onChanged();
+      }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -362,6 +469,145 @@ private static final long serialVersionUID = 0L;
           mergeFrom(parsedMessage);
         }
       }
+      return this;
+    }
+
+    private int code_ ;
+    /**
+     * <pre>
+     *状态码
+     * </pre>
+     *
+     * <code>int32 code = 1;</code>
+     * @return The code.
+     */
+    @java.lang.Override
+    public int getCode() {
+      return code_;
+    }
+    /**
+     * <pre>
+     *状态码
+     * </pre>
+     *
+     * <code>int32 code = 1;</code>
+     * @param value The code to set.
+     * @return This builder for chaining.
+     */
+    public Builder setCode(int value) {
+      
+      code_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     *状态码
+     * </pre>
+     *
+     * <code>int32 code = 1;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearCode() {
+      
+      code_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object message_ = "";
+    /**
+     * <pre>
+     *详细信息
+     * </pre>
+     *
+     * <code>string message = 2;</code>
+     * @return The message.
+     */
+    public java.lang.String getMessage() {
+      java.lang.Object ref = message_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        message_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <pre>
+     *详细信息
+     * </pre>
+     *
+     * <code>string message = 2;</code>
+     * @return The bytes for message.
+     */
+    public com.google.protobuf.ByteString
+        getMessageBytes() {
+      java.lang.Object ref = message_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        message_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <pre>
+     *详细信息
+     * </pre>
+     *
+     * <code>string message = 2;</code>
+     * @param value The message to set.
+     * @return This builder for chaining.
+     */
+    public Builder setMessage(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      message_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     *详细信息
+     * </pre>
+     *
+     * <code>string message = 2;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearMessage() {
+      
+      message_ = getDefaultInstance().getMessage();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     *详细信息
+     * </pre>
+     *
+     * <code>string message = 2;</code>
+     * @param value The bytes for message to set.
+     * @return This builder for chaining.
+     */
+    public Builder setMessageBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      message_ = value;
+      onChanged();
       return this;
     }
     @java.lang.Override

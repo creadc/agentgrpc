@@ -38,6 +38,7 @@ import javax.security.auth.login.Configuration;
 import javax.servlet.ServletContext;
 import java.io.*;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
@@ -48,16 +49,18 @@ import java.util.concurrent.Executor;
 public class test {
 
     public static void main(String[] args) {
-        int[] i = {1,2};
-        System.out.println(i[0]);
-        System.out.println(i[1]);
+        File file = new File("C:\\Users\\yzp\\Desktop\\test.json");
+        try {
+            Files.delete(file.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         //发送http请求，判断工程状态
-//        String url="http://124.71.152.17:8385/webroot/decision/system/info";
+//        String url="http://192.168.101.33:8080/webroot/decision/system/info";
 //        JSONObject jsonObject = SendHTTPUtil.getReturnJson(url, new HashMap<>());
 //        String s = (String) jsonObject.get("errorMessage");
 //        System.out.println(s);
-
-
 
 //        String mainYmlPath="C:\\Users\\yzp\\Desktop\\application1.yml";
 //        String addYmlPath="C:\\Users\\yzp\\Desktop\\application2.yml";

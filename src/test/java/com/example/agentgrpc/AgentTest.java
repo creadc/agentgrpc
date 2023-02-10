@@ -19,7 +19,7 @@ public class AgentTest {
     private int port2=9093;
 
     public ManagedChannel init(){
-        return ManagedChannelBuilder.forAddress(IP3, port2)
+        return ManagedChannelBuilder.forAddress(IP1, port1)
                 .usePlaintext()
                 .build();
     }
@@ -30,7 +30,10 @@ public class AgentTest {
 
         AgentGrpc.AgentBlockingStub stub = AgentGrpc.newBlockingStub(channel);
 
-        UpdateAgentReq req = UpdateAgentReq.newBuilder().build();
+        UpdateAgentReq req = UpdateAgentReq.newBuilder()
+                .setExecId("123")
+                .setIndex(321)
+                .build();
         stub.updateAgent(req);
 
         try {

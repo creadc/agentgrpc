@@ -1,7 +1,7 @@
 package com.example.agentgrpc.bll;
 
 import com.example.agentgrpc.jmeter.Stress;
-import com.example.agentgrpc.pojo.StressCheck;
+import com.example.agentgrpc.pojo.StressCheckEntity;
 import com.example.agentgrpc.protocol.stress.*;
 import com.example.agentgrpc.utils.Constants;
 import com.example.agentgrpc.utils.ReadConfUtil;
@@ -93,7 +93,7 @@ public class StressBLL {
         //把jmx文件名从arraylist中分离出来
         fileNames.remove(jmxName);
         //压测前检查
-        StressCheck sc;
+        StressCheckEntity sc;
         try {
             sc = stress.check(jmxDirPath, jmxName, jtlDirPath, fileNames);
         }

@@ -11,7 +11,11 @@ service Agent{
 }
 
 message UpdateAgentReq{
+  string exec_id =1;
+  int32 index=2;
 }
 
 message UpdateAgentRes{
+  int32 code = 1;//状态码
+  string message = 2;//详细信息
 }

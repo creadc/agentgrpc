@@ -33,11 +33,13 @@ public final class AgentOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\013agent.proto\022\005agent\"\020\n\016UpdateAgentReq\"\020" +
-      "\n\016UpdateAgentRes2F\n\005Agent\022=\n\013UpdateAgent" +
-      "\022\025.agent.UpdateAgentReq\032\025.agent.UpdateAg" +
-      "entRes\"\000B;\n$com.example.agentgrpc.protoc" +
-      "ol.agentP\001Z\021protocol/v1/agentb\006proto3"
+      "\n\013agent.proto\022\005agent\"0\n\016UpdateAgentReq\022\017" +
+      "\n\007exec_id\030\001 \001(\t\022\r\n\005index\030\002 \001(\005\"/\n\016Update" +
+      "AgentRes\022\014\n\004code\030\001 \001(\005\022\017\n\007message\030\002 \001(\t2" +
+      "F\n\005Agent\022=\n\013UpdateAgent\022\025.agent.UpdateAg" +
+      "entReq\032\025.agent.UpdateAgentRes\"\000B;\n$com.e" +
+      "xample.agentgrpc.protocol.agentP\001Z\021proto" +
+      "col/v1/agentb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -48,13 +50,13 @@ public final class AgentOuterClass {
     internal_static_agent_UpdateAgentReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_agent_UpdateAgentReq_descriptor,
-        new java.lang.String[] { });
+        new java.lang.String[] { "ExecId", "Index", });
     internal_static_agent_UpdateAgentRes_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_agent_UpdateAgentRes_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_agent_UpdateAgentRes_descriptor,
-        new java.lang.String[] { });
+        new java.lang.String[] { "Code", "Message", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

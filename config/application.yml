@@ -4,7 +4,7 @@ server:
 
 # #日志输出配置文件
 #logging:
-# config: config/logback-spring.xml
+#  config: config/logback-spring.xml
 
 
 spring:

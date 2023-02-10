@@ -16,6 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private UpdateAgentReq() {
+    execId_ = "";
   }
 
   @java.lang.Override
@@ -48,6 +49,17 @@ private static final long serialVersionUID = 0L;
           case 0:
             done = true;
             break;
+          case 10: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            execId_ = s;
+            break;
+          }
+          case 16: {
+
+            index_ = input.readInt32();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -80,6 +92,55 @@ private static final long serialVersionUID = 0L;
             com.example.agentgrpc.protocol.agent.UpdateAgentReq.class, com.example.agentgrpc.protocol.agent.UpdateAgentReq.Builder.class);
   }
 
+  public static final int EXEC_ID_FIELD_NUMBER = 1;
+  private volatile java.lang.Object execId_;
+  /**
+   * <code>string exec_id = 1;</code>
+   * @return The execId.
+   */
+  @java.lang.Override
+  public java.lang.String getExecId() {
+    java.lang.Object ref = execId_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      execId_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string exec_id = 1;</code>
+   * @return The bytes for execId.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getExecIdBytes() {
+    java.lang.Object ref = execId_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      execId_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int INDEX_FIELD_NUMBER = 2;
+  private int index_;
+  /**
+   * <code>int32 index = 2;</code>
+   * @return The index.
+   */
+  @java.lang.Override
+  public int getIndex() {
+    return index_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -94,6 +155,12 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(execId_)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, execId_);
+    }
+    if (index_ != 0) {
+      output.writeInt32(2, index_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -103,6 +170,13 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(execId_)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, execId_);
+    }
+    if (index_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(2, index_);
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -118,6 +192,10 @@ private static final long serialVersionUID = 0L;
     }
     com.example.agentgrpc.protocol.agent.UpdateAgentReq other = (com.example.agentgrpc.protocol.agent.UpdateAgentReq) obj;
 
+    if (!getExecId()
+        .equals(other.getExecId())) return false;
+    if (getIndex()
+        != other.getIndex()) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -129,6 +207,10 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
+    hash = (37 * hash) + EXEC_ID_FIELD_NUMBER;
+    hash = (53 * hash) + getExecId().hashCode();
+    hash = (37 * hash) + INDEX_FIELD_NUMBER;
+    hash = (53 * hash) + getIndex();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -262,6 +344,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      execId_ = "";
+
+      index_ = 0;
+
       return this;
     }
 
@@ -288,6 +374,8 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.example.agentgrpc.protocol.agent.UpdateAgentReq buildPartial() {
       com.example.agentgrpc.protocol.agent.UpdateAgentReq result = new com.example.agentgrpc.protocol.agent.UpdateAgentReq(this);
+      result.execId_ = execId_;
+      result.index_ = index_;
       onBuilt();
       return result;
     }
@@ -336,6 +424,13 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(com.example.agentgrpc.protocol.agent.UpdateAgentReq other) {
       if (other == com.example.agentgrpc.protocol.agent.UpdateAgentReq.getDefaultInstance()) return this;
+      if (!other.getExecId().isEmpty()) {
+        execId_ = other.execId_;
+        onChanged();
+      }
+      if (other.getIndex() != 0) {
+        setIndex(other.getIndex());
+      }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -362,6 +457,113 @@ private static final long serialVersionUID = 0L;
           mergeFrom(parsedMessage);
         }
       }
+      return this;
+    }
+
+    private java.lang.Object execId_ = "";
+    /**
+     * <code>string exec_id = 1;</code>
+     * @return The execId.
+     */
+    public java.lang.String getExecId() {
+      java.lang.Object ref = execId_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        execId_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string exec_id = 1;</code>
+     * @return The bytes for execId.
+     */
+    public com.google.protobuf.ByteString
+        getExecIdBytes() {
+      java.lang.Object ref = execId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        execId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string exec_id = 1;</code>
+     * @param value The execId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setExecId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      execId_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string exec_id = 1;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearExecId() {
+      
+      execId_ = getDefaultInstance().getExecId();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string exec_id = 1;</code>
+     * @param value The bytes for execId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setExecIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      execId_ = value;
+      onChanged();
+      return this;
+    }
+
+    private int index_ ;
+    /**
+     * <code>int32 index = 2;</code>
+     * @return The index.
+     */
+    @java.lang.Override
+    public int getIndex() {
+      return index_;
+    }
+    /**
+     * <code>int32 index = 2;</code>
+     * @param value The index to set.
+     * @return This builder for chaining.
+     */
+    public Builder setIndex(int value) {
+      
+      index_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int32 index = 2;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearIndex() {
+      
+      index_ = 0;
+      onChanged();
       return this;
     }
     @java.lang.Override
