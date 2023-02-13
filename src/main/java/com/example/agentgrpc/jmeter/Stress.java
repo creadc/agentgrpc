@@ -47,7 +47,7 @@ public class Stress {
         JMeterUtils.initLocale();
 
         StressCheckEntity res = new StressCheckEntity();
-        //获取文件
+        //获取jmx文件
         File file = new File(String.valueOf(Paths.get(jmxPath,jmxName)));
         HashTree jmxTree;
         try {
@@ -58,6 +58,7 @@ public class Stress {
             res.setRes("JMeter run failed:load jmxTree failed");
             return res;
         }
+        //去掉被注释的组件
         JMeter.convertSubTree(jmxTree, false);
 
         //修改csv文件位置

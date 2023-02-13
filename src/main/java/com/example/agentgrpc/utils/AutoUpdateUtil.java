@@ -32,7 +32,8 @@ public class AutoUpdateUtil {
     private static final String configUrl = (String) ReadConfUtil.readYml("update.yml","update.configUrl");
     private static final int PORT = (int) ReadConfUtil.readYml("application.yml","server.port");
 
-    @Scheduled(cron = "0 0 6 * * ?")
+    //定时更新，现在不用了
+//    @Scheduled(cron = "0 0 6 * * ?")
     public void scheduledUpdate(){
         log.info("--Start checking for automatic updates--");
         String path = System.getProperty("user.dir");
