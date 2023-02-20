@@ -58,6 +58,12 @@ public class Analyze {
                         bw.write(s+"\t\n");
                 }
             }
+            //nofilter
+            else if (filterName.contains("nofilter")){
+                while((s = br.readLine())!=null){
+                    bw.write(s+"\t\n");
+                }
+            }
         }catch(Exception e){
             log.error("ERROR2: filter jtl failed",e);
         }

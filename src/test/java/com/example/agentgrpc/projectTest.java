@@ -11,13 +11,13 @@ import java.util.concurrent.TimeUnit;
 public class projectTest {
 
     private String IP1="localhost";
-    private String IP2="192.168.101.114";
+    private String IP2="192.168.101.88";
     private String IP3="192.168.101.21";
     private int port1=9090;
     private int port2=9091;
 
     public ManagedChannel init(){
-        return ManagedChannelBuilder.forAddress(IP2, port2)
+        return ManagedChannelBuilder.forAddress(IP2, port1)
                 .usePlaintext()
                 .build();
     }
@@ -673,15 +673,13 @@ public class projectTest {
     //国产化
     public NodeInfo node3(){
         return NodeInfo.newBuilder()
-                .setIp("192.168.101.114")
-                .setPort("18080")
+                .setIp("192.168.101.88")
+                .setPort("8080")
                 .setWebapps("webroot")
                 .setServlet("decision")
-                .setLibPath("/home/user/environment/TAS/bin")
-                .setBinPath("/home/loongson/sky/environment/bes952/bin")
-                .setProjType(3)
-                .putAttrs("user","admin")
-                .putAttrs("pwd","B#2008_2108#es")
+                .setLibPath("/root/1/frtest/tomcat-linux/webapps/webroot/WEB-INF/lib")
+                .setBinPath("/root/1/frtest/tomcat-linux/bin")
+                .setProjType(1)
                 .build();
     }
 

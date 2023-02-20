@@ -49,12 +49,8 @@ import java.util.concurrent.Executor;
 public class test {
 
     public static void main(String[] args) {
-        File file = new File("C:\\Users\\yzp\\Desktop\\test.json");
-        try {
-            Files.delete(file.toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Analyze analyze = new Analyze();
+        analyze.filterJtl("C:\\Users\\yzp\\Desktop","test.txt","");
 
         //发送http请求，判断工程状态
 //        String url="http://192.168.101.33:8080/webroot/decision/system/info";
